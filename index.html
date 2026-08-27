@@ -3,119 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChargeTogg | EV Şarj İstasyonu Haritası ve Rota Planlayıcı</title>
+    <title>ChargeTogg | EV Sarj Istasyonu Haritasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: '#10b981', bgdark: '#0f172a', card: '#1e293b' } } } }</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Leaflet CSS for Maps -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body class="bg-bgdark text-gray-200 font-sans antialiased h-full flex flex-col overflow-hidden">
-    <nav class="bg-slate-900 border-b border-slate-800 h-16 flex-shrink-0 z-50 relative">
+    <nav class="bg-slate-900 border-b border-slate-800 h-16 flex-shrink-0 z-50 relative shadow-md">
         <div class="max-w-full mx-auto px-4 flex justify-between h-full items-center">
             <span class="text-white text-2xl font-black tracking-tighter"><i class="fa-solid fa-bolt text-brand mr-2"></i>Charge<span class="text-brand">Togg</span></span>
-            <div class="flex gap-4">
-                <button class="bg-brand text-slate-900 font-bold px-4 py-2 rounded-lg text-sm hover:bg-emerald-400 transition shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                    <i class="fa-solid fa-location-crosshairs mr-1"></i> Konumumu Bul
-                </button>
-            </div>
+            <button onclick="map.flyTo([39.0, 35.0], 6)" class="bg-slate-800 border border-slate-700 text-white font-bold px-4 py-2 rounded-lg text-sm hover:bg-slate-700 transition">
+                <i class="fa-solid fa-earth-europe mr-1"></i> Turkiye
+            </button>
         </div>
     </nav>
 
     <div class="flex flex-1 h-[calc(100vh-64px)] relative">
-        <!-- Sidebar -->
-        <aside class="w-full md:w-96 bg-card border-r border-slate-800 flex flex-col absolute md:relative z-40 h-full transform transition-transform duration-300 shadow-2xl" id="sidebar">
-            <div class="p-6 overflow-y-auto">
-                <h2 class="text-xl font-black text-white mb-6">Akıllı Rota Planlayıcı</h2>
-                <form onsubmit="event.preventDefault(); calcRoute();" class="space-y-4 mb-8">
-                    <div>
-                        <div class="relative">
-                            <i class="fa-solid fa-circle-dot absolute left-3 top-3.5 text-brand text-sm"></i>
-                            <input type="text" placeholder="Başlangıç (Örn: İstanbul)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 pl-10 focus:border-brand outline-none" required>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="relative">
-                            <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-red-500 text-sm"></i>
-                            <input type="text" placeholder="Varış (Örn: İzmir)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 pl-10 focus:border-brand outline-none" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold py-3 rounded-lg transition">Rota Oluştur</button>
-                </form>
-
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-700 pb-2">Yakındaki İstasyonlar</h3>
-                <div id="stationList" class="space-y-3">
-                    <!-- JS Data -->
+        <aside class="w-full md:w-[400px] bg-card border-r border-slate-800 flex flex-col absolute md:relative z-40 h-full transform transition-transform duration-300 shadow-2xl" id="sidebar">
+            <div class="p-6 overflow-y-auto h-full scroll-smooth">
+                <h2 class="text-xl font-black text-white mb-6">Canli Istasyon Agi</h2>
+                <div class="space-y-4 mb-8">
+                    <input type="text" id="searchInput" onkeyup="filterStations()" placeholder="Istasyon Ara..." class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 focus:border-brand outline-none">
                 </div>
+                <div id="stationList" class="space-y-3"></div>
             </div>
         </aside>
-
-        <!-- Map Container -->
         <main class="flex-1 relative z-10 bg-slate-800" id="map"></main>
-        
-        <!-- Mobile Sidebar Toggle -->
         <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden absolute bottom-6 right-6 z-50 bg-brand text-slate-900 p-4 rounded-full shadow-2xl">
-            <i class="fa-solid fa-bars text-xl"></i>
+            <i class="fa-solid fa-list text-xl"></i>
         </button>
     </div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Dummy Station Data
         const stations = [
-            { name: "Trugo Oksijen 168 Batı", type: "180 kW DC", op: "Trugo", coords: [39.754, 27.912], status: "Müsait", color: "bg-brand" },
-            { name: "ZES Mall of Istanbul", type: "120 kW DC", op: "ZES", coords: [41.062, 28.807], status: "Meşgul (1 Araç)", color: "bg-orange-500" },
-            { name: "Eşarj Zorlu Center", type: "50 kW DC", op: "Eşarj", coords: [41.066, 29.017], status: "Arızalı", color: "bg-red-500" }
+            { id: 1, name: "Trugo Oksijen 168 Bati (O-5)", type: "180 kW DC", op: "Trugo", coords: [39.754, 27.912], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
+            { id: 2, name: "Trugo Bolu Highway AVM", type: "300 kW DC", op: "Trugo", coords: [40.732, 31.579], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
+            { id: 3, name: "Trugo Ankara Armada", type: "180 kW DC", op: "Trugo", coords: [39.911, 32.812], status: "Mesgul", color: "bg-blue-500", hex: "#3b82f6" },
+            { id: 4, name: "Trugo Izmir IstinyePark", type: "180 kW DC", op: "Trugo", coords: [38.411, 27.062], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
+            { id: 5, name: "ZES Mall of Istanbul", type: "120 kW DC", op: "ZES", coords: [41.062, 28.807], status: "Musait", color: "bg-orange-500", hex: "#f97316" },
+            { id: 6, name: "ZES Zorlu Center", type: "120 kW DC", op: "ZES", coords: [41.066, 29.017], status: "Mesgul", color: "bg-orange-500", hex: "#f97316" },
+            { id: 7, name: "ZES Antalya Migros", type: "60 kW DC", op: "ZES", coords: [36.884, 30.655], status: "Musait", color: "bg-orange-500", hex: "#f97316" },
+            { id: 8, name: "Esarj Akasya AVM", type: "50 kW DC", op: "Esarj", coords: [40.999, 29.052], status: "Arizali", color: "bg-red-500", hex: "#ef4444" },
+            { id: 9, name: "Esarj Bursa Suryapi", type: "50 kW DC", op: "Esarj", coords: [40.211, 28.987], status: "Musait", color: "bg-red-500", hex: "#ef4444" },
+            { id: 10, name: "Trugo Kayseri Park", type: "180 kW DC", op: "Trugo", coords: [38.723, 35.503], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
+            { id: 11, name: "Trugo Gaziantep Sanko", type: "180 kW DC", op: "Trugo", coords: [37.066, 37.369], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
+            { id: 12, name: "ZES Samsun Piazza", type: "120 kW DC", op: "ZES", coords: [41.282, 36.345], status: "Musait", color: "bg-orange-500", hex: "#f97316" }
         ];
 
-        let map;
+        let map, markers = [];
 
         function initMap() {
-            // Center map on Turkey
-            map = L.map('map', { zoomControl: false }).setView([39.9, 32.8], 6);
+            map = L.map('map', { zoomControl: false }).setView([39.0, 35.0], 6);
             L.control.zoom({ position: 'topright' }).addTo(map);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: 'OSM' }).addTo(map);
+            renderStations(stations);
+        }
 
-            // Dark Mode Map Tiles (CartoDB Dark Matter)
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO'
-            }).addTo(map);
-
+        function renderStations(data) {
             const list = document.getElementById('stationList');
-            
-            stations.forEach(st => {
-                // Add marker
-                L.circleMarker(st.coords, {
-                    radius: 8,
-                    fillColor: st.op === 'Trugo' ? '#3b82f6' : (st.op === 'ZES' ? '#f97316' : '#ef4444'),
-                    color: '#fff',
-                    weight: 2,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                }).addTo(map).bindPopup(`<b style="color:black">${st.name}</b><br><span style="color:gray">${st.type}</span>`);
+            list.innerHTML = '';
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
 
-                // Add to sidebar
+            data.forEach(st => {
+                const marker = L.circleMarker(st.coords, {
+                    radius: 8, fillColor: st.hex, color: '#fff', weight: 2, opacity: 1, fillOpacity: 0.9
+                }).addTo(map).bindPopup(`<b style="color:#0f172a">${st.name}</b>`);
+                markers.push(marker);
+
                 list.innerHTML += `
-                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 cursor-pointer hover:border-brand transition" onclick="map.flyTo([${st.coords}], 14)">
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 cursor-pointer hover:border-brand transition" onclick="flyToStation(${st.coords[0]}, ${st.coords[1]})">
                         <div class="flex justify-between items-start mb-2">
                             <h4 class="text-white font-bold truncate pr-2">${st.name}</h4>
-                            <span class="bg-slate-800 text-xs font-bold px-2 py-1 rounded border border-slate-600">${st.op}</span>
+                            <span class="bg-slate-800 text-[10px] font-bold px-2 py-1 rounded border border-slate-600">${st.op}</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
-                            <span class="text-slate-400"><i class="fa-solid fa-plug text-brand"></i> ${st.type}</span>
-                            <span class="flex items-center gap-1 text-xs"><div class="w-2 h-2 rounded-full ${st.color}"></div> ${st.status}</span>
+                            <span class="text-slate-400 font-medium"><i class="fa-solid fa-bolt text-brand mr-1"></i> ${st.type}</span>
+                            <span class="flex items-center gap-1.5 text-xs font-bold text-slate-300">
+                                <div class="w-2.5 h-2.5 rounded-full ${st.color} shadow-[0_0_8px_currentColor]"></div> ${st.status}
+                            </span>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
-        function calcRoute() {
-            alert("Harita API Entegrasyonu (Mapbox/Google) gerektirir. Rota simülasyonu başlatıldı: İstanbul -> İzmir (Tahmini 2 Şarj Molası).");
-            map.flyTo([39.754, 27.912], 8); // O-5 Otoyolu
+        function flyToStation(lat, lng) {
+            map.flyTo([lat, lng], 14, { duration: 1.5 });
+            if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
         }
 
-        // Initialize when DOM loads
+        function filterStations() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            renderStations(stations.filter(s => s.name.toLowerCase().includes(query) || s.op.toLowerCase().includes(query)));
+        }
+
         window.addEventListener('DOMContentLoaded', initMap);
     </script>
 </body>
