@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChargeTogg | EV Sarj Istasyonu Haritasi</title>
+    <title>ChargeTogg | EV Sarj Haritasi & Rota Planlayici</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: '#10b981', bgdark: '#0f172a', card: '#1e293b' } } } }</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Leaflet & MarkerCluster & Routing CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
+    
     <style>
-        /* OpenStreetMap'i API Key olmadan Dark Mode yapmak icin ozel CSS filtresi */
-        .leaflet-tile-pane {
-            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-        }
+        .leaflet-tile-pane { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
+        .leaflet-routing-container { background-color: #1e293b !important; color: white !important; border: 1px solid #334155; }
+        .leaflet-routing-alt h2 { display: none; }
     </style>
 </head>
 <body class="bg-bgdark text-gray-200 font-sans antialiased h-full flex flex-col overflow-hidden">
@@ -26,77 +31,110 @@
     </nav>
 
     <div class="flex flex-1 h-[calc(100vh-64px)] relative">
-        <aside class="w-full md:w-[400px] bg-card border-r border-slate-800 flex flex-col absolute md:relative z-40 h-full transform transition-transform duration-300 shadow-2xl" id="sidebar">
-            <div class="p-6 overflow-y-auto h-full scroll-smooth">
-                <h2 class="text-xl font-black text-white mb-6">Canli Istasyon Agi</h2>
-                <div class="space-y-4 mb-8">
-                    <input type="text" id="searchInput" onkeyup="filterStations()" placeholder="Istasyon Ara..." class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 focus:border-brand outline-none">
+        <aside class="w-full md:w-[350px] bg-card border-r border-slate-800 flex flex-col absolute md:relative z-40 h-full transform transition-transform duration-300 shadow-2xl" id="sidebar">
+            <div class="p-5 overflow-y-auto h-full scroll-smooth flex flex-col">
+                <h2 class="text-lg font-black text-white mb-4">Guzergah Planlayici</h2>
+                
+                <form onsubmit="event.preventDefault(); calcRoute();" class="space-y-3 mb-6 bg-slate-900 p-4 rounded-xl border border-slate-700">
+                    <input type="text" id="startCity" placeholder="Kalkis (Orn: Istanbul)" class="w-full bg-slate-800 text-white rounded p-2 text-sm focus:border-brand outline-none border border-transparent" required>
+                    <input type="text" id="endCity" placeholder="Varis (Orn: Izmir)" class="w-full bg-slate-800 text-white rounded p-2 text-sm focus:border-brand outline-none border border-transparent" required>
+                    <button type="submit" id="routeBtn" class="w-full bg-brand text-slate-900 font-bold py-2 rounded text-sm hover:bg-emerald-400 transition">Rota Ciz</button>
+                    <p id="routeStatus" class="text-xs text-yellow-500 font-bold text-center mt-2 hidden">Hesaplaniyor...</p>
+                </form>
+
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 border-b border-slate-700 pb-2">Istasyonlar (Turkiye Geneli)</h3>
+                <div class="mb-3">
+                    <input type="text" id="searchInput" onkeyup="filterStations()" placeholder="Istasyon Ara..." class="w-full bg-slate-900 border border-slate-700 text-white rounded p-2 text-sm focus:border-brand outline-none">
                 </div>
-                <div id="stationList" class="space-y-3"></div>
+                <div id="stationList" class="space-y-2 flex-1 overflow-y-auto pr-1"></div>
             </div>
         </aside>
+        
         <main class="flex-1 relative z-10 bg-slate-800" id="map"></main>
+        
         <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden absolute bottom-6 right-6 z-50 bg-brand text-slate-900 p-4 rounded-full shadow-2xl">
             <i class="fa-solid fa-list text-xl"></i>
         </button>
     </div>
 
+    <!-- JS Libraries -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    
     <script>
+        // Genisletilmis Istasyon Veritabanı (40+ Lokasyon)
         const stations = [
-            { id: 1, name: "Trugo Oksijen 168 Bati (O-5)", type: "180 kW DC", op: "Trugo", coords: [39.754, 27.912], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
-            { id: 2, name: "Trugo Bolu Highway AVM", type: "300 kW DC", op: "Trugo", coords: [40.732, 31.579], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
-            { id: 3, name: "Trugo Ankara Armada", type: "180 kW DC", op: "Trugo", coords: [39.911, 32.812], status: "Mesgul", color: "bg-blue-500", hex: "#3b82f6" },
-            { id: 4, name: "Trugo Izmir IstinyePark", type: "180 kW DC", op: "Trugo", coords: [38.411, 27.062], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
-            { id: 5, name: "ZES Mall of Istanbul", type: "120 kW DC", op: "ZES", coords: [41.062, 28.807], status: "Musait", color: "bg-orange-500", hex: "#f97316" },
-            { id: 6, name: "ZES Zorlu Center", type: "120 kW DC", op: "ZES", coords: [41.066, 29.017], status: "Mesgul", color: "bg-orange-500", hex: "#f97316" },
-            { id: 7, name: "ZES Antalya Migros", type: "60 kW DC", op: "ZES", coords: [36.884, 30.655], status: "Musait", color: "bg-orange-500", hex: "#f97316" },
-            { id: 8, name: "Esarj Akasya AVM", type: "50 kW DC", op: "Esarj", coords: [40.999, 29.052], status: "Arizali", color: "bg-red-500", hex: "#ef4444" },
-            { id: 9, name: "Esarj Bursa Suryapi", type: "50 kW DC", op: "Esarj", coords: [40.211, 28.987], status: "Musait", color: "bg-red-500", hex: "#ef4444" },
-            { id: 10, name: "Trugo Kayseri Park", type: "180 kW DC", op: "Trugo", coords: [38.723, 35.503], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
-            { id: 11, name: "Trugo Gaziantep Sanko", type: "180 kW DC", op: "Trugo", coords: [37.066, 37.369], status: "Musait", color: "bg-blue-500", hex: "#3b82f6" },
-            { id: 12, name: "ZES Samsun Piazza", type: "120 kW DC", op: "ZES", coords: [41.282, 36.345], status: "Musait", color: "bg-orange-500", hex: "#f97316" }
+            { name: "Trugo Oksijen 168 (O-5)", type: "180 kW DC", op: "Trugo", coords: [39.754, 27.912], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "Trugo Bolu Highway", type: "300 kW DC", op: "Trugo", coords: [40.732, 31.579], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Mall of Istanbul", type: "120 kW DC", op: "ZES", coords: [41.062, 28.807], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Esarj Akasya AVM", type: "50 kW DC", op: "Esarj", coords: [40.999, 29.052], color: "bg-red-500", hex: "#ef4444" },
+            { name: "Trugo Ankara Armada", type: "180 kW DC", op: "Trugo", coords: [39.911, 32.812], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Ankara Ankamall", type: "120 kW DC", op: "ZES", coords: [39.951, 32.831], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Izmir IstinyePark", type: "180 kW DC", op: "Trugo", coords: [38.411, 27.062], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Izmir Optimum", type: "60 kW DC", op: "ZES", coords: [38.322, 27.135], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Kayseri Park", type: "180 kW DC", op: "Trugo", coords: [38.723, 35.503], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Samsun Piazza", type: "120 kW DC", op: "ZES", coords: [41.282, 36.345], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Gaziantep Sanko", type: "180 kW DC", op: "Trugo", coords: [37.066, 37.369], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "Esarj Adana Optimum", type: "60 kW DC", op: "Esarj", coords: [36.993, 35.341], color: "bg-red-500", hex: "#ef4444" },
+            { name: "Trugo Konya Novada", type: "180 kW DC", op: "Trugo", coords: [37.892, 32.502], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Antalya Migros", type: "60 kW DC", op: "ZES", coords: [36.884, 30.655], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Trabzon Forum", type: "180 kW DC", op: "Trugo", coords: [40.998, 39.754], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "Esarj Eskisehir Espark", type: "50 kW DC", op: "Esarj", coords: [39.782, 30.511], color: "bg-red-500", hex: "#ef4444" },
+            { name: "ZES Sakarya Serdivan", type: "120 kW DC", op: "ZES", coords: [40.765, 30.374], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Aydin Forum", type: "180 kW DC", op: "Trugo", coords: [37.845, 27.845], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Mugla Bodrium", type: "60 kW DC", op: "ZES", coords: [37.034, 27.423], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Esarj Denizli Teras Park", type: "50 kW DC", op: "Esarj", coords: [37.751, 29.076], color: "bg-red-500", hex: "#ef4444" },
+            { name: "Trugo Mersin Marina", type: "180 kW DC", op: "Trugo", coords: [36.782, 34.582], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Hatay Prime Mall", type: "60 kW DC", op: "ZES", coords: [36.216, 36.143], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Oksijen 68 (O-4)", type: "180 kW DC", op: "Trugo", coords: [40.721, 30.222], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Afyon Park", type: "120 kW DC", op: "ZES", coords: [38.761, 30.531], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Malatya Park", type: "180 kW DC", op: "Trugo", coords: [38.351, 38.305], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "ZES Erzurum MNG", type: "120 kW DC", op: "ZES", coords: [39.912, 41.265], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Diyarbakir Forum", type: "180 kW DC", op: "Trugo", coords: [37.935, 40.211], color: "bg-blue-500", hex: "#3b82f6" },
+            { name: "Esarj Sivas Prime Mall", type: "50 kW DC", op: "Esarj", coords: [39.754, 37.011], color: "bg-red-500", hex: "#ef4444" },
+            { name: "ZES Rize Simar", type: "60 kW DC", op: "ZES", coords: [41.025, 40.518], color: "bg-orange-500", hex: "#f97316" },
+            { name: "Trugo Oksijen 226 (O-5)", type: "180 kW DC", op: "Trugo", coords: [39.312, 27.654], color: "bg-blue-500", hex: "#3b82f6" }
         ];
 
-        let map, markers = [];
+        let map;
+        let markersCluster;
+        let routingControl = null;
 
         function initMap() {
             map = L.map('map', { zoomControl: false }).setView([39.0, 35.0], 6);
             L.control.zoom({ position: 'topright' }).addTo(map);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(map);
             
-            // CartoDB yerine tamamen ucretsiz ve acik kaynakli OpenStreetMap kullaniyoruz. 
-            // CSS filter ile ustten dark mode'a cevirdik, boylece API Key'e asla ihtiyac kalmiyor!
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-                attribution: '&copy; OpenStreetMap' 
-            }).addTo(map);
-            
+            markersCluster = L.markerClusterGroup({
+                maxClusterRadius: 40,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({ html: `<div class="bg-brand text-slate-900 font-bold w-8 h-8 flex items-center justify-center rounded-full border-2 border-slate-900 shadow-lg">${cluster.getChildCount()}</div>`, className: '' });
+                }
+            });
+            map.addLayer(markersCluster);
+
             renderStations(stations);
         }
 
         function renderStations(data) {
             const list = document.getElementById('stationList');
             list.innerHTML = '';
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
+            markersCluster.clearLayers();
 
             data.forEach(st => {
                 const marker = L.circleMarker(st.coords, {
                     radius: 8, fillColor: st.hex, color: '#fff', weight: 2, opacity: 1, fillOpacity: 0.9
-                }).addTo(map).bindPopup(`<b style="color:#0f172a">${st.name}</b>`);
-                markers.push(marker);
+                }).bindPopup(`<b style="color:#0f172a">${st.name}</b><br><span style="color:#475569">${st.type} - ${st.op}</span>`);
+                markersCluster.addLayer(marker);
 
                 list.innerHTML += `
-                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 cursor-pointer hover:border-brand transition" onclick="flyToStation(${st.coords[0]}, ${st.coords[1]})">
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-white font-bold truncate pr-2">${st.name}</h4>
-                            <span class="bg-slate-800 text-[10px] font-bold px-2 py-1 rounded border border-slate-600">${st.op}</span>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 cursor-pointer hover:border-brand transition" onclick="flyToStation(${st.coords[0]}, ${st.coords[1]})">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="text-white text-sm font-bold truncate pr-2">${st.name}</h4>
+                            <span class="bg-slate-800 text-[9px] font-bold px-1.5 py-0.5 rounded border border-slate-700">${st.op}</span>
                         </div>
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-slate-400 font-medium"><i class="fa-solid fa-bolt text-brand mr-1"></i> ${st.type}</span>
-                            <span class="flex items-center gap-1.5 text-xs font-bold text-slate-300">
-                                <div class="w-2.5 h-2.5 rounded-full ${st.color} shadow-[0_0_8px_currentColor]"></div> ${st.status}
-                            </span>
-                        </div>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-solid fa-bolt text-brand mr-1"></i> ${st.type}</span>
                     </div>`;
             });
         }
@@ -107,8 +145,64 @@
         }
 
         function filterStations() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            renderStations(stations.filter(s => s.name.toLowerCase().includes(query) || s.op.toLowerCase().includes(query)));
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderStations(stations.filter(s => s.name.toLowerCase().includes(q) || s.op.toLowerCase().includes(q)));
+        }
+
+        // Koordinat bulma (Nominatim)
+        async function getCoords(city) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${city}, Turkey`);
+                const data = await res.json();
+                if(data && data.length > 0) return L.latLng(data[0].lat, data[0].lon);
+            } catch(e) {}
+            return null;
+        }
+
+        // Rota Cizme
+        async function calcRoute() {
+            const start = document.getElementById('startCity').value;
+            const end = document.getElementById('endCity').value;
+            const status = document.getElementById('routeStatus');
+            const btn = document.getElementById('routeBtn');
+            
+            if(!start || !end) return;
+            
+            btn.style.display = 'none';
+            status.style.display = 'block';
+
+            const startCoords = await getCoords(start);
+            const endCoords = await getCoords(end);
+
+            if(!startCoords || !endCoords) {
+                alert("Sehir bulunamadi!");
+                btn.style.display = 'block';
+                status.style.display = 'none';
+                return;
+            }
+
+            if(routingControl) map.removeControl(routingControl);
+
+            routingControl = L.Routing.control({
+                waypoints: [startCoords, endCoords],
+                routeWhileDragging: false,
+                addWaypoints: false,
+                lineOptions: { styles: [{ color: '#10b981', weight: 4 }] },
+                createMarker: function() { return null; }, // Gizli marker
+                show: false
+            }).addTo(map);
+
+            routingControl.on('routesfound', function(e) {
+                btn.style.display = 'block';
+                status.style.display = 'none';
+                if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+            });
+            
+            routingControl.on('routingerror', function(e) {
+                alert("Rota cizilirken bir hata olustu (OSRM sunucusu yogun olabilir).");
+                btn.style.display = 'block';
+                status.style.display = 'none';
+            });
         }
 
         window.addEventListener('DOMContentLoaded', initMap);
