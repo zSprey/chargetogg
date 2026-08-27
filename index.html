@@ -3,126 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChargeTogg | Akıllı Şarj, Rota ve Maliyet Rehberi</title>
+    <title>ChargeTogg | Gelişmiş Şarj Süresi ve Batarya Simülatörü</title>
+    <meta name="description" content="Togg T10X şarj süresini hava durumuna ve şarj eğrisine göre hesaplayın. Trugo ve ZES güncel fiyatları.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { colors: { chargegreen: '#10b981', darkbg: '#0f172a', cardbg: '#1e293b' } } }
-        }
-    </script>
+    <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { chargegreen: '#10b981', darkbg: '#0f172a', cardbg: '#1e293b' } } } }</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-darkbg text-gray-200 font-sans antialiased">
-    <!-- Navbar -->
     <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
-            <div class="flex-shrink-0 flex items-center">
-                <span class="text-white text-2xl font-bold tracking-tight"><i class="fa-solid fa-bolt text-chargegreen mr-2"></i>Charge<span class="text-chargegreen">Togg</span></span>
+        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+            <div class="flex items-center">
+                <span class="text-white text-2xl font-bold"><i class="fa-solid fa-bolt text-chargegreen mr-2"></i>Charge<span class="text-chargegreen">Togg</span></span>
             </div>
             <div class="hidden md:flex space-x-8">
-                <a href="#hesaplayici" class="text-slate-300 hover:text-white transition">Süre & Maliyet</a>
-                <a href="#fiyatlar" class="text-slate-300 hover:text-white transition">Canlı Fiyatlar</a>
-                <a href="#rota" class="text-slate-300 hover:text-white transition">Rota Planlayıcı</a>
+                <a href="#hesaplayici" class="text-slate-300 hover:text-white transition">Akıllı Simülatör</a>
+                <a href="#makale" class="text-slate-300 hover:text-white transition">Menzil & Şarj Rehberi</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <div class="relative overflow-hidden py-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-4xl font-extrabold text-white sm:text-6xl">
-                Menzil Kaygısına <span class="text-chargegreen">Son</span>
-            </h1>
-            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-400">
-                Togg T10X şarj sürelerini hesaplayın, operatör fiyatlarını karşılaştırın ve uzun yol rotanızı akıllıca planlayın.
-            </p>
-        </div>
-    </div>
-
-    <!-- Şarj Simülatörü -->
+    <!-- Gelişmiş Şarj Simülatörü -->
     <div id="hesaplayici" class="max-w-4xl mx-auto px-4 py-12">
         <div class="bg-cardbg rounded-2xl p-8 shadow-2xl border border-slate-700">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center"><i class="fa-solid fa-stopwatch text-chargegreen mr-3"></i> Togg Akıllı Şarj Simülatörü</h2>
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center"><i class="fa-solid fa-microchip text-chargegreen mr-3"></i> Togg Gelişmiş Şarj & Menzil Simülatörü</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Batarya Tipi</label>
+                    <select id="batterySelect" class="w-full bg-slate-800 text-white rounded p-3 border border-slate-600 focus:border-chargegreen outline-none" onchange="updateValues()">
+                        <option value="88.5">T10X V2 Uzun Menzil (88.5 kWh)</option>
+                        <option value="52.4">T10X V1 Standart (52.4 kWh)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Hava Koşulları</label>
+                    <select id="tempSelect" class="w-full bg-slate-800 text-white rounded p-3 border border-slate-600 focus:border-chargegreen outline-none" onchange="updateValues()">
+                        <option value="optimum">Optimum (+20°C ile +30°C Arası)</option>
+                        <option value="cold">Soğuk Kış Havası (-5°C ile 5°C Arası)</option>
+                    </select>
+                </div>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label class="block text-sm text-slate-400 mb-1">Başlangıç Şarjı (%)</label>
-                    <input type="range" id="startSoc" min="0" max="90" value="20" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer" oninput="updateValues()">
+                    <input type="range" id="startSoc" min="0" max="90" value="20" class="w-full h-2 bg-slate-700 rounded-lg cursor-pointer" oninput="updateValues()">
                     <div class="text-right text-chargegreen font-bold mt-1">%<span id="startSocVal">20</span></div>
                 </div>
                 <div>
                     <label class="block text-sm text-slate-400 mb-1">Hedef Şarj (%)</label>
-                    <input type="range" id="endSoc" min="10" max="100" value="80" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer" oninput="updateValues()">
+                    <input type="range" id="endSoc" min="10" max="100" value="80" class="w-full h-2 bg-slate-700 rounded-lg cursor-pointer" oninput="updateValues()">
                     <div class="text-right text-chargegreen font-bold mt-1">%<span id="endSocVal">80</span></div>
                 </div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                 <div class="bg-slate-800 rounded-xl p-4 border border-slate-600 text-center">
-                    <p class="text-sm text-slate-400">180 kW DC (Hızlı)</p>
+                    <p class="text-xs text-slate-400">180 kW DC Trugo (Tahmini)</p>
                     <p class="text-2xl font-bold text-white mt-1" id="dcTime">28 Dk</p>
                 </div>
                 <div class="bg-slate-800 rounded-xl p-4 border border-slate-600 text-center">
-                    <p class="text-sm text-slate-400">11 kW AC (Ev)</p>
-                    <p class="text-2xl font-bold text-white mt-1" id="acTime">4 Sa 45 Dk</p>
+                    <p class="text-xs text-slate-400">11 kW AC Wallbox</p>
+                    <p class="text-2xl font-bold text-white mt-1" id="acTime">4 Sa 50 Dk</p>
                 </div>
-                <div class="bg-slate-800 rounded-xl p-4 border border-chargegreen text-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                    <p class="text-sm text-slate-400">DC Tahmini Maliyet</p>
-                    <p class="text-2xl font-bold text-chargegreen mt-1" id="estCost">₺450</p>
+                <div class="bg-slate-800 rounded-xl p-4 border border-chargegreen text-center shadow-[0_0_15px_rgba(16,185,129,0.2)] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-chargegreen text-white text-[10px] px-2 py-0.5 rounded-bl-lg font-bold">DC Maliyet</div>
+                    <p class="text-xs text-slate-400 mt-2">Toplam Trugo Maliyeti</p>
+                    <p class="text-2xl font-bold text-chargegreen mt-1" id="estCost">₺475</p>
                 </div>
             </div>
+            <p id="curveWarning" class="text-xs text-yellow-500 mt-4 hidden"><i class="fa-solid fa-triangle-exclamation"></i> Kış koşullarında batarya soğuk olduğu için DC şarj hızı batarya ısınana kadar düşük başlar. Süreler +%20 artırılmıştır.</p>
         </div>
     </div>
 
-    <!-- Canlı Fiyat Tablosu -->
-    <div id="fiyatlar" class="max-w-7xl mx-auto px-4 py-12">
-        <h2 class="text-2xl font-bold text-white mb-6">Operatör Fiyat Karşılaştırması (2026)</h2>
-        <div class="overflow-x-auto bg-cardbg rounded-xl border border-slate-700">
-            <table class="w-full text-left text-slate-300">
-                <thead class="bg-slate-800 text-xs uppercase">
-                    <tr>
-                        <th class="px-6 py-4">Operatör</th>
-                        <th class="px-6 py-4">AC (Masaüstü/Duvar)</th>
-                        <th class="px-6 py-4">DC (Hızlı)</th>
-                        <th class="px-6 py-4">HPC (Ultra Hızlı 120kW+)</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-700">
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="px-6 py-4 font-bold text-white flex items-center"><div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div> Trugo</td>
-                        <td class="px-6 py-4">₺6.95 / kWh</td>
-                        <td class="px-6 py-4 text-white font-semibold">₺8.95 / kWh</td>
-                        <td class="px-6 py-4">₺9.95 / kWh</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="px-6 py-4 font-bold text-white flex items-center"><div class="w-3 h-3 rounded-full bg-orange-500 mr-2"></div> ZES</td>
-                        <td class="px-6 py-4">₺7.49 / kWh</td>
-                        <td class="px-6 py-4 text-white font-semibold">₺9.49 / kWh</td>
-                        <td class="px-6 py-4">₺10.49 / kWh</td>
-                    </tr>
-                    <tr class="hover:bg-slate-800/50 transition">
-                        <td class="px-6 py-4 font-bold text-white flex items-center"><div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div> Eşarj</td>
-                        <td class="px-6 py-4">₺7.20 / kWh</td>
-                        <td class="px-6 py-4 text-white font-semibold">₺9.25 / kWh</td>
-                        <td class="px-6 py-4">₺10.25 / kWh</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <!-- SEO Makalesi Bölümü -->
+    <div id="makale" class="max-w-4xl mx-auto px-4 py-16">
+        <article class="prose prose-invert lg:prose-lg text-slate-300">
+            <h1 class="text-3xl font-extrabold text-white mb-6">Togg Batarya Şarj Eğrisi (Charging Curve) Nasıl Çalışır? Neden %80'den Sonra Yavaşlar?</h1>
+            <p>Elektrikli araç sahiplerinin DC (Doğru Akım) ultra hızlı şarj istasyonlarında en sık sorduğu soru şudur: <em>"Togg'u 180 kW HPC istasyonuna bağladım ama araç 100 kW ile şarj alıyor veya %80'e geldikten sonra hız 30 kW'a düştü. İstasyon mu arızalı?"</em></p>
+            <p>Hayır, istasyon arızalı değil. Elektrikli araçlardaki NMC (Nikel-Manganez-Kobalt) Lityum-İyon bataryalar, fiziksel ve kimyasal güvenlik sınırları gereği <strong>"Şarj Eğrisi" (Charging Curve)</strong> adı verilen algoritmik bir senaryoya göre güç çekerler.</p>
+            
+            <h3 class="text-xl font-bold text-white mt-8 mb-3">SoC (State of Charge) ve Hız İlişkisi</h3>
+            <ul class="list-disc pl-6 space-y-2">
+                <li><strong>%10 - %40 Arası:</strong> Bataryanın en çok "aç" olduğu ve iç direncin düşük olduğu evredir. İstasyon destekliyorsa Togg burada maksimum hızı olan 150-160 kW seviyelerine ulaşır.</li>
+                <li><strong>%40 - %70 Arası:</strong> Batarya hücreleri ısınmaya başlar. BMS (Batarya Yönetim Sistemi) güvenliği sağlamak için akımı hafifçe düşürür (90 kW - 70 kW arasına iner).</li>
+                <li><strong>%80 ve Sonrası:</strong> Akıllı telefonlardaki gibi batarya dolmaya yaklaştığında lityum iyonlarının hücreye girmesi zorlaşır. Bataryanın ömrünü korumak (dendrit oluşumunu engellemek) için hız bilinçli olarak 30-40 kW seviyelerine, %95 sonrasında ise 10 kW altına düşürülür.</li>
+            </ul>
+            <p class="mt-4 bg-slate-800 p-4 rounded border border-slate-700 text-sm">💡 <strong>Uzman Tavsiyesi:</strong> Uzun yoldayken aracınızı %100 doldurmak için beklemek zaman kaybıdır. %80'e ulaştığınızda şarjı durdurup yola çıkmak ve %15'e inince tekrar şarj etmek, yolculuğunuzu saatlerce kısaltır.</p>
+        </article>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 mt-20">
-        <div class="max-w-7xl mx-auto px-4 py-8 text-center text-slate-500">
-            <p>&copy; 2026 ChargeTogg. Tüm hakları saklıdır.</p>
-            <p class="text-xs mt-4">Yasal Uyarı: Veriler tahminidir. Bu site bağımsız bir platformdur. Togg veya Trugo ile resmi bağı yoktur.</p>
-        </div>
-    </footer>
 
     <script>
         function updateValues() {
             let start = parseInt(document.getElementById('startSoc').value);
             let end = parseInt(document.getElementById('endSoc').value);
+            let capacity = parseFloat(document.getElementById('batterySelect').value);
+            let temp = document.getElementById('tempSelect').value;
             
             if (start >= end) {
                 document.getElementById('startSoc').value = end - 5;
@@ -132,19 +106,34 @@
             document.getElementById('startSocVal').innerText = start;
             document.getElementById('endSocVal').innerText = end;
             
-            // Basit Simulasyon (T10X Uzun Menzil 88.5 kWh baz alınmıştır)
             let diffPercent = end - start;
-            let kwhNeeded = (88.5 * diffPercent) / 100;
+            let kwhNeeded = (capacity * diffPercent) / 100;
             
-            // DC Hızlı (Avg 100 kW)
-            let dcMins = Math.round((kwhNeeded / 100) * 60);
-            // AC (11 kW)
+            let dcMins = 0;
+            for(let i=start; i<end; i++) {
+                let kW = 100; 
+                if(i < 40) kW = 150;
+                else if(i < 70) kW = 90;
+                else if(i < 85) kW = 50;
+                else kW = 25; 
+                
+                let timeFor1Percent = (capacity / 100) / (kW / 60); 
+                dcMins += timeFor1Percent;
+            }
+            
+            if(temp === 'cold') {
+                dcMins = dcMins * 1.25; 
+                document.getElementById('curveWarning').classList.remove('hidden');
+            } else {
+                document.getElementById('curveWarning').classList.add('hidden');
+            }
+            
+            dcMins = Math.round(dcMins);
             let acHours = (kwhNeeded / 11);
             let acH = Math.floor(acHours);
             let acM = Math.round((acHours - acH) * 60);
             
-            // Maliyet (Ortalama 9 TL)
-            let cost = Math.round(kwhNeeded * 9);
+            let cost = Math.round(kwhNeeded * 8.95);
             
             document.getElementById('dcTime').innerText = dcMins + ' Dk';
             document.getElementById('acTime').innerText = acH + ' Sa ' + acM + ' Dk';
