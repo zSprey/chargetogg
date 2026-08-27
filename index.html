@@ -8,6 +8,12 @@
     <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: '#10b981', bgdark: '#0f172a', card: '#1e293b' } } } }</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        /* OpenStreetMap'i API Key olmadan Dark Mode yapmak icin ozel CSS filtresi */
+        .leaflet-tile-pane {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+    </style>
 </head>
 <body class="bg-bgdark text-gray-200 font-sans antialiased h-full flex flex-col overflow-hidden">
     <nav class="bg-slate-900 border-b border-slate-800 h-16 flex-shrink-0 z-50 relative shadow-md">
@@ -57,7 +63,13 @@
         function initMap() {
             map = L.map('map', { zoomControl: false }).setView([39.0, 35.0], 6);
             L.control.zoom({ position: 'topright' }).addTo(map);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: 'OSM' }).addTo(map);
+            
+            // CartoDB yerine tamamen ucretsiz ve acik kaynakli OpenStreetMap kullaniyoruz. 
+            // CSS filter ile ustten dark mode'a cevirdik, boylece API Key'e asla ihtiyac kalmiyor!
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+                attribution: '&copy; OpenStreetMap' 
+            }).addTo(map);
+            
             renderStations(stations);
         }
 
