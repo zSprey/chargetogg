@@ -1,144 +1,122 @@
 <!DOCTYPE html>
-<html lang="tr" class="dark">
+<html lang="tr" class="dark h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChargeTogg | Gelişmiş Şarj Süresi ve Batarya Simülatörü</title>
-    <meta name="description" content="Togg T10X şarj süresini hava durumuna ve şarj eğrisine göre hesaplayın. Trugo ve ZES güncel fiyatları.">
+    <title>ChargeTogg | EV Şarj İstasyonu Haritası ve Rota Planlayıcı</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { chargegreen: '#10b981', darkbg: '#0f172a', cardbg: '#1e293b' } } } }</script>
+    <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: '#10b981', bgdark: '#0f172a', card: '#1e293b' } } } }</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
-<body class="bg-darkbg text-gray-200 font-sans antialiased">
-    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
-            <div class="flex items-center">
-                <span class="text-white text-2xl font-bold"><i class="fa-solid fa-bolt text-chargegreen mr-2"></i>Charge<span class="text-chargegreen">Togg</span></span>
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#hesaplayici" class="text-slate-300 hover:text-white transition">Akıllı Simülatör</a>
-                <a href="#makale" class="text-slate-300 hover:text-white transition">Menzil & Şarj Rehberi</a>
+<body class="bg-bgdark text-gray-200 font-sans antialiased h-full flex flex-col overflow-hidden">
+    <nav class="bg-slate-900 border-b border-slate-800 h-16 flex-shrink-0 z-50 relative">
+        <div class="max-w-full mx-auto px-4 flex justify-between h-full items-center">
+            <span class="text-white text-2xl font-black tracking-tighter"><i class="fa-solid fa-bolt text-brand mr-2"></i>Charge<span class="text-brand">Togg</span></span>
+            <div class="flex gap-4">
+                <button class="bg-brand text-slate-900 font-bold px-4 py-2 rounded-lg text-sm hover:bg-emerald-400 transition shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <i class="fa-solid fa-location-crosshairs mr-1"></i> Konumumu Bul
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Gelişmiş Şarj Simülatörü -->
-    <div id="hesaplayici" class="max-w-4xl mx-auto px-4 py-12">
-        <div class="bg-cardbg rounded-2xl p-8 shadow-2xl border border-slate-700">
-            <h2 class="text-2xl font-bold text-white mb-6 flex items-center"><i class="fa-solid fa-microchip text-chargegreen mr-3"></i> Togg Gelişmiş Şarj & Menzil Simülatörü</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Batarya Tipi</label>
-                    <select id="batterySelect" class="w-full bg-slate-800 text-white rounded p-3 border border-slate-600 focus:border-chargegreen outline-none" onchange="updateValues()">
-                        <option value="88.5">T10X V2 Uzun Menzil (88.5 kWh)</option>
-                        <option value="52.4">T10X V1 Standart (52.4 kWh)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Hava Koşulları</label>
-                    <select id="tempSelect" class="w-full bg-slate-800 text-white rounded p-3 border border-slate-600 focus:border-chargegreen outline-none" onchange="updateValues()">
-                        <option value="optimum">Optimum (+20°C ile +30°C Arası)</option>
-                        <option value="cold">Soğuk Kış Havası (-5°C ile 5°C Arası)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Başlangıç Şarjı (%)</label>
-                    <input type="range" id="startSoc" min="0" max="90" value="20" class="w-full h-2 bg-slate-700 rounded-lg cursor-pointer" oninput="updateValues()">
-                    <div class="text-right text-chargegreen font-bold mt-1">%<span id="startSocVal">20</span></div>
-                </div>
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Hedef Şarj (%)</label>
-                    <input type="range" id="endSoc" min="10" max="100" value="80" class="w-full h-2 bg-slate-700 rounded-lg cursor-pointer" oninput="updateValues()">
-                    <div class="text-right text-chargegreen font-bold mt-1">%<span id="endSocVal">80</span></div>
+    <div class="flex flex-1 h-[calc(100vh-64px)] relative">
+        <!-- Sidebar -->
+        <aside class="w-full md:w-96 bg-card border-r border-slate-800 flex flex-col absolute md:relative z-40 h-full transform transition-transform duration-300 shadow-2xl" id="sidebar">
+            <div class="p-6 overflow-y-auto">
+                <h2 class="text-xl font-black text-white mb-6">Akıllı Rota Planlayıcı</h2>
+                <form onsubmit="event.preventDefault(); calcRoute();" class="space-y-4 mb-8">
+                    <div>
+                        <div class="relative">
+                            <i class="fa-solid fa-circle-dot absolute left-3 top-3.5 text-brand text-sm"></i>
+                            <input type="text" placeholder="Başlangıç (Örn: İstanbul)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 pl-10 focus:border-brand outline-none" required>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-red-500 text-sm"></i>
+                            <input type="text" placeholder="Varış (Örn: İzmir)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-3 pl-10 focus:border-brand outline-none" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-bold py-3 rounded-lg transition">Rota Oluştur</button>
+                </form>
+
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-700 pb-2">Yakındaki İstasyonlar</h3>
+                <div id="stationList" class="space-y-3">
+                    <!-- JS Data -->
                 </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-                <div class="bg-slate-800 rounded-xl p-4 border border-slate-600 text-center">
-                    <p class="text-xs text-slate-400">180 kW DC Trugo (Tahmini)</p>
-                    <p class="text-2xl font-bold text-white mt-1" id="dcTime">28 Dk</p>
-                </div>
-                <div class="bg-slate-800 rounded-xl p-4 border border-slate-600 text-center">
-                    <p class="text-xs text-slate-400">11 kW AC Wallbox</p>
-                    <p class="text-2xl font-bold text-white mt-1" id="acTime">4 Sa 50 Dk</p>
-                </div>
-                <div class="bg-slate-800 rounded-xl p-4 border border-chargegreen text-center shadow-[0_0_15px_rgba(16,185,129,0.2)] relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-chargegreen text-white text-[10px] px-2 py-0.5 rounded-bl-lg font-bold">DC Maliyet</div>
-                    <p class="text-xs text-slate-400 mt-2">Toplam Trugo Maliyeti</p>
-                    <p class="text-2xl font-bold text-chargegreen mt-1" id="estCost">₺475</p>
-                </div>
-            </div>
-            <p id="curveWarning" class="text-xs text-yellow-500 mt-4 hidden"><i class="fa-solid fa-triangle-exclamation"></i> Kış koşullarında batarya soğuk olduğu için DC şarj hızı batarya ısınana kadar düşük başlar. Süreler +%20 artırılmıştır.</p>
-        </div>
+        </aside>
+
+        <!-- Map Container -->
+        <main class="flex-1 relative z-10 bg-slate-800" id="map"></main>
+        
+        <!-- Mobile Sidebar Toggle -->
+        <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden absolute bottom-6 right-6 z-50 bg-brand text-slate-900 p-4 rounded-full shadow-2xl">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
     </div>
 
-    <!-- SEO Makalesi Bölümü -->
-    <div id="makale" class="max-w-4xl mx-auto px-4 py-16">
-        <article class="prose prose-invert lg:prose-lg text-slate-300">
-            <h1 class="text-3xl font-extrabold text-white mb-6">Togg Batarya Şarj Eğrisi (Charging Curve) Nasıl Çalışır? Neden %80'den Sonra Yavaşlar?</h1>
-            <p>Elektrikli araç sahiplerinin DC (Doğru Akım) ultra hızlı şarj istasyonlarında en sık sorduğu soru şudur: <em>"Togg'u 180 kW HPC istasyonuna bağladım ama araç 100 kW ile şarj alıyor veya %80'e geldikten sonra hız 30 kW'a düştü. İstasyon mu arızalı?"</em></p>
-            <p>Hayır, istasyon arızalı değil. Elektrikli araçlardaki NMC (Nikel-Manganez-Kobalt) Lityum-İyon bataryalar, fiziksel ve kimyasal güvenlik sınırları gereği <strong>"Şarj Eğrisi" (Charging Curve)</strong> adı verilen algoritmik bir senaryoya göre güç çekerler.</p>
-            
-            <h3 class="text-xl font-bold text-white mt-8 mb-3">SoC (State of Charge) ve Hız İlişkisi</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li><strong>%10 - %40 Arası:</strong> Bataryanın en çok "aç" olduğu ve iç direncin düşük olduğu evredir. İstasyon destekliyorsa Togg burada maksimum hızı olan 150-160 kW seviyelerine ulaşır.</li>
-                <li><strong>%40 - %70 Arası:</strong> Batarya hücreleri ısınmaya başlar. BMS (Batarya Yönetim Sistemi) güvenliği sağlamak için akımı hafifçe düşürür (90 kW - 70 kW arasına iner).</li>
-                <li><strong>%80 ve Sonrası:</strong> Akıllı telefonlardaki gibi batarya dolmaya yaklaştığında lityum iyonlarının hücreye girmesi zorlaşır. Bataryanın ömrünü korumak (dendrit oluşumunu engellemek) için hız bilinçli olarak 30-40 kW seviyelerine, %95 sonrasında ise 10 kW altına düşürülür.</li>
-            </ul>
-            <p class="mt-4 bg-slate-800 p-4 rounded border border-slate-700 text-sm">💡 <strong>Uzman Tavsiyesi:</strong> Uzun yoldayken aracınızı %100 doldurmak için beklemek zaman kaybıdır. %80'e ulaştığınızda şarjı durdurup yola çıkmak ve %15'e inince tekrar şarj etmek, yolculuğunuzu saatlerce kısaltır.</p>
-        </article>
-    </div>
-
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        function updateValues() {
-            let start = parseInt(document.getElementById('startSoc').value);
-            let end = parseInt(document.getElementById('endSoc').value);
-            let capacity = parseFloat(document.getElementById('batterySelect').value);
-            let temp = document.getElementById('tempSelect').value;
+        // Dummy Station Data
+        const stations = [
+            { name: "Trugo Oksijen 168 Batı", type: "180 kW DC", op: "Trugo", coords: [39.754, 27.912], status: "Müsait", color: "bg-brand" },
+            { name: "ZES Mall of Istanbul", type: "120 kW DC", op: "ZES", coords: [41.062, 28.807], status: "Meşgul (1 Araç)", color: "bg-orange-500" },
+            { name: "Eşarj Zorlu Center", type: "50 kW DC", op: "Eşarj", coords: [41.066, 29.017], status: "Arızalı", color: "bg-red-500" }
+        ];
+
+        let map;
+
+        function initMap() {
+            // Center map on Turkey
+            map = L.map('map', { zoomControl: false }).setView([39.9, 32.8], 6);
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            // Dark Mode Map Tiles (CartoDB Dark Matter)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap &copy; CARTO'
+            }).addTo(map);
+
+            const list = document.getElementById('stationList');
             
-            if (start >= end) {
-                document.getElementById('startSoc').value = end - 5;
-                start = end - 5;
-            }
-            
-            document.getElementById('startSocVal').innerText = start;
-            document.getElementById('endSocVal').innerText = end;
-            
-            let diffPercent = end - start;
-            let kwhNeeded = (capacity * diffPercent) / 100;
-            
-            let dcMins = 0;
-            for(let i=start; i<end; i++) {
-                let kW = 100; 
-                if(i < 40) kW = 150;
-                else if(i < 70) kW = 90;
-                else if(i < 85) kW = 50;
-                else kW = 25; 
-                
-                let timeFor1Percent = (capacity / 100) / (kW / 60); 
-                dcMins += timeFor1Percent;
-            }
-            
-            if(temp === 'cold') {
-                dcMins = dcMins * 1.25; 
-                document.getElementById('curveWarning').classList.remove('hidden');
-            } else {
-                document.getElementById('curveWarning').classList.add('hidden');
-            }
-            
-            dcMins = Math.round(dcMins);
-            let acHours = (kwhNeeded / 11);
-            let acH = Math.floor(acHours);
-            let acM = Math.round((acHours - acH) * 60);
-            
-            let cost = Math.round(kwhNeeded * 8.95);
-            
-            document.getElementById('dcTime').innerText = dcMins + ' Dk';
-            document.getElementById('acTime').innerText = acH + ' Sa ' + acM + ' Dk';
-            document.getElementById('estCost').innerText = '₺' + cost;
+            stations.forEach(st => {
+                // Add marker
+                L.circleMarker(st.coords, {
+                    radius: 8,
+                    fillColor: st.op === 'Trugo' ? '#3b82f6' : (st.op === 'ZES' ? '#f97316' : '#ef4444'),
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map).bindPopup(`<b style="color:black">${st.name}</b><br><span style="color:gray">${st.type}</span>`);
+
+                // Add to sidebar
+                list.innerHTML += `
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 cursor-pointer hover:border-brand transition" onclick="map.flyTo([${st.coords}], 14)">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-white font-bold truncate pr-2">${st.name}</h4>
+                            <span class="bg-slate-800 text-xs font-bold px-2 py-1 rounded border border-slate-600">${st.op}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400"><i class="fa-solid fa-plug text-brand"></i> ${st.type}</span>
+                            <span class="flex items-center gap-1 text-xs"><div class="w-2 h-2 rounded-full ${st.color}"></div> ${st.status}</span>
+                        </div>
+                    </div>
+                `;
+            });
         }
+
+        function calcRoute() {
+            alert("Harita API Entegrasyonu (Mapbox/Google) gerektirir. Rota simülasyonu başlatıldı: İstanbul -> İzmir (Tahmini 2 Şarj Molası).");
+            map.flyTo([39.754, 27.912], 8); // O-5 Otoyolu
+        }
+
+        // Initialize when DOM loads
+        window.addEventListener('DOMContentLoaded', initMap);
     </script>
 </body>
 </html>
