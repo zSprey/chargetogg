@@ -1,35 +1,155 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChargeTogg - Elektrikli Araç Şarj Rehberi</title>
+    <title>ChargeTogg | Akıllı Şarj, Rota ve Maliyet Rehberi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { chargegreen: '#10b981', darkbg: '#0f172a', cardbg: '#1e293b' } } }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-    <header class="bg-green-600 text-white p-6 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">ChargeTogg</h1>
-            <nav>
-                <a href="#" class="px-3 hover:underline">İstasyonlar</a>
-                <a href="#" class="px-3 hover:underline">Maliyet Hesapla</a>
-                <a href="#" class="px-3 hover:underline">Rehber</a>
-            </nav>
+<body class="bg-darkbg text-gray-200 font-sans antialiased">
+    <!-- Navbar -->
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+            <div class="flex-shrink-0 flex items-center">
+                <span class="text-white text-2xl font-bold tracking-tight"><i class="fa-solid fa-bolt text-chargegreen mr-2"></i>Charge<span class="text-chargegreen">Togg</span></span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#hesaplayici" class="text-slate-300 hover:text-white transition">Süre & Maliyet</a>
+                <a href="#fiyatlar" class="text-slate-300 hover:text-white transition">Canlı Fiyatlar</a>
+                <a href="#rota" class="text-slate-300 hover:text-white transition">Rota Planlayıcı</a>
+            </div>
         </div>
-    </header>
-    <main class="container mx-auto p-6 mt-8 text-center min-h-[60vh]">
-        <h2 class="text-4xl font-extrabold mb-4">Şarj İstasyonunuzu Kolayca Bulun</h2>
-        <p class="text-lg text-gray-700 mb-8">Türkiye'deki tüm elektrikli araç şarj noktaları, ev tipi şarj cihazı (Wallbox) kurulumları ve maliyet rehberi yapım aşamasında.</p>
-        <div class="p-6 bg-white rounded-lg shadow inline-block mt-4">
-            <h3 class="font-bold text-xl mb-2">Çok Yakında: Şarj Haritası</h3>
-            <p class="text-gray-600">Size en yakın hızlı şarj (DC) ve AC şarj noktalarını bulabileceğiniz interaktif harita hazırlanıyor.</p>
+    </nav>
+
+    <!-- Hero -->
+    <div class="relative overflow-hidden py-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl font-extrabold text-white sm:text-6xl">
+                Menzil Kaygısına <span class="text-chargegreen">Son</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-400">
+                Togg T10X şarj sürelerini hesaplayın, operatör fiyatlarını karşılaştırın ve uzun yol rotanızı akıllıca planlayın.
+            </p>
         </div>
-    </main>
-    <footer class="bg-gray-800 text-gray-400 text-sm p-6 mt-12">
-        <div class="container mx-auto text-center">
+    </div>
+
+    <!-- Şarj Simülatörü -->
+    <div id="hesaplayici" class="max-w-4xl mx-auto px-4 py-12">
+        <div class="bg-cardbg rounded-2xl p-8 shadow-2xl border border-slate-700">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center"><i class="fa-solid fa-stopwatch text-chargegreen mr-3"></i> Togg Akıllı Şarj Simülatörü</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Başlangıç Şarjı (%)</label>
+                    <input type="range" id="startSoc" min="0" max="90" value="20" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer" oninput="updateValues()">
+                    <div class="text-right text-chargegreen font-bold mt-1">%<span id="startSocVal">20</span></div>
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Hedef Şarj (%)</label>
+                    <input type="range" id="endSoc" min="10" max="100" value="80" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer" oninput="updateValues()">
+                    <div class="text-right text-chargegreen font-bold mt-1">%<span id="endSocVal">80</span></div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div class="bg-slate-800 rounded-xl p-4 border border-slate-600 text-center">
+                    <p class="text-sm text-slate-400">180 kW DC (Hızlı)</p>
+                    <p class="text-2xl font-bold text-white mt-1" id="dcTime">28 Dk</p>
+                </div>
+                <div class="bg-slate-800 rounded-xl p-4 border border-slate-600 text-center">
+                    <p class="text-sm text-slate-400">11 kW AC (Ev)</p>
+                    <p class="text-2xl font-bold text-white mt-1" id="acTime">4 Sa 45 Dk</p>
+                </div>
+                <div class="bg-slate-800 rounded-xl p-4 border border-chargegreen text-center shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                    <p class="text-sm text-slate-400">DC Tahmini Maliyet</p>
+                    <p class="text-2xl font-bold text-chargegreen mt-1" id="estCost">₺450</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canlı Fiyat Tablosu -->
+    <div id="fiyatlar" class="max-w-7xl mx-auto px-4 py-12">
+        <h2 class="text-2xl font-bold text-white mb-6">Operatör Fiyat Karşılaştırması (2026)</h2>
+        <div class="overflow-x-auto bg-cardbg rounded-xl border border-slate-700">
+            <table class="w-full text-left text-slate-300">
+                <thead class="bg-slate-800 text-xs uppercase">
+                    <tr>
+                        <th class="px-6 py-4">Operatör</th>
+                        <th class="px-6 py-4">AC (Masaüstü/Duvar)</th>
+                        <th class="px-6 py-4">DC (Hızlı)</th>
+                        <th class="px-6 py-4">HPC (Ultra Hızlı 120kW+)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700">
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="px-6 py-4 font-bold text-white flex items-center"><div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div> Trugo</td>
+                        <td class="px-6 py-4">₺6.95 / kWh</td>
+                        <td class="px-6 py-4 text-white font-semibold">₺8.95 / kWh</td>
+                        <td class="px-6 py-4">₺9.95 / kWh</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="px-6 py-4 font-bold text-white flex items-center"><div class="w-3 h-3 rounded-full bg-orange-500 mr-2"></div> ZES</td>
+                        <td class="px-6 py-4">₺7.49 / kWh</td>
+                        <td class="px-6 py-4 text-white font-semibold">₺9.49 / kWh</td>
+                        <td class="px-6 py-4">₺10.49 / kWh</td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="px-6 py-4 font-bold text-white flex items-center"><div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div> Eşarj</td>
+                        <td class="px-6 py-4">₺7.20 / kWh</td>
+                        <td class="px-6 py-4 text-white font-semibold">₺9.25 / kWh</td>
+                        <td class="px-6 py-4">₺10.25 / kWh</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 py-8 text-center text-slate-500">
             <p>&copy; 2026 ChargeTogg. Tüm hakları saklıdır.</p>
-            <p class="mt-2 text-xs">Yasal Uyarı: Bu platform bağımsız bir şarj rehberidir. Togg veya Trugo ile resmi bir bağı yoktur.</p>
+            <p class="text-xs mt-4">Yasal Uyarı: Veriler tahminidir. Bu site bağımsız bir platformdur. Togg veya Trugo ile resmi bağı yoktur.</p>
         </div>
     </footer>
+
+    <script>
+        function updateValues() {
+            let start = parseInt(document.getElementById('startSoc').value);
+            let end = parseInt(document.getElementById('endSoc').value);
+            
+            if (start >= end) {
+                document.getElementById('startSoc').value = end - 5;
+                start = end - 5;
+            }
+            
+            document.getElementById('startSocVal').innerText = start;
+            document.getElementById('endSocVal').innerText = end;
+            
+            // Basit Simulasyon (T10X Uzun Menzil 88.5 kWh baz alınmıştır)
+            let diffPercent = end - start;
+            let kwhNeeded = (88.5 * diffPercent) / 100;
+            
+            // DC Hızlı (Avg 100 kW)
+            let dcMins = Math.round((kwhNeeded / 100) * 60);
+            // AC (11 kW)
+            let acHours = (kwhNeeded / 11);
+            let acH = Math.floor(acHours);
+            let acM = Math.round((acHours - acH) * 60);
+            
+            // Maliyet (Ortalama 9 TL)
+            let cost = Math.round(kwhNeeded * 9);
+            
+            document.getElementById('dcTime').innerText = dcMins + ' Dk';
+            document.getElementById('acTime').innerText = acH + ' Sa ' + acM + ' Dk';
+            document.getElementById('estCost').innerText = '₺' + cost;
+        }
+    </script>
 </body>
 </html>
