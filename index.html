@@ -154,6 +154,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
 
     <style>
+        html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050811; color: #f1f5f9; }
         
         /* Ultra Dark Glassmorphism */
@@ -2032,5 +2033,21 @@
         calculateToggRoute();
     }
     </script>
+<!-- WAVE 2: Intersection Observer Fade-In Animations & Performance -->
+<style>
+html{scroll-behavior:smooth}
+.fade-section{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
+.fade-section.visible{opacity:1;transform:translateY(0)}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+var sections=document.querySelectorAll('section');
+sections.forEach(function(s){s.classList.add('fade-section')});
+var observer=new IntersectionObserver(function(entries){
+entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+},{threshold:0.1});
+sections.forEach(function(s){observer.observe(s)});
+});
+</script>
 </body>
 </html>
