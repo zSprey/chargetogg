@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <title>ChargeTogg | Türkiye'nin En Kapsamlı Akıllı EV Şarj Ağı & Rota Ekosistemi</title>
+    <title>ChargeTogg — Türkiye Elektrikli Araç Şarj Ağı ve Rota Altyapısı</title>
     <meta name="description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi. 81 ilde Trugo, ZES, Eşarj istasyonları ve Google Haritalar navigasyonlu akıllı EV rota motoru.">
     <meta name="keywords" content="chargetogg, trugo şarj istasyonları, türkiye ev şarj haritası, togg şarj rotası, 300kw hpc şarj, zes şarj fiyatları, eşarj haritası, elektrikli araç şarj süresi hesaplama, epdk şarj istasyonları">
     <meta name="theme-color" content="#00e5ff">
@@ -155,7 +155,7 @@
 
     <style>
         html { scroll-behavior: smooth; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050811; color: #f1f5f9; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080C14; color: #F1F5F9; color: #f1f5f9; }
         
         /* Ultra Dark Glassmorphism */
         .glass-panel {
@@ -189,12 +189,12 @@
         ::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
 
         /* Neon Glow Button */
-        .btn-neon {
+        .bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm {
             background: linear-gradient(135deg, #00e5ff 0%, #00b4d8 100%);
             box-shadow: 0 0 25px rgba(0, 229, 255, 0.35);
             transition: all 0.3s ease;
         }
-        .btn-neon:hover {
+        .bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm:hover {
             box-shadow: 0 0 35px rgba(0, 229, 255, 0.6);
             transform: translateY(-1px);
         }
@@ -305,7 +305,7 @@
             <div class="flex items-center gap-3">
 
 <button onclick="openCockpitMode()" aria-label="Sürüş Kokpit Modunu Başlat" class="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-car-side"></i> Kokpit Modu</button>
-                <a href="#harita" aria-label="Haritada İstasyon Bul" class="hidden sm:inline-flex btn-neon text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl items-center gap-2">
+                <a href="#harita" aria-label="Haritada İstasyon Bul" class="hidden sm:inline-flex bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass-location"></i> İstasyon Bul
                 </a>
                 <button onclick="toggleMobileNav()" aria-label="Mobil Menüyü Aç veya Kapat" class="lg:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-slate-200 flex items-center justify-center">
@@ -349,7 +349,7 @@
 
             <!-- Hero Action Buttons -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <a href="#harita" class="w-full sm:w-auto btn-neon text-slate-950 font-black text-sm px-8 py-4 rounded-2xl flex items-center justify-center gap-3">
+                <a href="#harita" class="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black text-sm px-8 py-4 rounded-2xl flex items-center justify-center gap-3">
                     <i class="fa-solid fa-map-location-dot text-base"></i> Haritada Canlı İstasyon Bul
                 </a>
                 <a href="#simulator" class="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm px-8 py-4 rounded-2xl flex items-center justify-center gap-3 transition">
@@ -441,7 +441,7 @@
                         <!-- Operator Badges Filter -->
                         <div class="flex gap-1.5 overflow-x-auto pb-1 text-[10px] font-bold custom-scrollbar">
                             <button onclick="setOperatorFilter('all')" aria-label="Tüm şarj istasyonlarını listele" class="op-filter-btn active whitespace-nowrap bg-brand text-slate-950 px-2.5 py-1 rounded-lg transition" data-op="all">Tümü</button>
-                            <button onclick="setOperatorFilter('Trugo')" aria-label="Trugo 300kW istasyonlarını filtrele" class="op-filter-btn whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg hover:border-brand transition" data-op="Trugo">⚡ Trugo (300kW)</button>
+                            <button onclick="setOperatorFilter('Trugo')" aria-label="Trugo 300kW istasyonlarını filtrele" class="op-filter-btn whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg hover:border-brand transition" data-op="Trugo"> Trugo (300kW)</button>
                             <button onclick="setOperatorFilter('ZES')" aria-label="ZES istasyonlarını filtrele" class="op-filter-btn whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg hover:border-brand transition" data-op="ZES">ZES</button>
                             <button onclick="setOperatorFilter('Eşarj')" aria-label="Eşarj istasyonlarını filtrele" class="op-filter-btn whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg hover:border-brand transition" data-op="Eşarj">Eşarj</button>
                             <button onclick="setOperatorFilter('Astor')" aria-label="Astor istasyonlarını filtrele" class="op-filter-btn whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg hover:border-brand transition" data-op="Astor">Astor</button>
@@ -629,7 +629,7 @@
                         </div>
                     </div>
 
-                    <a href="#harita" class="block w-full text-center btn-neon text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider">
+                    <a href="#harita" class="block w-full text-center bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider">
                         <i class="fa-solid fa-charging-station mr-1.5"></i> En Yakın İstasyonu Haritada Gör
                     </a>
 
@@ -704,7 +704,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" aria-label="Akıllı EV Rotasını ve Şarj Duraklarını Hesapla" class="w-full btn-neon text-slate-950 font-black py-4 rounded-2xl text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                    <button type="submit" aria-label="Akıllı EV Rotasını ve Şarj Duraklarını Hesapla" class="w-full bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black py-4 rounded-2xl text-sm uppercase tracking-wider flex items-center justify-center gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Akıllı Rotayı ve Şarj Duraklarını Hesapla
                     </button>
                 </form>
@@ -996,7 +996,7 @@
                                 </select>
                             </div>
 
-                            <button type="submit" aria-label="B2B İstasyon Başvurusunu İlet" class="w-full btn-neon text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider transition">
+                            <button type="submit" aria-label="B2B İstasyon Başvurusunu İlet" class="w-full bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider transition">
                                 <i class="fa-solid fa-paper-plane mr-1.5"></i> Ön Başvuruyu İlet (Fizibilite Raporu İste)
                             </button>
                         </form>
@@ -1057,7 +1057,7 @@
                                 <li><i class="fa-solid fa-check text-emeraldPulse mr-2"></i>Öncelikli Şarj Rezervasyonu (OCPI 2.2)</li>
                             </ul>
                         </div>
-                        <button onclick="openFleetModal('Growth')" aria-label="Growth Filo Paketi 14 Gün Ücretsiz Dene" class="mt-6 w-full btn-neon text-slate-950 font-black py-2.5 rounded-xl text-xs transition">14 Gün Ücretsiz Dene</button>
+                        <button onclick="openFleetModal('Growth')" aria-label="Growth Filo Paketi 14 Gün Ücretsiz Dene" class="mt-6 w-full bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black py-2.5 rounded-xl text-xs transition">14 Gün Ücretsiz Dene</button>
                     </div>
 
                     <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-cyan-400/50 transition">
@@ -1605,8 +1605,8 @@
                     tagClass: op.tagClass,
                     color: op.color,
                     city: prov.name,
-                    status: (Math.random() > 0.15) ? "🟢 2/2 Soket Boş" : "🟡 1/2 Soket Dolu",
-                    amenities: ["☕ Kafe", "🚻 WC", "📶 Wi-Fi", "🏪 7/24 Açık"]
+                    status: (Math.random() > 0.15) ? " 2/2 Soket Boş" : " 1/2 Soket Dolu",
+                    amenities: [" Kafe", " WC", "📶 Wi-Fi", " 7/24 Açık"]
                 });
             }
         });
@@ -1686,7 +1686,7 @@
                             ${s.amenities.map(a => `<span class="bg-white/5 px-1.5 py-0.5 rounded">${a}</span>`).join('')}
                         </div>
 
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}&travelmode=driving" target="_blank" rel="noopener" aria-label="Google Haritalar Navigasyonu Başlat (${s.name})" class="block w-full text-center btn-neon text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase tracking-wider">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}&travelmode=driving" target="_blank" rel="noopener" aria-label="Google Haritalar Navigasyonu Başlat (${s.name})" class="block w-full text-center bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase tracking-wider">
                             <i class="fa-solid fa-location-arrow mr-1"></i> Google Haritalar'da Git
                         </a>
                     </div>
@@ -1985,7 +1985,7 @@
                     <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Şifre</label>
                     <input type="password" id="adminPass" required aria-label="Yönetici Şifresi" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white outline-none focus:border-cyan-400 font-mono">
                 </div>
-                <button type="submit" aria-label="Yönetici Girişi Yap" class="w-full btn-neon text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20">
+                <button type="submit" aria-label="Yönetici Girişi Yap" class="w-full bg-white text-slate-950 hover:bg-slate-100 font-medium px-6 py-3 rounded-xl transition shadow-sm text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20">
                     <i class="fa-solid fa-lock-open mr-1.5"></i> Giriş Yap
                 </button>
             </form>
