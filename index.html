@@ -241,6 +241,7 @@
 
             <!-- Actions -->
             <div class="flex items-center gap-3">
+<button onclick="openCockpitMode()" class="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-car-side"></i> Kokpit Modu</button>
                 <a href="#harita" class="hidden sm:inline-flex btn-neon text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass-location"></i> İstasyon Bul
                 </a>
@@ -623,6 +624,7 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Kalkış Şarjı (SoC)</label>
                             <div class="flex items-center gap-3">
+<button onclick="openCockpitMode()" class="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-car-side"></i> Kokpit Modu</button>
                                 <input type="range" id="routeSoc" min="30" max="100" value="90" oninput="document.getElementById('routeSocVal').innerText = this.value + '%'" class="w-full accent-cyan-400">
                                 <span id="routeSocVal" class="text-cyan-400 text-xs font-black w-10 text-right">90%</span>
                             </div>
@@ -1410,5 +1412,21 @@
             updateSimulator();
         });
     </script>
+<script>        function openCockpitMode() {
+            const m = document.getElementById('cockpitModal');
+            if(m){ m.classList.remove('hidden'); m.classList.add('flex'); }
+            if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(()=>{}); }
+        }
+        function closeCockpitMode() {
+            const m = document.getElementById('cockpitModal');
+            if(m){ m.classList.add('hidden'); m.classList.remove('flex'); }
+        }
+        function openFleetModal(plan) {
+            const company = prompt(`${plan} Filo Yönetim Paketi için Şirket Ünvanınızı girin:`);
+            if (company) {
+                alert(`Teşekkürler! ${company} firması için ${plan} paketi kurumsal teklif formu alındı. Filo temsilcimiz 15 dakika içinde iletişime geçecektir.`);
+                if(typeof trackEcosystemEvent === 'function') trackEcosystemEvent('fleet_lead_submission', { plan: plan, company: company });
+            }
+        }</script>
 </body>
 </html>
