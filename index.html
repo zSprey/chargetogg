@@ -316,7 +316,7 @@
 
         // 2. Map Init
         const map = L.map('map', { zoomControl: false }).setView([39.0, 35.0], 6);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: '© OpenStreetMap © CARTO'
         }).addTo(map);
