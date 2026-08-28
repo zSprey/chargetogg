@@ -241,7 +241,7 @@
 
             <!-- Actions -->
             <div class="flex items-center gap-3">
-<button onclick="openAdminLogin()" title="Yönetici Girişi" class="bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono transition flex items-center gap-1 border border-white/10"><i class="fa-solid fa-shield-halved text-cyan-400"></i> Admin</button>
+
 <button onclick="openCockpitMode()" class="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-car-side"></i> Kokpit Modu</button>
                 <a href="#harita" class="hidden sm:inline-flex btn-neon text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass-location"></i> İstasyon Bul
@@ -625,7 +625,7 @@
                         <div>
                             <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Kalkış Şarjı (SoC)</label>
                             <div class="flex items-center gap-3">
-<button onclick="openAdminLogin()" title="Yönetici Girişi" class="bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono transition flex items-center gap-1 border border-white/10"><i class="fa-solid fa-shield-halved text-cyan-400"></i> Admin</button>
+
 <button onclick="openCockpitMode()" class="bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-extrabold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5"><i class="fa-solid fa-car-side"></i> Kokpit Modu</button>
                                 <input type="range" id="routeSoc" min="30" max="100" value="90" oninput="document.getElementById('routeSocVal').innerText = this.value + '%'" class="w-full accent-cyan-400">
                                 <span id="routeSocVal" class="text-cyan-400 text-xs font-black w-10 text-right">90%</span>
@@ -960,7 +960,7 @@
                         <p class="text-xs text-slate-400 mt-1">Şirket filonuzdaki EV araçların tüketimini, Trugo/HPC şarj masraflarını ve I-REC yeşil enerji sertifikalarını tek ekrandan yönetin.</p>
                     </div>
                     <div class="flex items-center gap-3">
-<button onclick="openAdminLogin()" title="Yönetici Girişi" class="bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono transition flex items-center gap-1 border border-white/10"><i class="fa-solid fa-shield-halved text-cyan-400"></i> Admin</button>
+
                         <span class="text-xs font-bold text-slate-400 bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
                             <i class="fa-solid fa-shield-check text-emeraldPulse mr-1"></i> SOC2 & ISO 27001 Uyumlu
                         </span>
@@ -1666,5 +1666,12 @@
     function triggerDailySeoBot() {
         alert("Günlük Otonom SEO Botu tetiklendi. Sitemap.xml ve yeni haber akışı güncelleniyor...");
     }</script>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        if (window.location.hash === '#admin' || window.location.search.includes('admin')) {
+          if (typeof openAdminLogin === 'function') openAdminLogin();
+        }
+      });
+    </script>
 </body>
 </html>
