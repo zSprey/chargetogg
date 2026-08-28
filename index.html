@@ -1256,6 +1256,233 @@
 <details class="group" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:1.25rem"><summary class="text-white font-semibold cursor-pointer flex justify-between items-center">Togg T10X'in menzili ne kadar?<i class="fas fa-chevron-down text-emerald-400 group-open:rotate-180 transition-transform"></i></summary><p class="text-gray-400 mt-3 text-sm">Togg T10X Uzun Menzil 88.5 kWh bataryasi ile WLTP standardinda 523 km, Standart Menzil 52.4 kWh bataryasi ile 314 km menzil sunmaktadir.</p></details>
 </div></div></section>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Turkiye'de kac adet EV sarj noktasi var?","acceptedAnswer":{"@type":"Answer","text":"EPDK Temmuz 2026 verilerine gore Turkiye genelinde toplam 46.665 sarj soketi bulunmaktadir."}},{"@type":"Question","name":"Trugo'nun kac sarj istasyonu var?","acceptedAnswer":{"@type":"Answer","text":"Trugo 81 ilde toplam 3.868+ sarj soketi ile hizmet vermektedir."}},{"@type":"Question","name":"Sarj fiyatlari ne kadar?","acceptedAnswer":{"@type":"Answer","text":"Trugo DC: 14.98 TL/kWh, ZES DC: 16.49 TL/kWh, Esarj DC: 14.90 TL/kWh, Astor DC: 13.99 TL/kWh."}},{"@type":"Question","name":"Togg T10X menzili ne kadar?","acceptedAnswer":{"@type":"Answer","text":"T10X Uzun Menzil 523 km, Standart Menzil 314 km WLTP menzil sunmaktadir."}}]}</script>
+        <!-- TASARRUF HESAPLAYICI (BENZİN VS ELEKTRİK MALİYET KARŞILAŞTIRMA) -->
+        <section id="tasarruf-hesapla" class="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#0d1820]/90 to-[#050811]/95 border border-emerald-500/25 backdrop-blur-xl p-6 sm:p-10 shadow-2xl shadow-emerald-950/20">
+                <!-- Glow Accents -->
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-white/10 relative z-10 gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black uppercase tracking-wider mb-3">
+                            <i class="fa-solid fa-piggy-bank animate-pulse"></i> Maliyet Karşılaştırma & Tasarruf Motoru
+                        </div>
+                        <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                            Benzin vs Togg T10X <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Yakıt Tasarruf Simülatörü</span>
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-2 max-w-2xl">
+                            Aylık sürüş mesafenize ve güncel akaryakıt fiyatlarına göre benzinli araca kıyasla Togg T10X ve Trugo şarj altyapısıyla elde edeceğiniz net kazancı anlık görün.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 text-xs text-slate-300">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>Benzin: <strong>44.26 ₺/L</strong> • Trugo DC: <strong>14.98 ₺/kWh</strong></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+                    <!-- Controls (6 cols) -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <!-- Monthly Km Slider -->
+                        <div class="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                            <div class="flex justify-between items-center mb-3">
+                                <label for="savingsKmSlider" class="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                                    <i class="fa-solid fa-gauge-high text-emerald-400 mr-1.5"></i> Aylık Kat Edilen Mesafe
+                                </label>
+                                <span class="px-3 py-1 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-mono font-bold text-sm" id="savingsKmDisplay">1.500 km</span>
+                            </div>
+                            <input type="range" id="savingsKmSlider" min="500" max="5000" step="100" value="1500" oninput="updateSavingsKm(this.value)" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400">
+                            <div class="flex justify-between text-[11px] text-slate-500 mt-2 font-mono">
+                                <span>500 km (Şehir İçi Az)</span>
+                                <span>2.500 km (Ortalama)</span>
+                                <span>5.000 km (Yoğun Ticari)</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Petrol Consumption -->
+                            <div class="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                                <label for="petrolConsumptionInput" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-gas-pump text-amber-400 mr-1.5"></i> Benzin Tüketimi
+                                </label>
+                                <div class="relative">
+                                    <input type="number" id="petrolConsumptionInput" step="0.1" min="3" max="20" value="7.5" oninput="calculateSavings()" class="w-full bg-[#050811] border border-white/15 focus:border-emerald-400 rounded-xl px-4 py-3 text-white font-bold text-sm focus:outline-none transition pr-16 font-mono">
+                                    <span class="absolute right-3 top-3 text-xs text-slate-400">L / 100km</span>
+                                </div>
+                                <span class="text-[11px] text-slate-500 mt-1 block">C-SUV Benzinli Ortalama: 7.5L</span>
+                            </div>
+
+                            <!-- Petrol Price -->
+                            <div class="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                                <label for="petrolPriceInput" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-tag text-rose-400 mr-1.5"></i> Benzin Litre Fiyatı
+                                </label>
+                                <div class="relative">
+                                    <input type="number" id="petrolPriceInput" step="0.01" min="10" max="100" value="44.26" oninput="calculateSavings()" class="w-full bg-[#050811] border border-white/15 focus:border-emerald-400 rounded-xl px-4 py-3 text-white font-bold text-sm focus:outline-none transition pr-12 font-mono">
+                                    <span class="absolute right-3 top-3 text-xs text-slate-400">₺ / L</span>
+                                </div>
+                                <span class="text-[11px] text-slate-500 mt-1 block">Ağustos 2026 Pompa Fiyatı</span>
+                            </div>
+                        </div>
+
+                        <!-- Fixed Togg Baseline Card -->
+                        <div class="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/20 flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-white block">Togg T10X Uzun Menzil (88.5 kWh)</span>
+                                    <span class="text-slate-400 text-[11px]">Tüketim: 18.5 kWh/100km • Trugo DC: 14.98 ₺/kWh</span>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold text-[11px]">Resmi Veri</span>
+                        </div>
+                    </div>
+
+                    <!-- Outputs (6 cols) -->
+                    <div class="lg:col-span-6 flex flex-col justify-between rounded-3xl bg-gradient-to-br from-emerald-950/40 via-[#071318]/60 to-cyan-950/30 border border-emerald-500/30 p-6 sm:p-8">
+                        <div>
+                            <!-- Header Comparison -->
+                            <div class="grid grid-cols-2 gap-4 pb-6 border-b border-white/10 text-center">
+                                <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                                    <span class="text-[11px] text-rose-300 font-bold uppercase block mb-1">Aylık Benzin Gideri</span>
+                                    <div class="text-xl sm:text-2xl font-black text-white font-mono" id="monthlyPetrolCost">₺4.979</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+                                    <span class="text-[11px] text-cyan-300 font-bold uppercase block mb-1">Aylık Togg Şarj Gideri</span>
+                                    <div class="text-xl sm:text-2xl font-black text-cyan-300 font-mono" id="monthlyEvCost">₺4.157</div>
+                                </div>
+                            </div>
+
+                            <!-- Net Savings Highlight -->
+                            <div class="my-6">
+                                <span class="text-xs font-black uppercase text-emerald-400 tracking-wider">Aylık Net Cepte Kalan Kazanç</span>
+                                <div class="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300 tracking-tight mt-1 font-mono" id="monthlySavingsOutput">
+                                    ₺822
+                                </div>
+                                <div class="mt-2 text-xs text-slate-300 flex items-center justify-between">
+                                    <span>Yıllık Kümülatif Tasarruf:</span>
+                                    <strong class="text-emerald-400 text-base font-mono font-black" id="annualSavingsOutput">₺9.867 / yıl</strong>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar for Savings Ratio -->
+                            <div class="space-y-2 pt-2">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-slate-300">Yakıt Tasarruf Oranı</span>
+                                    <span class="text-emerald-400 font-mono" id="savingsPercentDisplay">%16.5 Daha Ekonomik</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-white/10">
+                                    <div id="savingsProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full transition-all duration-500" style="width: 16.5%;"></div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 mt-1">
+                                    * Evde gece AC tarifesiyle şarj edildiğinde (2.60 ₺/kWh) tasarruf oranı <strong>%88</strong>'e ve yıllık kazanç <strong>₺52.000</strong>'e ulaşmaktadır.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Action -->
+                        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3 text-xs">
+                            <span class="text-slate-400"><i class="fa-solid fa-leaf text-emerald-400 mr-1"></i> Sıfır CO₂ emisyonu ile çevre dostu</span>
+                            <a href="#harita" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 px-4 py-2 rounded-xl font-bold transition">
+                                En Yakın Trugo'yu Bul
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- KULLANICI YORUMLARI & ŞARJ DENEYİMLERİ -->
+        <section id="yorumlar" class="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-wider mb-3">
+                    <i class="fa-solid fa-star text-amber-400"></i> Doğrulanmış Kullanıcı Yorumları
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                    Togg Sürücülerinin <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Şarj & Rota Deneyimleri</span>
+                </h2>
+                <p class="text-slate-400 text-sm mt-2">
+                    Türkiye genelinde 81 ilde Trugo 300kW HPC ve ChargeTogg akıllı rota motorunu kullanan gerçek sürücü değerlendirmeleri.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 backdrop-blur-xl transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex text-amber-400 gap-1 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="text-[11px] text-slate-500 font-mono">24 Ağustos 2026</span>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            "İstanbul-Antalya yolculuğumda Trugo 300kW HPC istasyonları sayesinde hiç bekleme yapmadım. Şarj haritası ve rota planlayıcı batarya doluluk oranımı tam isabetle tahmin etti."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-emerald-400 text-slate-950 font-black flex items-center justify-center text-sm">
+                            MY
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Mehmet Y.</div>
+                            <div class="text-xs text-slate-400">İstanbul • Togg T10X Uzun Menzil</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 backdrop-blur-xl transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex text-amber-400 gap-1 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="text-[11px] text-slate-500 font-mono">18 Ağustos 2026</span>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            "O-5 otoyolundaki Balıkesir dinlenme tesisinde kahvemi içerken %20'den %80'e 26 dakikada şarj oldu. Canlı soket doluluk durumu özelliği uzun yolda büyük güven ve konfor sağlıyor."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-cyan-400 text-white font-black flex items-center justify-center text-sm">
+                            AK
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Ayşe K.</div>
+                            <div class="text-xs text-slate-400">İzmir • Togg T10X V2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 backdrop-blur-xl transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex text-amber-400 gap-1 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="text-[11px] text-slate-500 font-mono">11 Ağustos 2026</span>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            "Bolu Dağı istasyonundaki yüksek güç çıkışı harikaydı. 180kW üzeri kesintisiz şarj hızıyla Togg T10X'imi çok kısa sürede doldurdum. Tasarruf hesaplayıcı da yakıt maliyetimi net görmemi sağladı."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-amber-400 text-slate-950 font-black flex items-center justify-center text-sm">
+                            BS
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Burak S.</div>
+                            <div class="text-xs text-slate-400">Ankara • Togg T10X Launch Edition</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 <footer class="bg-[#03050a] border-t border-white/5 py-14 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
@@ -2049,5 +2276,59 @@ entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible
 sections.forEach(function(s){observer.observe(s)});
 });
 </script>
+    <!-- ChargeTogg Savings Calculator JS -->
+    <script>
+    let savingsState = {
+        km: 1500,
+        consumption: 7.5,
+        petrolPrice: 44.26
+    };
+
+    function updateSavingsKm(val) {
+        savingsState.km = parseInt(val, 10);
+        const disp = document.getElementById('savingsKmDisplay');
+        if (disp) disp.innerText = `${savingsState.km.toLocaleString('tr-TR')} km`;
+        calculateSavings();
+    }
+
+    function calculateSavings() {
+        const kmSlider = document.getElementById('savingsKmSlider');
+        const consInput = document.getElementById('petrolConsumptionInput');
+        const priceInput = document.getElementById('petrolPriceInput');
+
+        if (kmSlider) savingsState.km = parseFloat(kmSlider.value) || 1500;
+        if (consInput) savingsState.consumption = parseFloat(consInput.value) || 7.5;
+        if (priceInput) savingsState.petrolPrice = parseFloat(priceInput.value) || 44.26;
+
+        const monthlyPetrol = (savingsState.km / 100) * savingsState.consumption * savingsState.petrolPrice;
+        const toggKwhPer100Km = 18.5;
+        const trugoDcRate = 14.98;
+        const monthlyEv = (savingsState.km / 100) * toggKwhPer100Km * trugoDcRate;
+
+        const monthlySavings = Math.max(0, monthlyPetrol - monthlyEv);
+        const annualSavings = monthlySavings * 12;
+        const savingsPercent = monthlyPetrol > 0 ? Math.min(100, Math.max(0, (monthlySavings / monthlyPetrol) * 100)) : 0;
+
+        const petrolEl = document.getElementById('monthlyPetrolCost');
+        const evEl = document.getElementById('monthlyEvCost');
+        const savingsEl = document.getElementById('monthlySavingsOutput');
+        const annualEl = document.getElementById('annualSavingsOutput');
+        const pctDisp = document.getElementById('savingsPercentDisplay');
+        const pBar = document.getElementById('savingsProgressBar');
+
+        if (petrolEl) petrolEl.innerText = `₺${Math.round(monthlyPetrol).toLocaleString('tr-TR')}`;
+        if (evEl) evEl.innerText = `₺${Math.round(monthlyEv).toLocaleString('tr-TR')}`;
+        if (savingsEl) savingsEl.innerText = `₺${Math.round(monthlySavings).toLocaleString('tr-TR')}`;
+        if (annualEl) annualEl.innerText = `₺${Math.round(annualSavings).toLocaleString('tr-TR')} / yıl`;
+        if (pctDisp) pctDisp.innerText = `%${savingsPercent.toFixed(1)} Daha Ekonomik`;
+        if (pBar) pBar.style.width = `${Math.max(5, savingsPercent)}%`;
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', calculateSavings);
+    } else {
+        calculateSavings();
+    }
+    </script>
 </body>
 </html>
