@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Togg Şarj Süresi & Maliyet Hesaplayıcı | Trugo 300kW HPC - ChargeTogg</title>
+    <meta name="description" content="Togg T10X Uzun ve Standart Menzil bataryanızın Trugo, ZES ve AC Wallbox istasyonlarında ne kadar sürede dolacağını ve resmi tarifelerle şarj maliyetini anlık hesaplayın.">
+    <meta name="keywords" content="togg şarj süresi, togg şarj hesaplama, trugo şarj süresi, togg t10x batarya dolum süresi, togg dc şarj hızı, togg şarj maliyeti">
+    <meta name="theme-color" content="#00e5ff">
+    <link rel="canonical" href="https://chargetogg.com/sarj-suresi">
+
+    <!-- Preconnect & DNS-Prefetch Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#00e5ff',
+                        brandGlow: '#00f2fe',
+                        darkBg: '#050811',
+                        darkCard: '#0d1322',
+                        darkSurface: '#121a2e'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050811; color: #f1f5f9; }
+        .glass-panel {
+            background: rgba(13, 19, 34, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .btn-neon {
+            background: linear-gradient(135deg, #00e5ff 0%, #00b4d8 100%);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.35);
+            transition: all 0.3s ease;
+        }
+        .btn-neon:hover {
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        .fade-section{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease}
+        .fade-section.visible{opacity:1;transform:translateY(0)}
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col justify-between selection:bg-brand selection:text-slate-950">
+
+    <!-- Top Ecosystem Header Bar -->
+    <div class="bg-[#03050a] border-b border-white/5 py-1.5 px-4 text-[11px] font-bold text-slate-400">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 mr-1 animate-ping"></span> CANLI TRUGO VERİSİ
+                </span>
+                <span class="hidden sm:inline text-slate-500">Togg Connected Mobility Ekosistemi</span>
+            </div>
+            <div class="flex items-center gap-5">
+                <a href="https://chargetogg.com" aria-label="ChargeTogg Ana Sayfa" class="text-brand flex items-center gap-1 font-extrabold"><i class="fa-solid fa-bolt"></i> ChargeTogg</a>
+                <a href="https://servicetogg.com" aria-label="ServiceTogg Yetkili Servis Rehberi" class="hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-wrench"></i> ServiceTogg</a>
+                <a href="https://toggelectric.com" aria-label="ToggElectric EV Topluluk ve Forum" class="hover:text-white transition flex items-center gap-1"><i class="fa-solid fa-comments"></i> ToggElectric</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-40 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <a href="/" aria-label="ChargeTogg Ana Sayfa" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 via-teal-400 to-emerald-400 flex items-center justify-center text-slate-950 shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform duration-300">
+                    <i class="fa-solid fa-bolt-lightning text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black tracking-tight text-white flex items-center gap-1">
+                        Charge<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Togg</span>
+                    </span>
+                    <span class="text-[10px] font-semibold text-slate-400 tracking-wider">ŞARJ SÜRESİ VE MALİYET MOTORU</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-3">
+                <a href="/" aria-label="Ana Sayfaya Dön" class="text-xs text-slate-400 hover:text-white font-bold transition px-3 py-2">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Haritaya Dön
+                </a>
+                <a href="/karsilastirma" aria-label="Tarife Karşılaştırma Sayfası" class="hidden sm:inline-flex bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs px-4 py-2.5 rounded-xl items-center gap-1.5 transition">
+                    <i class="fa-solid fa-scale-balanced text-cyan-400"></i> Tarife Karşılaştır
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content: Charging Time Calculator -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-10 w-full space-y-10">
+
+        <!-- Header Hero -->
+        <section class="text-center space-y-4 max-w-3xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black uppercase tracking-wider">
+                <i class="fa-solid fa-stopwatch text-sm"></i> Gerçek Batarya Eğrisi Algoritması
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                Togg Şarj Süresi & <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Maliyet Hesaplayıcı</span>
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+                T10X modelinizi Trugo 300kW HPC veya AC Wallbox ile şarj ettiğinizde ne kadar sürede dolacağını, tahmini menzil kazanımını ve güncel resmi tarifelerle şarj tutarını anında hesaplayın.
+            </p>
+        </section>
+
+        <!-- Calculator Cockpit Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- Left Form Controls (7 cols) -->
+            <div class="lg:col-span-7 space-y-6 glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl">
+                
+                <!-- Vehicle Battery Model Selection -->
+                <div class="space-y-2">
+                    <label for="calcBatteryCap" class="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                        <i class="fa-solid fa-car-side text-cyan-400 mr-1.5"></i> Araç Modeli ve Batarya Kapasitesi
+                    </label>
+                    <select id="calcBatteryCap" onchange="runChargingCalculation()" aria-label="Araç Modeli ve Batarya Kapasitesi" class="w-full bg-[#050811] border border-white/15 focus:border-cyan-400 rounded-2xl p-4 text-white font-bold text-sm outline-none transition cursor-pointer">
+                        <option value="88.5" data-model="T10X Long Range" data-wltp="523" data-real="400">Togg T10X V2 Uzun Menzil (88.5 kWh Batarya - 523 km WLTP)</option>
+                        <option value="52.4" data-model="T10X Standard Range" data-wltp="314" data-real="260">Togg T10X V1 Standart Menzil (52.4 kWh Batarya - 314 km WLTP)</option>
+                    </select>
+                </div>
+
+                <!-- Charger Station Power Selection -->
+                <div class="space-y-2">
+                    <label for="calcChargerPower" class="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+                        <i class="fa-solid fa-charging-station text-emerald-400 mr-1.5"></i> Şarj İstasyonu Güç Çıkışı & Türü
+                    </label>
+                    <select id="calcChargerPower" onchange="runChargingCalculation()" aria-label="Şarj İstasyonu Güç Çıkışı ve Türü" class="w-full bg-[#050811] border border-white/15 focus:border-emerald-400 rounded-2xl p-4 text-white font-bold text-sm outline-none transition cursor-pointer">
+                        <option value="300" data-type="DC" data-toggmax="180" data-rate="14.98" selected>300 kW DC Ultra Hızlı HPC (Trugo / Togg Maks. 180 kW Pik) - 14.98 ₺/kWh</option>
+                        <option value="180" data-type="DC" data-toggmax="180" data-rate="14.98">180 kW DC Yüksek Hızlı İstasyon (Trugo / ZES) - 14.98 ₺/kWh</option>
+                        <option value="120" data-type="DC" data-toggmax="120" data-rate="14.98">120 kW DC Hızlı İstasyon - 14.98 ₺/kWh</option>
+                        <option value="50" data-type="DC" data-toggmax="50" data-rate="14.98">50 kW DC Standart İstasyon - 14.98 ₺/kWh</option>
+                        <option value="22" data-type="AC" data-toggmax="22" data-rate="9.95">22 kW AC Halka Açık / Trifaze Wallbox (9.95 ₺/kWh)</option>
+                        <option value="11" data-type="AC" data-toggmax="11" data-rate="9.95">11 kW AC Standart Ev & İşyeri Wallbox (9.95 ₺/kWh)</option>
+                        <option value="7.4" data-type="AC" data-toggmax="7.4" data-rate="4.50">7.4 kW AC Ev Monofaze Priz / Gece Tarifesi (~4.50 ₺/kWh)</option>
+                    </select>
+                </div>
+
+                <!-- Sliders: Current & Target SoC -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                    <!-- Current % -->
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400 font-bold uppercase"><i class="fa-solid fa-battery-quarter text-amber-400 mr-1"></i> Başlangıç Şarjı</span>
+                            <span id="startPercentBadge" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-black text-sm">20%</span>
+                        </div>
+                        <input type="range" id="startPercentSlider" min="0" max="95" value="20" oninput="handleStartChange(this.value)" aria-label="Başlangıç Batarya Yüzdesi" class="w-full accent-amber-400 bg-slate-800 rounded-lg cursor-pointer h-2">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-bold">
+                            <span>%0 (Boş)</span>
+                            <span>%50</span>
+                            <span>%95</span>
+                        </div>
+                    </div>
+
+                    <!-- Target % -->
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400 font-bold uppercase"><i class="fa-solid fa-battery-three-quarters text-emerald-400 mr-1"></i> Hedef Şarj</span>
+                            <span id="targetPercentBadge" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-black text-sm">80%</span>
+                        </div>
+                        <input type="range" id="targetPercentSlider" min="5" max="100" value="80" oninput="handleTargetChange(this.value)" aria-label="Hedef Batarya Yüzdesi" class="w-full accent-emerald-400 bg-slate-800 rounded-lg cursor-pointer h-2">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-bold">
+                            <span>%5</span>
+                            <span>%80 (Önerilen)</span>
+                            <span>%100 (Dolu)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battery Health & Curve Warning -->
+                <div class="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-cyan-400 text-base mt-0.5 shrink-0"></i>
+                    <div class="text-xs text-slate-300 leading-relaxed">
+                        <strong class="text-cyan-300">Batarya Koruma Eğrisi:</strong> DC hızlı şarjda %80 doluluk sonrasında hücre ömrünü ve termal dengeyi korumak amacıyla şarj gücü batarya yönetim sistemi (BMS) tarafından kademeli olarak düşürülür. Uzun yolculuklarda %20 ➔ %80 şarjı en verimli zaman kazancını sağlar.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Calculation Results Card (5 cols) -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-cyan-500/30 shadow-2xl relative overflow-hidden bg-gradient-to-b from-[#0e1629] to-[#070b16]">
+                    <div class="absolute -top-24 -right-24 w-60 h-60 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                        <span class="text-xs font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-gauge-high"></i> Hesaplama Sonucu
+                        </span>
+                        <span id="calcModeBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            DC HPC ŞARJ
+                        </span>
+                    </div>
+
+                    <!-- Main Output Time Display -->
+                    <div class="py-6 text-center space-y-2 border-b border-white/10">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Tahmini Dolum Süresi</span>
+                        <div class="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-400 tracking-tight" id="calcOutputTime">
+                            28 Dk
+                        </div>
+                        <p class="text-xs text-slate-400" id="calcTimeSubtitle">%20'den %80 seviyesine Trugo 300kW HPC ile</p>
+                    </div>
+
+                    <!-- Detail Metrics Grid -->
+                    <div class="grid grid-cols-2 gap-4 py-4 border-b border-white/10">
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-1">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Aktarılan Enerji</span>
+                            <div class="text-xl font-black text-white"><span id="calcOutputKwh">53.1</span> <span class="text-xs text-slate-400">kWh</span></div>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-1">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Kazanılan Menzil</span>
+                            <div class="text-xl font-black text-emerald-400">+<span id="calcOutputKm">240</span> <span class="text-xs text-slate-400">km</span></div>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-1">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Trugo Şarj Tutarı</span>
+                            <div class="text-xl font-black text-cyan-300">₺<span id="calcOutputCost">795</span></div>
+                        </div>
+
+                        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/5 space-y-1">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Ortalama Pik Güç</span>
+                            <div class="text-xl font-black text-amber-300"><span id="calcOutputPower">180</span> <span class="text-xs text-slate-400">kW</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Action Links -->
+                    <div class="pt-2 space-y-3">
+                        <a href="/#harita" aria-label="Haritada En Yakın Trugo İstasyonunu Bul" class="w-full btn-neon text-slate-950 font-black text-xs py-3.5 px-4 rounded-xl flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-map-location-dot"></i> En Yakın Trugo İstasyonunu Bul
+                        </a>
+                        <a href="/karsilastirma" aria-label="Tüm Operatör Fiyatlarını Karşılaştır" class="w-full bg-white/5 hover:bg-white/10 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 border border-white/10 transition">
+                            <i class="fa-solid fa-tags text-cyan-400"></i> ZES, Eşarj & Trugo Fiyat Karşılaştırması
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-8 px-4 text-center text-xs text-slate-500 bg-[#03050a] mt-16">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>&copy; 2026 ChargeTogg. Türkiye'nin Bağımsız Akıllı EV Şarj Ağı & Rota Ekosistemi.</div>
+            <div class="flex items-center gap-5 text-slate-400">
+                <a href="/" aria-label="Ana Sayfa" class="hover:text-cyan-400 transition">Ana Sayfa</a>
+                <a href="/#harita" aria-label="Şarj Haritası" class="hover:text-cyan-400 transition">Harita</a>
+                <a href="/karsilastirma" aria-label="Tarife Karşılaştır" class="hover:text-cyan-400 transition">Tarifeler</a>
+                <a href="/sarj-suresi" aria-label="Şarj Süresi Hesapla" class="text-cyan-400 font-bold">Şarj Süresi</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WAVE 3: Back to Top & Cookie Banner -->
+    <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Sayfa Başına Dön" class="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-emerald-500/80 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:scale-110">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <div id="cookieConsentBanner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 max-w-md z-50 p-4 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 transform translate-y-24 opacity-0 pointer-events-none flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+        <div class="text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-cookie-bite text-amber-400 text-base shrink-0"></i>
+            <span>Bu site deneyiminizi iyileştirmek için çerezler kullanmaktadır.</span>
+        </div>
+        <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+            <button onclick="acceptCookieConsent()" aria-label="Çerezleri Kabul Et" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition shadow-md">
+                Kabul Et
+            </button>
+        </div>
+    </div>
+
+    <!-- Interactive Calculator Script -->
+    <script>
+    function handleStartChange(val) {
+        val = parseInt(val);
+        var targetVal = parseInt(document.getElementById('targetPercentSlider').value);
+        if (val >= targetVal) {
+            val = Math.max(0, targetVal - 5);
+            document.getElementById('startPercentSlider').value = val;
+        }
+        document.getElementById('startPercentBadge').textContent = val + '%';
+        runChargingCalculation();
+    }
+
+    function handleTargetChange(val) {
+        val = parseInt(val);
+        var startVal = parseInt(document.getElementById('startPercentSlider').value);
+        if (val <= startVal) {
+            val = Math.min(100, startVal + 5);
+            document.getElementById('targetPercentSlider').value = val;
+        }
+        document.getElementById('targetPercentBadge').textContent = val + '%';
+        runChargingCalculation();
+    }
+
+    function runChargingCalculation() {
+        var batteryCap = parseFloat(document.getElementById('calcBatteryCap').value);
+        var chargerSelect = document.getElementById('calcChargerPower');
+        var opt = chargerSelect.options[chargerSelect.selectedIndex];
+        var chargerPower = parseFloat(opt.value);
+        var chargerType = opt.getAttribute('data-type');
+        var toggMaxPower = parseFloat(opt.getAttribute('data-toggmax'));
+        var rate = parseFloat(opt.getAttribute('data-rate'));
+
+        var startSoC = parseInt(document.getElementById('startPercentSlider').value);
+        var targetSoC = parseInt(document.getElementById('targetPercentSlider').value);
+
+        var deltaPercent = targetSoC - startSoC;
+        var energyNeeded = (deltaPercent / 100) * batteryCap; // kWh
+
+        // Realistic Togg Charging Time Calculation with DC curve tapering
+        var totalMinutes = 0;
+        if (chargerType === 'DC') {
+            // Below 80% SoC -> can take up to min(chargerPower, 180kW)
+            // Above 80% SoC -> power steps down: 80-90% ~70kW, 90-100% ~30kW
+            var effectivePowerUnder80 = Math.min(toggMaxPower, 180);
+            if (effectivePowerUnder80 <= 50) effectivePowerUnder80 = chargerPower; // 50kW station runs at 50kW
+
+            var deltaUnder80 = Math.max(0, Math.min(targetSoC, 80) - Math.min(startSoC, 80));
+            var deltaOver80 = Math.max(0, targetSoC - Math.max(startSoC, 80));
+
+            var kwhUnder80 = (deltaUnder80 / 100) * batteryCap;
+            var kwhOver80 = (deltaOver80 / 100) * batteryCap;
+
+            var timeHoursUnder80 = kwhUnder80 / (effectivePowerUnder80 * 0.90); // 90% real efficiency
+            var timeHoursOver80 = kwhOver80 / (Math.min(effectivePowerUnder80, 45) * 0.85);
+
+            totalMinutes = Math.round((timeHoursUnder80 + timeHoursOver80) * 60);
+        } else {
+            // AC Charging: Togg standard onboard charger max is 11 kW (or 22 kW optional)
+            var effectiveAcPower = Math.min(chargerPower, 11);
+            if (chargerPower >= 22) effectiveAcPower = 22; // 22kW optional
+            var timeHours = energyNeeded / (effectiveAcPower * 0.90);
+            totalMinutes = Math.round(timeHours * 60);
+        }
+
+        // Format Time
+        var timeStr = "";
+        var hrs = Math.floor(totalMinutes / 60);
+        var mins = totalMinutes % 60;
+        if (hrs > 0) {
+            timeStr = hrs + " Sa " + (mins > 0 ? mins + " Dk" : "");
+        } else {
+            timeStr = mins + " Dk";
+        }
+
+        var totalCost = Math.round(energyNeeded * rate);
+        // Real range gained (T10X LR: ~17.5 kWh/100km -> 5.71 km/kWh, SR: ~16.5 kWh/100km -> 6.06 km/kWh)
+        var kmPerKwh = (batteryCap > 70) ? 4.52 : 4.96;
+        var kmGained = Math.round(energyNeeded * kmPerKwh);
+
+        document.getElementById('calcOutputTime').textContent = timeStr;
+        document.getElementById('calcOutputKwh').textContent = energyNeeded.toFixed(1);
+        document.getElementById('calcOutputKm').textContent = kmGained;
+        document.getElementById('calcOutputCost').textContent = totalCost.toLocaleString('tr-TR');
+        document.getElementById('calcOutputPower').textContent = Math.min(chargerPower, toggMaxPower);
+        document.getElementById('calcModeBadge').textContent = chargerType === 'DC' ? 'DC HIZLI HPC' : 'AC WALLBOX';
+        document.getElementById('calcTimeSubtitle').textContent = "%" + startSoC + " ➔ %" + targetSoC + " doluluk (" + opt.text.split('(')[0].trim() + ")";
+    }
+
+    // Scroll & Cookie Scripts
+    window.addEventListener('scroll', function() {
+        var btn = document.getElementById('backToTopBtn');
+        if (btn) {
+            if (window.scrollY > 300) {
+                btn.classList.remove('opacity-0', 'pointer-events-none');
+                btn.classList.add('opacity-100');
+            } else {
+                btn.classList.add('opacity-0', 'pointer-events-none');
+                btn.classList.remove('opacity-100');
+            }
+        }
+    });
+
+    function initCookieConsent() {
+        if (!localStorage.getItem('cookie_consent_accepted')) {
+            setTimeout(function() {
+                var banner = document.getElementById('cookieConsentBanner');
+                if (banner) {
+                    banner.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+                    banner.classList.add('translate-y-0', 'opacity-100');
+                }
+            }, 800);
+        }
+    }
+    function acceptCookieConsent() {
+        localStorage.setItem('cookie_consent_accepted', 'true');
+        var banner = document.getElementById('cookieConsentBanner');
+        if (banner) {
+            banner.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+            banner.classList.remove('translate-y-0', 'opacity-100');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initCookieConsent();
+        runChargingCalculation();
+    });
+    </script>
+    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js')}</script>
+</body>
+</html>
