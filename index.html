@@ -1,100 +1,68 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="tr" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChargeTogg | Türkiye'nin En Kapsamlı Akıllı EV Şarj Ağı & Rota Ekosistemi</title>
-    <meta name="description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi. 81 ilde Trugo, ZES, Eşarj istasyonları ve Google Haritalar navigasyonlu akıllı EV rota motoru.">
-    <meta name="keywords" content="chargetogg, trugo şarj istasyonları, türkiye ev şarj haritası, togg şarj rotası, 300kw hpc şarj, zes şarj fiyatları, eşarj haritası, elektrikli araç şarj süresi hesaplama, epdk şarj istasyonları">
+    <meta name="description" content="81 ilde Trugo 300kW+ Ultra HPC, ZES, Eşarj, Astor ve Tesla Supercharger istasyonları. Canlı soket durumu, interaktif şarj süresi & maliyet simülatörü ve Google Haritalar navigasyonlu akıllı EV rota motoru.">
+    <meta name="keywords" content="trugo şarj istasyonları, türkiye ev şarj haritası, togg şarj rotası, 300kw hpc şarj, zes şarj fiyatları, eşarj haritası, elektrikli araç şarj süresi hesaplama">
     <meta name="theme-color" content="#00e5ff">
     <link rel="canonical" href="https://chargetogg.com/">
 
     <!-- OpenGraph & Social Meta -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chargetogg.com/">
-    <meta property="og:title" content="ChargeTogg | Türkiye Akıllı EV Şarj Ağı & Rota Ekosistemi">
-    <meta property="og:description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi">
-    <meta property="og:image" content="/assets/images/togg_charging_hero.jpg">
-    
-    <!-- Twitter Card Meta -->
+    <meta property="og:title" content="ChargeTogg | Türkiye Akıllı EV Şarj Ekosistemi">
+    <meta property="og:description" content="81 ilde Trugo 300kW HPC istasyonları, canlı şarj simülatörü ve akıllı rota navigasyonu.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1200">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ChargeTogg | Türkiye Akıllı EV Şarj Ağı & Rota Ekosistemi">
-    <meta name="twitter:description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi">
-    <meta name="twitter:image" content="/assets/images/togg_charging_hero.jpg">
 
-    <!-- Schema.org WebApplication JSON-LD -->
+    <!-- Schema.org Enterprise JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "ChargeTogg",
-      "description": "Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi",
-      "url": "https://chargetogg.com",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "TRY"
-      }
-    }
-    </script>
-
-    <!-- Schema.org BreadcrumbList JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
+      "@graph": [
         {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Ana Sayfa",
-          "item": "https://chargetogg.com/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Şarj Haritası",
-          "item": "https://chargetogg.com/#harita"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Şarj Simülatörü",
-          "item": "https://chargetogg.com/#simulator"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "Akıllı Rota",
-          "item": "https://chargetogg.com/#rota"
-        }
-      ]
-    }
-    </script>
-
-    <!-- Schema.org FAQPage JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Togg T10X Trugo 300kW HPC istasyonunda ne kadar sürede şarj olur?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Togg T10X Uzun Menzil (88.5 kWh), 300kW Trugo HPC istasyonunda %20'den %80 şarj seviyesine yaklaşık 28 dakikada ulaşır."
+          "@type": "WebSite",
+          "@id": "https://chargetogg.com/#website",
+          "url": "https://chargetogg.com/",
+          "name": "ChargeTogg",
+          "description": "Türkiye Geneli Canlı EV Şarj İstasyonları Haritası ve Akıllı Rota Motoru",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://chargetogg.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
           }
         },
         {
-          "@type": "Question",
-          "name": "ChargeTogg rotamı Google Haritalar'a nasıl aktarırım?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Rota planlama motorunda kalkış ve varış noktalarını girdikten sonra 'Google Haritalar'da Canlı Navigasyonu Başlat' butonuna tıklayarak duraklar dahil tüm rotayı telefonunuzdaki Google Haritalar uygulamasına aktarabilirsiniz."
-          }
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://chargetogg.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Şarj Haritası", "item": "https://chargetogg.com/#harita" },
+            { "@type": "ListItem", "position": 3, "name": "Şarj Simülatörü", "item": "https://chargetogg.com/#simulator" },
+            { "@type": "ListItem", "position": 4, "name": "Akıllı Rota", "item": "https://chargetogg.com/#rota" }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Togg T10X Trugo 300kW HPC istasyonunda ne kadar sürede şarj olur?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Togg T10X Uzun Menzil (88.5 kWh), 300kW Trugo HPC istasyonunda %20'den %80 şarj seviyesine yaklaşık 28 dakikada ulaşır."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "ChargeTogg rotamı Google Haritalar'a nasıl aktarırım?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Rota planlama motorunda kalkış ve varış noktalarını girdikten sonra 'Google Haritalar'da Canlı Navigasyonu Başlat' butonuna tıklayarak duraklar dahil tüm rotayı telefonunuzdaki Google Haritalar uygulamasına aktarabilirsiniz."
+              }
+            }
+          ]
         }
       ]
     }
@@ -290,7 +258,7 @@
             <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-300">
                 <a href="#harita" class="hover:text-brand transition flex items-center gap-1.5"><i class="fa-solid fa-map-location-dot text-xs text-brand"></i> Şarj Haritası</a>
                 <a href="#simulator" class="hover:text-brand transition flex items-center gap-1.5"><i class="fa-solid fa-calculator text-xs text-brand"></i> Şarj Simülatörü</a>
-                <a href="#rota" class="hover:text-brand transition flex items-center gap-1.5"><i class="fa-solid fa-route text-xs text-brand"></i> Akıllı Rota</a>
+                <a href="#rota-planlayici" class="hover:text-brand transition flex items-center gap-1.5"><i class="fa-solid fa-route text-xs text-brand"></i> Rota Planlayıcı</a>
                 <a href="#tarifeler" class="hover:text-brand transition flex items-center gap-1.5"><i class="fa-solid fa-tags text-xs text-brand"></i> Güncel Tarifeler</a>
                 <a href="#b2b" class="hover:text-brand transition flex items-center gap-1.5"><i class="fa-solid fa-handshake text-xs text-brand"></i> B2B İstasyon Kur</a>
             </nav>
@@ -1071,6 +1039,162 @@
                 </div>
             </div>
         </section>
+        <!-- ROTA PLANLAYICI (AKILLI EV ROTA & TRUGO ŞARJ MALİYETİ) -->
+        <section id="rota-planlayici" class="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#0d1322]/90 to-[#050811]/90 border border-cyan-500/20 backdrop-blur-xl p-6 sm:p-10 shadow-2xl shadow-cyan-950/20">
+                <!-- Ambient Glow Background -->
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-white/5 relative z-10 gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-wider mb-3">
+                            <i class="fa-solid fa-route animate-pulse"></i> Akıllı Rota Hesaplayıcı
+                        </div>
+                        <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                            Togg T10X Şehirlerarası <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Rota & Şarj Planlayıcı</span>
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-2 max-w-2xl">
+                            Togg T10X (88.5 kWh Batarya, 18.5 kWh/100km tüketim) ve Türkiye geneli 81 ildeki 3.868 Trugo soket verisiyle mesafe, tüketim, şarj durağı ve maliyetinizi saniyeler içinde hesaplayın.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 text-xs text-slate-300">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>Trugo DC Tarife: <strong class="text-cyan-400 font-black">14.98 ₺/kWh</strong></span>
+                    </div>
+                </div>
+
+                <!-- Quick Route Presets -->
+                <div class="flex flex-wrap items-center gap-2 mb-6 text-xs relative z-10">
+                    <span class="text-slate-400 font-semibold mr-1"><i class="fa-solid fa-bolt text-cyan-400 mr-1"></i>Popüler Rotalar:</span>
+                    <button type="button" onclick="setQuickRoute('İstanbul', 'Ankara')" class="bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 px-3 py-1.5 rounded-xl transition text-slate-300">İstanbul ➔ Ankara (450 km)</button>
+                    <button type="button" onclick="setQuickRoute('İstanbul', 'İzmir')" class="bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 px-3 py-1.5 rounded-xl transition text-slate-300">İstanbul ➔ İzmir (480 km)</button>
+                    <button type="button" onclick="setQuickRoute('Ankara', 'Antalya')" class="bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 px-3 py-1.5 rounded-xl transition text-slate-300">Ankara ➔ Antalya (485 km)</button>
+                    <button type="button" onclick="setQuickRoute('Bursa', 'Trabzon')" class="bg-white/5 hover:bg-cyan-500/20 hover:text-cyan-300 border border-white/10 px-3 py-1.5 rounded-xl transition text-slate-300">Bursa ➔ Trabzon (1080 km)</button>
+                </div>
+
+                <!-- Inputs & Action Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end relative z-10">
+                    <!-- Start City -->
+                    <div class="md:col-span-4">
+                        <label for="routeStartCity" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-location-dot text-emerald-400 mr-1.5"></i> Başlangıç Şehri
+                        </label>
+                        <select id="routeStartCity" onchange="calculateToggRoute()" class="w-full bg-[#050811] border border-white/15 focus:border-cyan-400 rounded-2xl px-4 py-3.5 text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition">
+                            <option value="İstanbul" selected>İstanbul</option>
+                            <option value="Ankara">Ankara</option>
+                            <option value="İzmir">İzmir</option>
+                            <option value="Antalya">Antalya</option>
+                            <option value="Bursa">Bursa</option>
+                            <option value="Trabzon">Trabzon</option>
+                            <option value="Adana">Adana</option>
+                        </select>
+                    </div>
+
+                    <!-- Swap Button -->
+                    <div class="md:col-span-1 flex justify-center pb-1">
+                        <button type="button" onclick="swapRouteCities()" title="Şehirleri Değiştir" class="w-12 h-12 rounded-2xl bg-white/5 hover:bg-cyan-500/20 border border-white/10 text-cyan-400 flex items-center justify-center transition hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-right-left"></i>
+                        </button>
+                    </div>
+
+                    <!-- Destination City -->
+                    <div class="md:col-span-4">
+                        <label for="routeDestCity" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-flag-checkered text-cyan-400 mr-1.5"></i> Varış Şehri
+                        </label>
+                        <select id="routeDestCity" onchange="calculateToggRoute()" class="w-full bg-[#050811] border border-white/15 focus:border-cyan-400 rounded-2xl px-4 py-3.5 text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition">
+                            <option value="İstanbul">İstanbul</option>
+                            <option value="Ankara" selected>Ankara</option>
+                            <option value="İzmir">İzmir</option>
+                            <option value="Antalya">Antalya</option>
+                            <option value="Bursa">Bursa</option>
+                            <option value="Trabzon">Trabzon</option>
+                            <option value="Adana">Adana</option>
+                        </select>
+                    </div>
+
+                    <!-- Calculate Button -->
+                    <div class="md:col-span-3">
+                        <button type="button" id="btnCalculateRoute" onclick="calculateToggRoute()" class="w-full bg-gradient-to-r from-cyan-500 via-cyan-400 to-emerald-400 hover:opacity-95 text-slate-950 font-black text-sm py-3.5 px-6 rounded-2xl shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition transform active:scale-95">
+                            <i class="fa-solid fa-bolt-lightning text-slate-950"></i> Rotayı Hesapla
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="routeResultsContainer" class="mt-8 pt-8 border-t border-white/10 relative z-10 transition-all duration-300">
+                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                        <!-- Stat 1: Distance -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+                                <span>Toplam Mesafe</span>
+                                <i class="fa-solid fa-road text-cyan-400"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-black text-white" id="routeResDistance">450 <span class="text-xs text-slate-400 font-normal">km</span></div>
+                            <div class="text-[11px] text-cyan-400/80 mt-1">Otoyol & Karayolu</div>
+                        </div>
+
+                        <!-- Stat 2: Energy Consumption -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+                                <span>Tahmini Tüketim</span>
+                                <i class="fa-solid fa-battery-half text-emerald-400"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-black text-emerald-400" id="routeResConsumption">83.3 <span class="text-xs text-slate-400 font-normal">kWh</span></div>
+                            <div class="text-[11px] text-slate-400 mt-1">18.5 kWh / 100km</div>
+                        </div>
+
+                        <!-- Stat 3: Charging Stops -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+                                <span>Gereken Mola</span>
+                                <i class="fa-solid fa-charging-station text-amber-400"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-black text-amber-400" id="routeResStops">1 <span class="text-xs text-slate-400 font-normal">Durak</span></div>
+                            <div class="text-[11px] text-slate-400 mt-1" id="routeResStopDetail">Trugo 300kW HPC (~28 dk)</div>
+                        </div>
+
+                        <!-- Stat 4: Estimated Cost -->
+                        <div class="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+                                <span>Trugo Şarj Tutarı</span>
+                                <i class="fa-solid fa-turkish-lira-sign text-cyan-400"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-black text-cyan-400" id="routeResCost">₺1.247</div>
+                            <div class="text-[11px] text-slate-400 mt-1">14.98 ₺/kWh DC Tarife</div>
+                        </div>
+
+                        <!-- Stat 5: Travel Time -->
+                        <div class="col-span-2 lg:col-span-1 p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-cyan-500/30 transition">
+                            <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+                                <span>Toplam Süre</span>
+                                <i class="fa-solid fa-clock text-purple-400"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-black text-purple-300" id="routeResTime">5 sa 15 dk</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Sürüş + HPC Şarj</div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Stop Card -->
+                    <div id="routeStopSuggestion" class="mt-4 p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-sm shrink-0">
+                                <i class="fa-solid fa-location-arrow"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white" id="routeStopTitle">Önerilen Durak: Trugo Bolu Dağı Otoyol Dinlenme Tesisi (300kW HPC - 8 Soket)</div>
+                                <div class="text-slate-400" id="routeStopSubtitle">Togg T10X 88.5 kWh bataryayı %20'den %80'e yaklaşık 28 dakikada tamamlar.</div>
+                            </div>
+                        </div>
+                        <a id="routeGmapsLink" href="https://www.google.com/maps/dir/Istanbul/Ankara" target="_blank" class="shrink-0 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 px-4 py-2 rounded-xl font-bold transition flex items-center gap-1.5">
+                            <i class="fa-brands fa-google"></i> Canlı Navigasyon Başlat
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 <footer class="bg-[#03050a] border-t border-white/5 py-14 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
@@ -1729,6 +1853,124 @@
         }
       });
     </script>
+    <!-- ChargeTogg Route Planner JS -->
+    <script>
+    const TOGG_CITY_DISTANCES = {
+        "İstanbul": { "Ankara": 450, "İzmir": 480, "Antalya": 700, "Bursa": 155, "Trabzon": 1060, "Adana": 935, "İstanbul": 0 },
+        "Ankara": { "İstanbul": 450, "İzmir": 590, "Antalya": 485, "Bursa": 390, "Trabzon": 760, "Adana": 490, "Ankara": 0 },
+        "İzmir": { "İstanbul": 480, "Ankara": 590, "Antalya": 460, "Bursa": 330, "Trabzon": 1330, "Adana": 900, "İzmir": 0 },
+        "Antalya": { "İstanbul": 700, "Ankara": 485, "İzmir": 460, "Bursa": 545, "Trabzon": 1210, "Adana": 570, "Antalya": 0 },
+        "Bursa": { "İstanbul": 155, "Ankara": 390, "İzmir": 330, "Antalya": 545, "Trabzon": 1080, "Adana": 850, "Bursa": 0 },
+        "Trabzon": { "İstanbul": 1060, "Ankara": 760, "İzmir": 1330, "Antalya": 1210, "Bursa": 1080, "Adana": 910, "Trabzon": 0 },
+        "Adana": { "İstanbul": 935, "Ankara": 490, "İzmir": 900, "Antalya": 570, "Bursa": 850, "Trabzon": 910, "Adana": 0 }
+    };
+
+    const TRUGO_DC_RATE = 14.98; // TL/kWh official rate
+    const TOGG_CONSUMPTION_RATE = 0.185; // 18.5 kWh / 100km
+
+    function setQuickRoute(start, dest) {
+        const s = document.getElementById('routeStartCity');
+        const d = document.getElementById('routeDestCity');
+        if (s && d) {
+            s.value = start;
+            d.value = dest;
+            calculateToggRoute();
+        }
+    }
+
+    function swapRouteCities() {
+        const s = document.getElementById('routeStartCity');
+        const d = document.getElementById('routeDestCity');
+        if (s && d) {
+            const tmp = s.value;
+            s.value = d.value;
+            d.value = tmp;
+            calculateToggRoute();
+        }
+    }
+
+    function calculateToggRoute() {
+        const startEl = document.getElementById('routeStartCity');
+        const destEl = document.getElementById('routeDestCity');
+        const start = startEl ? startEl.value : 'İstanbul';
+        const dest = destEl ? destEl.value : 'Ankara';
+        
+        let dist = 0;
+        if (TOGG_CITY_DISTANCES[start] && TOGG_CITY_DISTANCES[start][dest] !== undefined) {
+            dist = TOGG_CITY_DISTANCES[start][dest];
+        } else {
+            dist = 450;
+        }
+
+        const distEl = document.getElementById('routeResDistance');
+        const consEl = document.getElementById('routeResConsumption');
+        const stopsEl = document.getElementById('routeResStops');
+        const stopDetailEl = document.getElementById('routeResStopDetail');
+        const costEl = document.getElementById('routeResCost');
+        const timeEl = document.getElementById('routeResTime');
+        const titleEl = document.getElementById('routeStopTitle');
+        const subEl = document.getElementById('routeStopSubtitle');
+        const gmapsEl = document.getElementById('routeGmapsLink');
+
+        if (dist === 0) {
+            if (distEl) distEl.innerHTML =   <span class="text-xs text-slate-400 font-normal">km</span>;
+            if (consEl) consEl.innerHTML =   <span class="text-xs text-slate-400 font-normal">kWh</span>;
+            if (stopsEl) stopsEl.innerHTML =   <span class="text-xs text-slate-400 font-normal">Durak</span>;
+            if (stopDetailEl) stopDetailEl.innerText = Aynı şehir içi;
+            if (costEl) costEl.innerText = ₺0;
+            if (timeEl) timeEl.innerText =   dk;
+            if (titleEl) titleEl.innerText = Başlangıç ve varış şehri aynı seçildi.;
+            if (subEl) subEl.innerText = Lütfen farklı bir varış şehri belirleyin.;
+            return;
+        }
+
+        const consumption = (dist * TOGG_CONSUMPTION_RATE);
+        const totalCost = Math.round(consumption * TRUGO_DC_RATE);
+        
+        let stops = 0;
+        if (dist <= 350) stops = 0;
+        else if (dist <= 650) stops = 1;
+        else if (dist <= 980) stops = 2;
+        else stops = 3;
+
+        const driveMinutes = (dist / 92) * 60;
+        const totalMinutes = Math.round(driveMinutes + (stops * 28));
+        const hours = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        const timeStr = ${hours} sa  dk;
+
+        if (distEl) distEl.innerHTML = ${dist.toLocaleString('tr-TR')} <span class="text-xs text-slate-400 font-normal">km</span>;
+        if (consEl) consEl.innerHTML = ${consumption.toFixed(1)} <span class="text-xs text-slate-400 font-normal">kWh</span>;
+        if (stopsEl) stopsEl.innerHTML = ${stops} <span class="text-xs text-slate-400 font-normal"></span>;
+        if (stopDetailEl) stopDetailEl.innerText = stops === 0 ? 'Tek şarjla 400 km menzil yeterli' : ${stops}x Trugo 300kW (~ dk);
+        if (costEl) costEl.innerText = ₺;
+        if (timeEl) timeEl.innerText = timeStr;
+
+        let stopText = "Trugo 300kW Ultra HPC İstasyonu";
+        if ((start.includes('İstanbul') && dest.includes('Ankara')) || (start.includes('Ankara') && dest.includes('İstanbul'))) {
+            stopText = "Önerilen Durak: Trugo Bolu Dağı Otoyol Dinlenme Tesisi (300kW HPC - 8 Soket)";
+        } else if ((start.includes('İstanbul') && dest.includes('İzmir')) || (start.includes('İzmir') && dest.includes('İstanbul'))) {
+            stopText = "Önerilen Durak: Trugo O-5 Otoyolu Balıkesir Batı Dinlenme Tesisi (300kW HPC)";
+        } else if ((start.includes('Ankara') && dest.includes('Antalya')) || (start.includes('Antalya') && dest.includes('Ankara'))) {
+            stopText = "Önerilen Durak: Trugo Afyonkarahisar Kolaylı Dinlenme Tesisi (300kW HPC)";
+        } else if (dest.includes('Trabzon') || start.includes('Trabzon')) {
+            stopText = "Önerilen Durak: Trugo Samsun Terme & Merzifon Otoyol Dinlenme İstasyonları (300kW HPC)";
+        } else if (dest.includes('Adana') || start.includes('Adana')) {
+            stopText = "Önerilen Durak: Trugo Aksaray Ağaçlı & Pozantı Dinlenme Tesisleri (300kW HPC)";
+        }
+
+        if (titleEl) titleEl.innerText = stopText;
+        if (subEl) subEl.innerText = Togg T10X 88.5 kWh batarya ile %20-%80 şarj Trugo 300kW istasyonunda ~28 dakikada tamamlanır.;
+        if (gmapsEl) {
+            gmapsEl.href = https://www.google.com/maps/dir//;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', calculateToggRoute);
+    } else {
+        calculateToggRoute();
+    }
+    </script>
 </body>
 </html>
-
