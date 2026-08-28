@@ -1,0 +1,12 @@
+{
+  "name": "ChargeTogg | Turkiye EV Sarj Haritasi ve Filo Yonetimi",
+  "short_name": "Chargetogg",
+  "description": "Turkiye geneli 46.665+ sarj noktasi canli harita, Trugo 300kW HPC simulatoru, B2B filo yonetimi ve rota planlayici. EPDK resmi verileriyle.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050811",
+  "theme_color": "#10b981",
+  "icons": [
+    {"src": "/favicon.ico", "sizes": "64x64", "type": "image/x-icon"}
+  ]
+}
