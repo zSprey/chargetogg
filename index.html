@@ -181,6 +181,18 @@
         .op-tesla { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.3); }
         .op-voltrun { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
     </style>
+    <!-- Google Analytics 4 & Acquisition Event Tracking Hook -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TOGGCONNECTED"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TOGGCONNECTED');
+      function trackEcosystemEvent(eventName, params) {
+        if(typeof gtag === 'function') gtag('event', eventName, params);
+        console.log('[GA4 TRACK]', eventName, params);
+      }
+    </script>
 </head>
 <body class="bg-darkBg text-slate-100 min-h-screen flex flex-col selection:bg-brand selection:text-slate-950">
 
