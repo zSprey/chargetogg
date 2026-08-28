@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Preconnect & DNS-Prefetch Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <title>2026 Türkiye EV Şarj İstasyonu Fiyat & Tarife Karşılaştırması | ChargeTogg</title>
     <meta name="description" content="81 ildeki Trugo 300kW, ZES, Eşarj, Astor, Voltrun, Sharz ve Tesla şarj istasyonlarının güncel DC ve AC kWh fiyatları, soket sayıları ve Togg T10X şarj maliyeti karşılaştırma tablosu.">
     <meta name="keywords" content="türkiye ev şarj fiyatları 2026, trugo şarj tarifesi, zes kwh fiyatı, eşarj şarj ücreti, astor şarj fiyatı, elektrikli araç şarj istasyonu karşılaştırma, togg t10x şarj maliyeti">
@@ -95,6 +100,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
+html{scroll-behavior:smooth}
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050811; color: #f1f5f9; }
         .glass-panel { background: rgba(13, 19, 34, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-card { background: rgba(18, 26, 46, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -192,8 +198,8 @@
                     <p class="text-xs md:text-sm text-slate-400 mt-1">Fiyatlara KDV ve EPDK hizmet bedelleri dahildir.</p>
                 </div>
                 <div class="flex flex-wrap gap-2 items-center">
-                    <input type="text" id="opSearch" placeholder="Operatör ara..." class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs md:text-sm text-white focus:outline-none focus:border-cyan-400 w-full sm:w-48">
-                    <select id="filterType" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs md:text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
+                    <input type="text" id="opSearch" aria-label="Operatör Ara" placeholder="Operatör ara..." class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs md:text-sm text-white focus:outline-none focus:border-cyan-400 w-full sm:w-48">
+                    <select id="filterType" aria-label="İstasyon Güç Türü Filtresi" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs md:text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
                         <option value="all">Tüm Operatörler</option>
                         <option value="dc">DC Hızlı Şarj Olanlar</option>
                         <option value="hpc">180kW+ Ultra HPC</option>
@@ -371,7 +377,7 @@
                             <label for="kwhSlider" class="text-slate-300">Şarj Miktarı (kWh)</label>
                             <span id="kwhDisplay" class="text-xl font-mono font-black text-cyan-400">53.1 kWh</span>
                         </div>
-                        <input type="range" id="kwhSlider" min="10" max="88.5" step="0.5" value="53.1" class="w-full accent-cyan-400 bg-slate-800 rounded-lg cursor-pointer">
+                        <input type="range" id="kwhSlider" aria-label="Aylık Tüketim (kWh)" min="10" max="88.5" step="0.5" value="53.1" class="w-full accent-cyan-400 bg-slate-800 rounded-lg cursor-pointer">
                         <div class="flex justify-between text-[11px] text-slate-500 mt-1">
                             <span>10 kWh (Şehir İçi)</span>
                             <span>53.1 kWh (%20-%80)</span>

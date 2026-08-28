@@ -451,7 +451,7 @@
                         <!-- Power Filter -->
                         <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
                             <span>Gösterilen: <strong id="stationListCount" class="text-white">0</strong> İstasyon</span>
-                            <select id="powerSelect" onchange="filterMapStations()" aria-label="İstasyon Güç Çıkışı Filtresi" class="bg-slate-900 border border-slate-800 text-slate-300 text-[10px] font-bold rounded-lg px-2 py-1 outline-none focus:border-brand">
+                            <select id="powerSelect" onchange="filterMapStations()" aria-label="İstasyon Güç Çıkışı Filtresi" aria-label="İstasyon Güç Çıkışı Filtresi" class="bg-slate-900 border border-slate-800 text-slate-300 text-[10px] font-bold rounded-lg px-2 py-1 outline-none focus:border-brand">
                                 <option value="0">Tüm Güçler</option>
                                 <option value="300">300kW+ Ultra HPC</option>
                                 <option value="120">120-180kW Hızlı DC</option>
@@ -495,32 +495,32 @@
                     <div>
                         <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">1. Araç Modelinizi Seçin</label>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="vehicleCards">
-                            <button onclick="selectVehicle('togg_lr')" aria-label="Togg T10X Uzun Menzil Modeli Seç (88.5 kWh)" class="veh-btn active text-left p-3.5 rounded-2xl bg-cyan-500/15 border-2 border-cyan-400 transition" data-id="togg_lr">
+                            <button onclick="selectVehicle('togg_lr')" aria-label="Togg T10X Uzun Menzil Modeli Seç (88.5 kWh)" aria-label="Togg T10X Uzun Menzil Modeli Seç (88.5 kWh)" class="veh-btn active text-left p-3.5 rounded-2xl bg-cyan-500/15 border-2 border-cyan-400 transition" data-id="togg_lr">
                                 <div class="text-xs font-black text-white">Togg T10X</div>
                                 <div class="text-[10px] text-cyan-300 font-bold">Uzun Menzil • 88.5 kWh</div>
                                 <div class="text-[9px] text-slate-400 mt-1">WLTP: 523 KM</div>
                             </button>
-                            <button onclick="selectVehicle('togg_sr')" aria-label="Togg T10X Standart Menzil Modeli Seç (52.4 kWh)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="togg_sr">
+                            <button onclick="selectVehicle('togg_sr')" aria-label="Togg T10X Standart Menzil Modeli Seç (52.4 kWh)" aria-label="Togg T10X Standart Menzil Modeli Seç (52.4 kWh)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="togg_sr">
                                 <div class="text-xs font-black text-white">Togg T10X</div>
                                 <div class="text-[10px] text-slate-300 font-bold">Standart • 52.4 kWh</div>
                                 <div class="text-[9px] text-slate-400 mt-1">WLTP: 314 KM</div>
                             </button>
-                            <button onclick="selectVehicle('togg_t10f')" aria-label="Togg T10F Fastback Modeli Seç (88.5 kWh)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="togg_t10f">
+                            <button onclick="selectVehicle('togg_t10f')" aria-label="Togg T10F Fastback Modeli Seç (88.5 kWh)" aria-label="Togg T10F Fastback Modeli Seç (88.5 kWh)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="togg_t10f">
                                 <div class="text-xs font-black text-white">Togg T10F</div>
                                 <div class="text-[10px] text-slate-300 font-bold">Fastback • 88.5 kWh</div>
                                 <div class="text-[9px] text-slate-400 mt-1">WLTP: 600 KM</div>
                             </button>
-                            <button onclick="selectVehicle('tesla_my')" aria-label="Tesla Model Y Modeli Seç (Karşılaştırma)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="tesla_my">
+                            <button onclick="selectVehicle('tesla_my')" aria-label="Tesla Model Y Modeli Seç (Karşılaştırma)" aria-label="Tesla Model Y Modeli Seç (Karşılaştırma)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="tesla_my">
                                 <div class="text-xs font-black text-white">Tesla Model Y</div>
                                 <div class="text-[10px] text-slate-300 font-bold">Long Range • 75 kWh</div>
                                 <div class="text-[9px] text-slate-400 mt-1">WLTP: 533 KM</div>
                             </button>
-                            <button onclick="selectVehicle('hyundai_i5')" aria-label="Hyundai Ioniq 5 Modeli Seç (Karşılaştırma)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="hyundai_i5">
+                            <button onclick="selectVehicle('hyundai_i5')" aria-label="Hyundai Ioniq 5 Modeli Seç (Karşılaştırma)" aria-label="Hyundai Ioniq 5 Modeli Seç (Karşılaştırma)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="hyundai_i5">
                                 <div class="text-xs font-black text-white">Hyundai Ioniq 5</div>
                                 <div class="text-[10px] text-slate-300 font-bold">77.4 kWh (800V)</div>
                                 <div class="text-[9px] text-slate-400 mt-1">WLTP: 507 KM</div>
                             </button>
-                            <button onclick="selectVehicle('taycan')" aria-label="Porsche Taycan Modeli Seç (Karşılaştırma)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="taycan">
+                            <button onclick="selectVehicle('taycan')" aria-label="Porsche Taycan Modeli Seç (Karşılaştırma)" aria-label="Porsche Taycan Modeli Seç (Karşılaştırma)" class="veh-btn text-left p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-id="taycan">
                                 <div class="text-xs font-black text-white">Porsche Taycan</div>
                                 <div class="text-[10px] text-slate-300 font-bold">Performance • 93.4 kWh</div>
                                 <div class="text-[9px] text-slate-400 mt-1">WLTP: 505 KM</div>
@@ -532,22 +532,22 @@
                     <div>
                         <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">2. Şarj İstasyonu Gücünü Seçin</label>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                            <button onclick="selectCharger(300, 7.99)" aria-label="300 kW Ultra Hızlı DC HPC Şarj Gücü Seç" class="chg-btn active p-3 rounded-2xl bg-cyan-500/15 border-2 border-cyan-400 text-center transition" data-kw="300">
+                            <button onclick="selectCharger(300, 7.99)" aria-label="300 kW Ultra Hızlı DC HPC Şarj Gücü Seç" aria-label="300 kW Ultra Hızlı DC HPC Şarj Gücü Seç" class="chg-btn active p-3 rounded-2xl bg-cyan-500/15 border-2 border-cyan-400 text-center transition" data-kw="300">
                                 <div class="text-sm font-black text-cyan-300">300 kW</div>
                                 <div class="text-[10px] text-slate-300">Trugo HPC Dual</div>
                                 <div class="text-[9px] text-emerald-400 font-bold mt-1">7.99 ₺/kWh</div>
                             </button>
-                            <button onclick="selectCharger(180, 8.49)" aria-label="180 kW Hızlı DC Şarj Gücü Seç" class="chg-btn p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-center transition" data-kw="180">
+                            <button onclick="selectCharger(180, 8.49)" aria-label="180 kW Hızlı DC Şarj Gücü Seç" aria-label="180 kW Hızlı DC Şarj Gücü Seç" class="chg-btn p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-center transition" data-kw="180">
                                 <div class="text-sm font-black text-white">180 kW</div>
                                 <div class="text-[10px] text-slate-400">Hızlı DC İstasyon</div>
                                 <div class="text-[9px] text-slate-400 font-bold mt-1">8.49 ₺/kWh</div>
                             </button>
-                            <button onclick="selectCharger(60, 8.98)" aria-label="60 kW Standart DC Şarj Gücü Seç" class="chg-btn p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-center transition" data-kw="60">
+                            <button onclick="selectCharger(60, 8.98)" aria-label="60 kW Standart DC Şarj Gücü Seç" aria-label="60 kW Standart DC Şarj Gücü Seç" class="chg-btn p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-center transition" data-kw="60">
                                 <div class="text-sm font-black text-white">60 kW</div>
                                 <div class="text-[10px] text-slate-400">Şehir İçi DC</div>
                                 <div class="text-[9px] text-slate-400 font-bold mt-1">8.98 ₺/kWh</div>
                             </button>
-                            <button onclick="selectCharger(22, 6.90)" aria-label="22 kW AC Wallbox Şarj Gücü Seç" class="chg-btn p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-center transition" data-kw="22">
+                            <button onclick="selectCharger(22, 6.90)" aria-label="22 kW AC Wallbox Şarj Gücü Seç" aria-label="22 kW AC Wallbox Şarj Gücü Seç" class="chg-btn p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 text-center transition" data-kw="22">
                                 <div class="text-sm font-black text-white">22 kW</div>
                                 <div class="text-[10px] text-slate-400">AC / Wallbox Tip-2</div>
                                 <div class="text-[9px] text-slate-400 font-bold mt-1">6.90 ₺/kWh</div>
@@ -736,7 +736,7 @@
                     </div>
 
                     <!-- Direct Google Maps Navigation Bridge Button -->
-                    <a id="routeGmapsLaunchBtn" href="#" target="_blank" rel="noopener noreferrer" aria-label="Google Haritalar Canlı Navigasyonunu Başlat" class="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 px-4 rounded-2xl text-center text-sm shadow-xl shadow-blue-600/30 transition transform hover:-translate-y-0.5">
+                    <a id="routeGmapsLaunchBtn" href="#" target="_blank" rel="noopener noreferrer" aria-label="Google Haritalar Canlı Navigasyonunu Başlat" aria-label="Google Haritalar Canlı Navigasyonunu Başlat" class="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 px-4 rounded-2xl text-center text-sm shadow-xl shadow-blue-600/30 transition transform hover:-translate-y-0.5">
                         <i class="fa-brands fa-google mr-2 text-base"></i> Google Haritalar'da Canlı Navigasyonu Başlat (Duraklar Dahil)
                     </a>
                 </div>
