@@ -3,6 +3,10 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/karsilastirma",
+      "destination": "/karsilastirma.html"
+    },
+    {
       "source": "/admin",
       "destination": "/admin.html"
     },
