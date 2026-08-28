@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arsama & İşyerime Şarj İstasyonu Gelir Hesaplayıcı | ChargeTogg B2B</title>
+<meta name="description" content="Otel, AVM, dinlenme tesisi ve otopark sahipleri için elektrikli araç şarj istasyonu gelir paylaşım simülatörü ve CPO yatırım ortaklığı portalı.">
+<link rel="canonical" href="https://chargetogg.com/istasyon-gelir-hesapla">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#050811;color:#e5e7eb;min-height:100vh;margin:0}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:24px}
+</style>
+</head>
+<body>
+<nav class="border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-xl sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="/" class="flex items-center gap-2"><i class="fas fa-charging-station text-emerald-400 text-xl"></i><span class="font-black text-white text-lg">Charge<span class="text-emerald-400">Togg</span> <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">Arsa & İş Ortaklığı</span></span></a>
+<div class="flex items-center gap-4 text-sm">
+<a href="/" class="text-gray-400 hover:text-white transition">Harita</a>
+<a href="/filo-hesapla" class="text-gray-400 hover:text-white transition">Filo TCO</a>
+<a href="/press" class="text-gray-400 hover:text-white transition">Basın & Yatırım</a>
+</div>
+</div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-4 py-12">
+<div class="text-center mb-12">
+<span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-4 py-1.5 rounded-full border border-emerald-500/20 uppercase tracking-wider mb-4 inline-block">B2B Gelir Paylaşım Modeli</span>
+<h1 class="text-4xl md:text-5xl font-black text-white mb-4">Arsam / İşletmem Şarj İstasyonundan Ne Kadar Kazanır?</h1>
+<p class="text-gray-400 text-lg max-w-2xl mx-auto">Tesisinize Trugo, ZES veya Eşarj 300kW HPC ultra hızlı şarj istasyonları kurulduğunda elde edeceğiniz kira ve ciro komisyonunu hesaplayın.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Inputs -->
+<div class="lg:col-span-5 glass p-6 md:p-8">
+<h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i class="fas fa-building text-emerald-400"></i> Mülk & Tesis Bilgileri</h2>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Mülk / Lokasyon Türü</label>
+<select id="prType" class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none" onchange="calcPropertyRev()">
+<option value="otoyol">Otoyol / Dinlenme Tesisi (Çok Yüksek Trafik)</option>
+<option value="avm">AVM / Alışveriş Merkezi Otoparkı</option>
+<option value="otel">Otel / Resort & Turistik Tesis</option>
+<option value="sehirici">Şehir İçi Cadde Üstü Otopark / Benzinlik</option>
+<option value="arsa">Müstakil Yol Kenarı Arsa</option>
+</select>
+</div>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block flex justify-between">
+<span>Kurulacak Soket Sayısı</span>
+<span id="txtSockets" class="text-emerald-400 font-bold">4 Soket (2 Ünite)</span>
+</label>
+<input type="range" id="rngSockets" min="2" max="16" step="2" value="4" class="w-full accent-emerald-500" oninput="calcPropertyRev()">
+</div>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">İstasyon Güç Seviyesi</label>
+<select id="prPower" class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none" onchange="calcPropertyRev()">
+<option value="300">300 kW Ultra HPC (Trugo / Tesla Standardı)</option>
+<option value="180">180 kW Hızlı DC</option>
+<option value="22">22 kW Destinasyon AC</option>
+</select>
+</div>
+
+<div class="pt-4 border-t border-gray-800 text-xs text-gray-400 space-y-2">
+<p><i class="fas fa-hand-holding-dollar text-emerald-400 mr-1"></i> <strong>Sıfır Yatırım Maliyeti:</strong> CPO operatörleri trafo, cihaz ve montaj masraflarını %100 karşılar.</p>
+<p><i class="fas fa-store text-cyan-400 mr-1"></i> <strong>Tesis Cirosunda %35 Artış:</strong> Şarj süresince sürücüler restoran, market ve kafenizi kullanır.</p>
+</div>
+</div>
+
+<!-- Outputs -->
+<div class="lg:col-span-7 space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="glass p-6 text-center border-l-4 border-emerald-500">
+<p class="text-gray-400 text-xs mb-1">Tahmini Yıllık Net Gelir Payı</p>
+<p id="resAnnualRev" class="text-3xl md:text-4xl font-black text-emerald-400">₺ 432.000</p>
+<p class="text-gray-500 text-xs mt-1">Elektrik komisyonu + sabit kira</p>
+</div>
+<div class="glass p-6 text-center border-l-4 border-cyan-500">
+<p class="text-gray-400 text-xs mb-1">Günlük Ortalama Şarj Sayısı</p>
+<p id="resDailySessions" class="text-3xl md:text-4xl font-black text-cyan-400">32 Araç / Gün</p>
+<p class="text-gray-500 text-xs mt-1">Potansiyel müşteri trafiği</p>
+</div>
+</div>
+
+<!-- Lead Gen -->
+<div class="glass p-8">
+<h3 class="text-xl font-bold text-white mb-2">Operatör Yatırım Ortaklığı Başvurusu</h3>
+<p class="text-gray-400 text-sm mb-6">Mülkünüzü Trugo, ZES ve Eşarj yatırım planlama direktörlerine iletelim, fizibilite raporunuzu 48 saatte ücretsiz çıkaralım.</p>
+<form onsubmit="return submitLandLead(event)" class="space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<input type="text" id="ldName" required placeholder="Adınız Soyadınız / Firma Ünvanı" class="bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+<input type="tel" id="ldPhone" required placeholder="Telefon Numaranız" class="bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<input type="text" id="ldCity" required placeholder="Şehir / İlçe (Örn: Balıkesir / Susurluk)" class="bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+<input type="text" id="ldTrafo" placeholder="Mevcut Trafo Gücü (Varsa kVA)" class="bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+</div>
+<button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold py-3.5 rounded-xl hover:scale-102 transition-all shadow-lg shadow-emerald-500/25 text-sm">
+<i class="fas fa-file-signature mr-2"></i> Ücretsiz Fizibilite & Teklif Talebi Gönder
+</button>
+</form>
+<p id="ldSuccess" class="hidden text-emerald-400 text-sm mt-4 font-bold text-center"><i class="fas fa-check-circle mr-1"></i> Başvurunuz alındı! Bölge koordinatörümüz 24 saat içinde arayacaktır.</p>
+</div>
+</div>
+</div>
+</main>
+
+<footer class="border-t border-gray-800/30 mt-20 py-8 text-center text-gray-600 text-sm">
+<p>ChargeTogg B2B Altyapı & İstasyon Ortaklığı &copy; 2026 | Togg Connected Ecosystem</p>
+</footer>
+
+<script>
+function calcPropertyRev() {
+    var sockets = parseInt(document.getElementById('rngSockets').value);
+    var type = document.getElementById('prType').value;
+    var power = parseInt(document.getElementById('prPower').value);
+    
+    document.getElementById('txtSockets').textContent = sockets + ' Soket (' + (sockets/2) + ' Ünite)';
+    
+    var dailyPerSocket = type === 'otoyol' ? 9 : (type === 'avm' ? 7 : (type === 'sehirici' ? 6 : 4));
+    var totalDaily = sockets * dailyPerSocket;
+    var kwhPerSession = power >= 180 ? 42 : 25;
+    var annualKwh = totalDaily * kwhPerSession * 365;
+    
+    // Commission per kWh: ~1.20 TL for DC, ~0.60 TL for AC
+    var commPerKwh = power >= 180 ? 1.20 : 0.60;
+    var annualEarn = annualKwh * commPerKwh;
+    
+    function fmt(n) { return '₺ ' + new Intl.NumberFormat('tr-TR').format(Math.round(n)); }
+    document.getElementById('resAnnualRev').textContent = fmt(annualEarn);
+    document.getElementById('resDailySessions').textContent = totalDaily + ' Araç / Gün';
+}
+function submitLandLead(e) {
+    e.preventDefault();
+    document.getElementById('ldSuccess').classList.remove('hidden');
+    return false;
+}
+document.addEventListener('DOMContentLoaded', calcPropertyRev);
+</script>
+</body>
+</html>
