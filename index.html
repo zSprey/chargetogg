@@ -4,65 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChargeTogg | Türkiye'nin En Kapsamlı Akıllı EV Şarj Ağı & Rota Ekosistemi</title>
-    <meta name="description" content="81 ilde Trugo 300kW+ Ultra HPC, ZES, Eşarj, Astor ve Tesla Supercharger istasyonları. Canlı soket durumu, interaktif şarj süresi & maliyet simülatörü ve Google Haritalar navigasyonlu akıllı EV rota motoru.">
-    <meta name="keywords" content="trugo şarj istasyonları, türkiye ev şarj haritası, togg şarj rotası, 300kw hpc şarj, zes şarj fiyatları, eşarj haritası, elektrikli araç şarj süresi hesaplama">
+    <meta name="description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi. 81 ilde Trugo, ZES, Eşarj istasyonları ve Google Haritalar navigasyonlu akıllı EV rota motoru.">
+    <meta name="keywords" content="chargetogg, trugo şarj istasyonları, türkiye ev şarj haritası, togg şarj rotası, 300kw hpc şarj, zes şarj fiyatları, eşarj haritası, elektrikli araç şarj süresi hesaplama, epdk şarj istasyonları">
     <meta name="theme-color" content="#00e5ff">
     <link rel="canonical" href="https://chargetogg.com/">
 
     <!-- OpenGraph & Social Meta -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chargetogg.com/">
-    <meta property="og:title" content="ChargeTogg | Türkiye Akıllı EV Şarj Ekosistemi">
-    <meta property="og:description" content="81 ilde Trugo 300kW HPC istasyonları, canlı şarj simülatörü ve akıllı rota navigasyonu.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1200">
+    <meta property="og:title" content="ChargeTogg | Türkiye Akıllı EV Şarj Ağı & Rota Ekosistemi">
+    <meta property="og:description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi">
+    <meta property="og:image" content="/assets/images/togg_charging_hero.jpg">
+    
+    <!-- Twitter Card Meta -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ChargeTogg | Türkiye Akıllı EV Şarj Ağı & Rota Ekosistemi">
+    <meta name="twitter:description" content="Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi">
+    <meta name="twitter:image" content="/assets/images/togg_charging_hero.jpg">
 
-    <!-- Schema.org Enterprise JSON-LD -->
+    <!-- Schema.org WebApplication JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
+      "@type": "WebApplication",
+      "name": "ChargeTogg",
+      "description": "Türkiye geneli 46.665+ şarj noktası canlı harita, Trugo 300kW HPC simülatörü ve B2B filo yönetimi",
+      "url": "https://chargetogg.com",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TRY"
+      }
+    }
+    </script>
+
+    <!-- Schema.org BreadcrumbList JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
         {
-          "@type": "WebSite",
-          "@id": "https://chargetogg.com/#website",
-          "url": "https://chargetogg.com/",
-          "name": "ChargeTogg",
-          "description": "Türkiye Geneli Canlı EV Şarj İstasyonları Haritası ve Akıllı Rota Motoru",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://chargetogg.com/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Ana Sayfa",
+          "item": "https://chargetogg.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Şarj Haritası",
+          "item": "https://chargetogg.com/#harita"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Şarj Simülatörü",
+          "item": "https://chargetogg.com/#simulator"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Akıllı Rota",
+          "item": "https://chargetogg.com/#rota"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Schema.org FAQPage JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Togg T10X Trugo 300kW HPC istasyonunda ne kadar sürede şarj olur?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Togg T10X Uzun Menzil (88.5 kWh), 300kW Trugo HPC istasyonunda %20'den %80 şarj seviyesine yaklaşık 28 dakikada ulaşır."
           }
         },
         {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Ana Sayfa", "item": "https://chargetogg.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Şarj Haritası", "item": "https://chargetogg.com/#harita" },
-            { "@type": "ListItem", "position": 3, "name": "Şarj Simülatörü", "item": "https://chargetogg.com/#simulator" },
-            { "@type": "ListItem", "position": 4, "name": "Akıllı Rota", "item": "https://chargetogg.com/#rota" }
-          ]
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Togg T10X Trugo 300kW HPC istasyonunda ne kadar sürede şarj olur?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Togg T10X Uzun Menzil (88.5 kWh), 300kW Trugo HPC istasyonunda %20'den %80 şarj seviyesine yaklaşık 28 dakikada ulaşır."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "ChargeTogg rotamı Google Haritalar'a nasıl aktarırım?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Rota planlama motorunda kalkış ve varış noktalarını girdikten sonra 'Google Haritalar'da Canlı Navigasyonu Başlat' butonuna tıklayarak duraklar dahil tüm rotayı telefonunuzdaki Google Haritalar uygulamasına aktarabilirsiniz."
-              }
-            }
-          ]
+          "@type": "Question",
+          "name": "ChargeTogg rotamı Google Haritalar'a nasıl aktarırım?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Rota planlama motorunda kalkış ve varış noktalarını girdikten sonra 'Google Haritalar'da Canlı Navigasyonu Başlat' butonuna tıklayarak duraklar dahil tüm rotayı telefonunuzdaki Google Haritalar uygulamasına aktarabilirsiniz."
+          }
         }
       ]
     }
@@ -1699,3 +1731,4 @@
     </script>
 </body>
 </html>
+
