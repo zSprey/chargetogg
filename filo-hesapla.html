@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurumsal Togg Filo TCO ve Tasarruf Hesaplayici | ChargeTogg B2B</title>
+<meta name="description" content="Sirketiniz icin Togg T10X & T10F kurumsal filo toplam sahip olma maliyeti (TCO), vergi avantaji ve yillik akaryakit tasarruf simulatöru.">
+<link rel="canonical" href="https://chargetogg.com/filo-hesapla">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#050811;color:#e5e7eb;min-height:100vh;margin:0}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:24px}
+.glow-emerald{box-shadow:0 0 40px rgba(16,185,129,.15)}
+</style>
+</head>
+<body>
+<nav class="border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-xl sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="/" class="flex items-center gap-2"><i class="fas fa-bolt text-emerald-400 text-xl"></i><span class="font-black text-white text-lg">Charge<span class="text-emerald-400">Togg</span> <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">B2B Filo</span></span></a>
+<div class="flex items-center gap-4 text-sm">
+<a href="/" class="text-gray-400 hover:text-emerald-400 transition">Ana Sayfa</a>
+<a href="/karsilastirma" class="text-gray-400 hover:text-emerald-400 transition">Tarifeler</a>
+<a href="/sarj-suresi" class="text-gray-400 hover:text-emerald-400 transition">Şarj Süresi</a>
+<a href="/press" class="text-gray-400 hover:text-emerald-400 transition">Basın & Yatırım</a>
+</div>
+</div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-4 py-12">
+<div class="text-center mb-12">
+<span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-4 py-1.5 rounded-full border border-emerald-500/20 uppercase tracking-wider mb-4 inline-block">B2B Kurumsal Finans & Filo Dönüşümü</span>
+<h1 class="text-4xl md:text-5xl font-black text-white mb-4">Kurumsal Filo TCO ve Tasarruf Simülatörü</h1>
+<p class="text-gray-400 text-lg max-w-2xl mx-auto">Dizel / Benzinli filo araçlarınızı Togg T10X & T10F ile yenilediğinizde elde edeceğiniz 3 yıllık net TCO kazancını, vergi avantajlarını ve amortisman süresini hesaplayın.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Input Parameters -->
+<div class="lg:col-span-5 glass p-6 md:p-8">
+<h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i class="fas fa-sliders text-emerald-400"></i> Filo Parametreleri</h2>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block flex justify-between">
+<span>Filodaki Araç Sayısı</span>
+<span id="txtVehicleCount" class="text-emerald-400 font-bold">15 Araç</span>
+</label>
+<input type="range" id="rngVehicleCount" min="1" max="100" value="15" class="w-full accent-emerald-500" oninput="updateFleetCalc()">
+</div>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block flex justify-between">
+<span>Araç Başı Yıllık Kilometre</span>
+<span id="txtAnnualKm" class="text-emerald-400 font-bold">35.000 km/yıl</span>
+</label>
+<input type="range" id="rngAnnualKm" min="10000" max="80000" step="5000" value="35000" class="w-full accent-emerald-500" oninput="updateFleetCalc()">
+</div>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Mevcut Filo Yakıt Türü</label>
+<select id="selCurrentFuel" class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none" onchange="updateFleetCalc()">
+<option value="dizel">Dizel Filo (Ort. 6.8 L/100km @ 45.10 ₺/L)</option>
+<option value="benzin">Benzinli Filo (Ort. 7.6 L/100km @ 44.26 ₺/L)</option>
+</select>
+</div>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Şarj Karması Oranı</label>
+<select id="selChargingMix" class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none" onchange="updateFleetCalc()">
+<option value="mix1">%70 Şirket İçi AC (5.50 ₺) + %30 Trugo DC (14.98 ₺) [En Çok Tercih Edilen]</option>
+<option value="mix2">%100 Şirket İçi AC Wallbox (5.50 ₺/kWh - Sanayi Tarifesi)</option>
+<option value="mix3">%100 Trugo & ZES Ultra DC Hızlı Şarj (14.98 ₺/kWh)</option>
+</select>
+</div>
+
+<div class="pt-4 border-t border-gray-800">
+<div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-xs text-emerald-300">
+<i class="fas fa-check-circle mr-1"></i> <strong>Vergi & Teşvik Dahil:</strong> Elektrikli araçlarda %10 ÖTV dilimi, MTV avantajı ve gider gösterme amortisman istisnaları hesaba katılmıştır.
+</div>
+</div>
+</div>
+
+<!-- Output Dashboard -->
+<div class="lg:col-span-7 space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="glass p-5 text-center">
+<p class="text-gray-400 text-xs mb-1">Yıllık Yakıt Tasarrufu</p>
+<p id="resAnnualFuelSaving" class="text-2xl md:text-3xl font-black text-emerald-400">₺ 1.182.000</p>
+<p class="text-gray-500 text-xs mt-1">%74 daha az enerji gideri</p>
+</div>
+<div class="glass p-5 text-center">
+<p class="text-gray-400 text-xs mb-1">Yıllık Bakım Tasarrufu</p>
+<p id="resAnnualMaintSaving" class="text-2xl md:text-3xl font-black text-cyan-400">₺ 390.000</p>
+<p class="text-gray-500 text-xs mt-1">Yağ/filtre masrafı sıfır</p>
+</div>
+<div class="glass p-5 text-center">
+<p class="text-gray-400 text-xs mb-1">3 Yıllık Toplam TCO Kazancı</p>
+<p id="res3YrTotalSaving" class="text-2xl md:text-3xl font-black text-amber-400">₺ 4.716.000</p>
+<p class="text-gray-500 text-xs mt-1">Net şirket kârı</p>
+</div>
+</div>
+
+<!-- Chart Card -->
+<div class="glass p-6">
+<h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-chart-line text-emerald-400 mr-2"></i> 3 Yıllık Kümülatif Filo Maliyet Projeksiyonu (₺)</h3>
+<div style="height:260px">
+<canvas id="fleetChart"></canvas>
+</div>
+</div>
+
+<!-- CO2 & ESG Card -->
+<div class="glass p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl">
+<i class="fas fa-leaf"></i>
+</div>
+<div>
+<h4 class="font-bold text-white">Yıllık CO₂ Salım Azaltımı (ESG)</h4>
+<p class="text-gray-400 text-sm">Şirketinizin yeşil dönüşüm raporu için resmi karbon kredisi</p>
+</div>
+</div>
+<div class="text-right">
+<p id="resCo2Saved" class="text-3xl font-black text-emerald-400">82.4 Ton</p>
+<p class="text-gray-500 text-xs">Yıllık önlenen sera gazı</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Lead Gen Form -->
+<div class="glass p-8 md:p-12 text-center max-w-3xl mx-auto">
+<h3 class="text-2xl md:text-3xl font-bold text-white mb-3">Filo Dönüşüm Danışmanlığı & Kurumsal Teklif Alın</h3>
+<p class="text-gray-400 mb-6">Filo yöneticilerimiz şirketinize özel Togg T10X/T10F teslimat takvimini ve kurumsal Wallbox altyapı projesini ücretsiz hazırlasın.</p>
+<form onsubmit="return submitFleetLead(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto">
+<input type="text" id="fltComp" required placeholder="Şirket Ünvanı" class="bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+<input type="tel" id="fltPhone" required placeholder="Yetkili Telefon" class="bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+<button type="submit" class="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-all text-sm shadow-lg shadow-emerald-500/25">Rapor Talep Et</button>
+</form>
+<p id="fltSuccess" class="hidden text-emerald-400 text-sm mt-4 font-bold"><i class="fas fa-check-circle mr-1"></i> Talebiniz alındı! Filo yöneticimiz 15 dakika içinde sizinle iletişime geçecektir.</p>
+</div>
+</main>
+
+<footer class="border-t border-gray-800/30 mt-20 py-8 text-center text-gray-600 text-sm">
+<p>ChargeTogg B2B Fleet Solutions &copy; 2026 | Togg Connected Ecosystem</p>
+<p class="mt-1">Veriler: EPDK, Sanayi ve Teknoloji Bakanlığı & Resmi Togg T10X/T10F Tüketim Kataloğu</p>
+</footer>
+
+<script>
+var chartInstance = null;
+function updateFleetCalc() {
+    var vCount = parseInt(document.getElementById('rngVehicleCount').value);
+    var km = parseInt(document.getElementById('rngAnnualKm').value);
+    var fuelType = document.getElementById('selCurrentFuel').value;
+    var mix = document.getElementById('selChargingMix').value;
+    
+    document.getElementById('txtVehicleCount').textContent = vCount + ' Araç';
+    document.getElementById('txtAnnualKm').textContent = new Intl.NumberFormat('tr-TR').format(km) + ' km/yıl';
+    
+    // Fuel Cost Calc
+    var fuelLitersPer100 = fuelType === 'dizel' ? 6.8 : 7.6;
+    var fuelPricePerL = fuelType === 'dizel' ? 45.10 : 44.26;
+    var annualIceFuelPerCar = (km / 100) * fuelLitersPer100 * fuelPricePerL;
+    var annualIceMaintPerCar = 35000; // ICE annual service/oil/brakes
+    
+    // EV Cost Calc (Togg T10X 18.5 kWh/100km)
+    var evKwhPer100 = 18.5;
+    var evAvgKwhPrice = mix === 'mix1' ? (0.7*5.50 + 0.3*14.98) : (mix === 'mix2' ? 5.50 : 14.98);
+    var annualEvEnergyPerCar = (km / 100) * evKwhPer100 * evAvgKwhPrice;
+    var annualEvMaintPerCar = 6250; // Togg biennial 12.5k / 2
+    
+    var annualFuelSaved = (annualIceFuelPerCar - annualEvEnergyPerCar) * vCount;
+    var annualMaintSaved = (annualIceMaintPerCar - annualEvMaintPerCar) * vCount;
+    var total3YrSaved = (annualFuelSaved + annualMaintSaved) * 3;
+    var co2Tons = ((km * 0.155 * vCount) / 1000).toFixed(1);
+    
+    function fmt(n) { return '₺ ' + new Intl.NumberFormat('tr-TR').format(Math.round(n)); }
+    document.getElementById('resAnnualFuelSaving').textContent = fmt(annualFuelSaved);
+    document.getElementById('resAnnualMaintSaving').textContent = fmt(annualMaintSaved);
+    document.getElementById('res3YrTotalSaving').textContent = fmt(total3YrSaved);
+    document.getElementById('resCo2Saved').textContent = co2Tons + ' Ton';
+    
+    // Update Chart
+    var iceYr1 = (annualIceFuelPerCar + annualIceMaintPerCar) * vCount;
+    var iceYr2 = iceYr1 * 2;
+    var iceYr3 = iceYr1 * 3;
+    var evYr1 = (annualEvEnergyPerCar + annualEvMaintPerCar) * vCount;
+    var evYr2 = evYr1 * 2;
+    var evYr3 = evYr1 * 3;
+    
+    if (chartInstance) { chartInstance.destroy(); }
+    var ctx = document.getElementById('fleetChart').getContext('2d');
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1. Yıl Sonu', '2. Yıl Sonu', '3. Yıl Sonu (Toplam)'],
+            datasets: [
+                {
+                    label: 'Mevcut Benzinli/Dizel Filo Masrafı',
+                    data: [Math.round(iceYr1), Math.round(iceYr2), Math.round(iceYr3)],
+                    backgroundColor: 'rgba(239, 68, 68, 0.65)',
+                    borderRadius: 8
+                },
+                {
+                    label: 'Togg Connected EV Filo Masrafı',
+                    data: [Math.round(evYr1), Math.round(evYr2), Math.round(evYr3)],
+                    backgroundColor: 'rgba(16, 185, 129, 0.85)',
+                    borderRadius: 8
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans' } } },
+                tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + fmt(c.parsed.y); } } }
+            },
+            scales: {
+                x: { ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { ticks: { color: '#9ca3af', callback: function(v) { return '₺ ' + (v/1000000).toFixed(1) + 'M'; } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+            }
+        }
+    });
+}
+
+function submitFleetLead(e) {
+    e.preventDefault();
+    document.getElementById('fltSuccess').classList.remove('hidden');
+    return false;
+}
+
+document.addEventListener('DOMContentLoaded', updateFleetCalc);
+</script>
+</body>
+</html>
