@@ -3,76 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChargeTogg | Harita</title>
+    <title>ChargeTogg | Türkiye EV Şarj Ağı & Akıllı Rota Navigasyonu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: '#10b981', bgdark: '#0f172a', card: '#1e293b' } } } }</script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#10b981',
+                        brandDark: '#059669',
+                        darkBg: '#090d16',
+                        darkCard: '#111827',
+                        darkBorder: '#1f293d'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         html.dark .leaflet-tile-pane { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
-        html:not(.dark) .leaflet-tile-pane { filter: none; }
+        .leaflet-routing-container { display: none !important; }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-bgdark text-gray-800 dark:text-gray-200 font-sans h-full flex flex-col overflow-hidden transition-colors">
-    <nav class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 h-16 flex-shrink-0 z-50 relative shadow-sm">
-        <div class="max-w-full mx-auto px-4 flex justify-between h-full items-center">
-            <span class="text-black dark:text-white text-2xl font-black"><i class="fa-solid fa-bolt text-brand mr-2"></i>Charge<span class="text-brand">Togg</span></span>
-            <div class="flex gap-4 items-center">
-                <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-brand"><i id="themeIcon" class="fa-solid fa-sun text-xl"></i></button>
-            </div>
+<body class="bg-slate-900 text-slate-100 h-full flex flex-col overflow-hidden antialiased">
+
+    <nav class="h-16 bg-slate-950 border-b border-slate-800 flex-shrink-0 z-50 px-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-brand flex items-center justify-center text-slate-950 font-black shadow-lg shadow-brand/30">
+                <i class="fa-solid fa-bolt text-lg"></i>
+            </span>
+            <span class="text-xl font-black tracking-tight text-white">Charge<span class="text-brand">Togg</span></span>
+            <span class="hidden sm:inline text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-brand border border-brand/20 ml-2">Canlı Ağ Haritası</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button onclick="map.flyTo([39.0, 35.0], 6)" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold px-3 py-2 rounded-xl transition text-slate-300">
+                <i class="fa-solid fa-crosshairs text-brand mr-1"></i> Tüm Türkiye
+            </button>
+            <button onclick="locateUser()" class="bg-brand hover:bg-brandDark text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl transition shadow-lg shadow-brand/20">
+                <i class="fa-solid fa-location-arrow mr-1"></i> Konumumu Bul
+            </button>
         </div>
     </nav>
-    <div class="flex flex-1 relative">
-        <aside class="w-[300px] bg-white dark:bg-card border-r border-gray-200 dark:border-slate-800 p-4 overflow-y-auto hidden md:flex flex-col z-40 transition-colors">
-            <h2 class="text-lg font-black dark:text-white mb-4">Rota Ciz</h2>
-            <form onsubmit="event.preventDefault(); calcRoute();" class="space-y-2 mb-4">
-                <input type="text" id="startCity" placeholder="Kalkis" class="w-full bg-gray-100 dark:bg-slate-900 dark:text-white rounded p-2 text-sm outline-none" required>
-                <input type="text" id="endCity" placeholder="Varis" class="w-full bg-gray-100 dark:bg-slate-900 dark:text-white rounded p-2 text-sm outline-none" required>
-                <button type="submit" class="w-full bg-brand text-white font-bold py-2 rounded text-sm">Hesapla</button>
-            </form>
-            <div id="stationList" class="space-y-2"></div>
+
+    <div class="flex flex-1 relative overflow-hidden">
+        
+        <aside id="sidebar" class="w-full md:w-[380px] bg-slate-950/95 backdrop-blur-xl border-r border-slate-800 flex flex-col absolute md:relative z-40 h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300 shadow-2xl">
+            <div class="p-5 overflow-y-auto flex-1 space-y-5">
+                
+                <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-black uppercase text-brand tracking-wider"><i class="fa-solid fa-route mr-1"></i> Akıllı Rota Planlama</h3>
+                        <span id="routeDistance" class="text-[10px] font-bold text-slate-400"></span>
+                    </div>
+                    <form onsubmit="event.preventDefault(); calcRoute();" class="space-y-2">
+                        <div class="relative">
+                            <i class="fa-solid fa-circle-dot text-emerald-400 absolute left-3 top-3 text-xs"></i>
+                            <input type="text" id="startCity" placeholder="Kalkış (Örn: İstanbul)" required class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 pl-8 pr-3 text-xs text-white outline-none focus:border-brand">
+                        </div>
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot text-red-500 absolute left-3 top-3 text-xs"></i>
+                            <input type="text" id="endCity" placeholder="Varış (Örn: İzmir)" required class="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 pl-8 pr-3 text-xs text-white outline-none focus:border-brand">
+                        </div>
+                        <button type="submit" id="routeBtn" class="w-full bg-brand hover:bg-brandDark text-slate-950 font-black py-2.5 rounded-xl text-xs transition">
+                            Rotayı & Şarj Duraklarını Çiz
+                        </button>
+                    </form>
+                </div>
+
+                <div class="space-y-2">
+                    <input type="text" id="searchInput" onkeyup="filterStations()" placeholder="İstasyon adı, şehir veya operatör..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-brand">
+                    <div class="flex gap-2">
+                        <button onclick="filterOp('all')" class="op-btn active flex-1 bg-brand text-slate-950 font-black py-1.5 rounded-lg text-[10px] transition">Tümü</button>
+                        <button onclick="filterOp('Trugo')" class="op-btn flex-1 bg-slate-900 border border-slate-800 text-slate-300 font-bold py-1.5 rounded-lg text-[10px] hover:border-brand transition">Trugo</button>
+                        <button onclick="filterOp('ZES')" class="op-btn flex-1 bg-slate-900 border border-slate-800 text-slate-300 font-bold py-1.5 rounded-lg text-[10px] hover:border-brand transition">ZES</button>
+                        <button onclick="filterOp('Eşarj')" class="op-btn flex-1 bg-slate-900 border border-slate-800 text-slate-300 font-bold py-1.5 rounded-lg text-[10px] hover:border-brand transition">Eşarj</button>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-[11px] font-extrabold uppercase text-slate-500 mb-2">Haritadaki İstasyonlar (<span id="stationCount">0</span>)</h4>
+                    <div id="stationList" class="space-y-2 max-h-[42vh] overflow-y-auto pr-1"></div>
+                </div>
+            </div>
         </aside>
-        <main class="flex-1 relative z-10 bg-gray-200 dark:bg-slate-800 transition-colors" id="map"></main>
+
+        <main class="flex-1 relative bg-slate-900" id="map"></main>
+
+        <button onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')" class="md:hidden absolute bottom-6 right-6 z-50 bg-brand text-slate-950 w-12 h-12 rounded-full font-black shadow-2xl flex items-center justify-center">
+            <i class="fa-solid fa-list text-lg"></i>
+        </button>
     </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
     <script>
-        function toggleTheme() {
-            document.documentElement.classList.toggle('dark');
-            document.getElementById('themeIcon').className = document.documentElement.classList.contains('dark') ? 'fa-solid fa-sun text-xl' : 'fa-solid fa-moon text-xl';
-        }
         const stations = [
-            { name: "Trugo Bolu", coords: [40.732, 31.579], op: "Trugo", hex: "#3b82f6" },
-            { name: "ZES Istanbul", coords: [41.062, 28.807], op: "ZES", hex: "#f97316" },
-            { name: "Esarj Akasya", coords: [40.999, 29.052], op: "Esarj", hex: "#ef4444" },
-            { name: "Trugo Ankara", coords: [39.911, 32.812], op: "Trugo", hex: "#3b82f6" },
-            { name: "ZES Izmir", coords: [38.411, 27.062], op: "ZES", hex: "#f97316" }
+            { name: "Trugo Oksijen 168 (O-5 Otoyolu)", op: "Trugo", power: "180 kW DC", coords: [39.754, 27.912], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Bolu Highway AVM", op: "Trugo", power: "300 kW HPC", coords: [40.732, 31.579], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Ankara Armada AVM", op: "Trugo", power: "180 kW DC", coords: [39.911, 32.812], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo İzmir İstinyePark", op: "Trugo", power: "180 kW DC", coords: [38.411, 27.062], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Bursa Korupark", op: "Trugo", power: "180 kW DC", coords: [40.245, 28.965], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Kayseri Park AVM", op: "Trugo", power: "180 kW DC", coords: [38.723, 35.503], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Gaziantep Sanko Park", op: "Trugo", power: "180 kW DC", coords: [37.066, 37.369], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Antalya Agora AVM", op: "Trugo", power: "180 kW DC", coords: [36.921, 30.745], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Trabzon Forum AVM", op: "Trugo", power: "180 kW DC", coords: [40.998, 39.754], status: "Müsait", hex: "#3b82f6" },
+            { name: "Trugo Oksijen 68 (Kocaeli O-4)", op: "Trugo", power: "180 kW DC", coords: [40.721, 30.222], status: "Müsait", hex: "#3b82f6" },
+
+            { name: "ZES Mall of Istanbul", op: "ZES", power: "120 kW DC", coords: [41.062, 28.807], status: "Müsait", hex: "#f97316" },
+            { name: "ZES Zorlu Center", op: "ZES", power: "120 kW DC", coords: [41.066, 29.017], status: "Meşgul", hex: "#f97316" },
+            { name: "ZES Ankara Ankamall", op: "ZES", power: "120 kW DC", coords: [39.951, 32.831], status: "Müsait", hex: "#f97316" },
+            { name: "ZES İzmir Optimum", op: "ZES", power: "60 kW DC", coords: [38.322, 27.135], status: "Müsait", hex: "#f97316" },
+            { name: "ZES Samsun Piazza", op: "ZES", power: "120 kW DC", coords: [41.282, 36.345], status: "Müsait", hex: "#f97316" },
+            { name: "ZES Bodrum Midtown", op: "ZES", power: "60 kW DC", coords: [37.054, 27.382], status: "Müsait", hex: "#f97316" },
+            { name: "ZES Eskişehir Espark", op: "ZES", power: "60 kW DC", coords: [39.782, 30.511], status: "Müsait", hex: "#f97316" },
+            { name: "ZES Erzurum MNG AVM", op: "ZES", power: "120 kW DC", coords: [39.912, 41.265], status: "Müsait", hex: "#f97316" },
+
+            { name: "Eşarj Akasya AVM", op: "Eşarj", power: "50 kW DC", coords: [40.999, 29.052], status: "Müsait", hex: "#ef4444" },
+            { name: "Eşarj Adana Optimum", op: "Eşarj", power: "60 kW DC", coords: [36.993, 35.341], status: "Müsait", hex: "#ef4444" },
+            { name: "Eşarj Denizli Teras Park", op: "Eşarj", power: "50 kW DC", coords: [37.751, 29.076], status: "Müsait", hex: "#ef4444" },
+            { name: "Eşarj Diyarbakır Forum", op: "Eşarj", power: "50 kW DC", coords: [37.935, 40.211], status: "Müsait", hex: "#ef4444" }
         ];
-        let map, markersCluster;
+
+        let map, markersCluster, routingControl = null;
+
         function initMap() {
             map = L.map('map', { zoomControl: false }).setView([39.0, 35.0], 6);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-            markersCluster = L.markerClusterGroup();
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+
+            markersCluster = L.markerClusterGroup({
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({
+                        html: `<div class="bg-brand text-slate-950 font-black w-8 h-8 flex items-center justify-center rounded-full border-2 border-slate-950 shadow-xl">${cluster.getChildCount()}</div>`,
+                        className: ''
+                    });
+                }
+            });
             map.addLayer(markersCluster);
-            stations.forEach(st => {
-                let m = L.circleMarker(st.coords, {radius:8, fillColor:st.hex, color:'#fff', weight:2, fillOpacity:1}).bindPopup(`<b>${st.name}</b>`);
-                markersCluster.addLayer(m);
-                document.getElementById('stationList').innerHTML += `<div class="bg-gray-100 dark:bg-slate-900 p-2 rounded text-sm dark:text-white cursor-pointer" onclick="map.flyTo([${st.coords}],14)">${st.name} - ${st.op}</div>`;
+            renderStations(stations);
+        }
+
+        function renderStations(list) {
+            document.getElementById('stationCount').innerText = list.length;
+            const container = document.getElementById('stationList');
+            container.innerHTML = '';
+            markersCluster.clearLayers();
+
+            list.forEach(st => {
+                const marker = L.circleMarker(st.coords, {
+                    radius: 8,
+                    fillColor: st.hex,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.9
+                }).bindPopup(`
+                    <div style="color:#0f172a; font-family:sans-serif; min-width:160px;">
+                        <h4 style="margin:0 0 4px 0; font-weight:bold; font-size:13px;">${st.name}</h4>
+                        <p style="margin:0; font-size:11px; color:#475569;">Operatör: <b>${st.op}</b></p>
+                        <p style="margin:2px 0 0 0; font-size:11px; color:#10b981; font-weight:bold;">⚡ ${st.power}</p>
+                    </div>
+                `);
+                markersCluster.addLayer(marker);
+
+                container.innerHTML += `
+                    <div onclick="flyToStation(${st.coords[0]}, ${st.coords[1]})" class="p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-brand cursor-pointer transition">
+                        <div class="flex justify-between items-start mb-1">
+                            <h5 class="text-xs font-bold text-white truncate pr-2">${st.name}</h5>
+                            <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">${st.op}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] text-slate-400">
+                            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-bolt mr-1"></i>${st.power}</span>
+                            <span class="text-slate-500">${st.status}</span>
+                        </div>
+                    </div>
+                `;
             });
         }
-        async function getCoords(city) {
-            try { const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${city},Turkey`); const d = await res.json(); return d.length ? L.latLng(d[0].lat, d[0].lon) : null; } catch(e){} return null;
+
+        function flyToStation(lat, lng) {
+            map.flyTo([lat, lng], 14, { duration: 1.5 });
+            if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
         }
+
+        function filterStations() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = stations.filter(s => s.name.toLowerCase().includes(q) || s.op.toLowerCase().includes(q));
+            renderStations(filtered);
+        }
+
+        function filterOp(op) {
+            document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('bg-brand', 'text-slate-950', 'font-black'));
+            event.target.classList.add('bg-brand', 'text-slate-950', 'font-black');
+            if (op === 'all') renderStations(stations);
+            else renderStations(stations.filter(s => s.op.toLowerCase() === op.toLowerCase()));
+        }
+
+        async function getCoordinates(query) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}, Turkey`);
+                const data = await res.json();
+                if (data && data.length > 0) return L.latLng(data[0].lat, data[0].lon);
+            } catch(e) {}
+            return null;
+        }
+
         async function calcRoute() {
-            let s = await getCoords(document.getElementById('startCity').value);
-            let e = await getCoords(document.getElementById('endCity').value);
-            if(s && e) L.Routing.control({waypoints:[s,e], lineOptions:{styles:[{color:'#10b981', weight:4}]}, show:false, createMarker:()=>null}).addTo(map);
+            const startStr = document.getElementById('startCity').value;
+            const endStr = document.getElementById('endCity').value;
+            const btn = document.getElementById('routeBtn');
+            btn.innerText = "Rota Hesaplanıyor...";
+
+            const startCoords = await getCoordinates(startStr);
+            const endCoords = await getCoordinates(endStr);
+
+            if (!startCoords || !endCoords) {
+                alert("Şehir konumu çözümlenemedi. Lütfen geçerli bir il/ilçe adı girin.");
+                btn.innerText = "Rotayı & Şarj Duraklarını Çiz";
+                return;
+            }
+
+            if (routingControl) map.removeControl(routingControl);
+
+            routingControl = L.Routing.control({
+                waypoints: [startCoords, endCoords],
+                lineOptions: { styles: [{ color: '#10b981', weight: 5, opacity: 0.9 }] },
+                createMarker: () => null,
+                show: false
+            }).addTo(map);
+
+            routingControl.on('routesfound', function(e) {
+                const distanceKm = Math.round(e.routes[0].summary.totalDistance / 1000);
+                document.getElementById('routeDistance').innerText = `~${distanceKm} km (Tahmini ${Math.ceil(distanceKm/350)} şarj molası)`;
+                btn.innerText = "Rotayı & Şarj Duraklarını Çiz";
+                if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+            });
         }
-        window.addEventListener('DOMContentLoaded', initMap);
+
+        function locateUser() {
+            if (!navigator.geolocation) return alert('Tarayıcınız konum servisini desteklemiyor.');
+            navigator.geolocation.getCurrentPosition(pos => {
+                map.flyTo([pos.coords.latitude, pos.coords.longitude], 13);
+            }, () => alert('Konum izni alınamadı.'));
+        }
+
+        window.onload = initMap;
     </script>
 </body>
 </html>
