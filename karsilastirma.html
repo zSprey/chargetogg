@@ -1,508 +1,155 @@
 <!DOCTYPE html>
-<html lang="tr" class="dark scroll-smooth">
+<html lang="tr" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Preconnect & DNS-Prefetch Performance Optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <title>2026 Türkiye EV Şarj İstasyonu Fiyat & Tarife Karşılaştırması | ChargeTogg</title>
-    <meta name="description" content="81 ildeki Trugo 300kW, ZES, Eşarj, Astor, Voltrun, Sharz ve Tesla şarj istasyonlarının güncel DC ve AC kWh fiyatları, soket sayıları ve Togg T10X şarj maliyeti karşılaştırma tablosu.">
-    <meta name="keywords" content="türkiye ev şarj fiyatları 2026, trugo şarj tarifesi, zes kwh fiyatı, eşarj şarj ücreti, astor şarj fiyatı, elektrikli araç şarj istasyonu karşılaştırma, togg t10x şarj maliyeti">
-    <meta name="theme-color" content="#00e5ff">
-    <link rel="canonical" href="https://chargetogg.com/karsilastirma.html">
-
-    <!-- OpenGraph & Social Meta -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chargetogg.com/karsilastirma.html">
-    <meta property="og:title" content="2026 Türkiye EV Şarj İstasyonu Fiyat & Tarife Karşılaştırması | ChargeTogg">
-    <meta property="og:description" content="Trugo, ZES, Eşarj, Astor ve Tesla Supercharger güncel DC/AC fiyatları, soket sayıları ve canlı maliyet hesaplayıcı.">
-    <meta property="og:image" content="/assets/images/togg_charging_hero.jpg">
-    
-    <!-- Twitter Card Meta -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="2026 Türkiye EV Şarj İstasyonu Fiyat & Tarife Karşılaştırması | ChargeTogg">
-    <meta name="twitter:description" content="Trugo, ZES, Eşarj, Astor ve Tesla Supercharger güncel DC/AC fiyatları, soket sayıları ve canlı maliyet hesaplayıcı.">
-    <meta name="twitter:image" content="/assets/images/togg_charging_hero.jpg">
-
-    <!-- Schema.org WebPage & Dataset JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebPage",
-          "@id": "https://chargetogg.com/karsilastirma.html#webpage",
-          "url": "https://chargetogg.com/karsilastirma.html",
-          "name": "2026 Türkiye EV Şarj İstasyonu Fiyat & Tarife Karşılaştırması",
-          "description": "Türkiye genelindeki 46.665+ şarj soketinin operatör bazlı DC/AC birim fiyatları, güç kapasiteleri ve kapsama alanı karşılaştırma tablosu.",
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Ana Sayfa",
-                "item": "https://chargetogg.com/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Tarife Karşılaştırma",
-                "item": "https://chargetogg.com/karsilastirma.html"
-              }
-            ]
-          }
-        },
-        {
-          "@type": "Dataset",
-          "name": "Türkiye Elektrikli Araç Şarj Operatörleri Fiyat Tarifesi 2026",
-          "description": "EPDK lisanslı Trugo, ZES, Eşarj, Astor, Voltrun, Sharz ve Tesla operatörlerinin DC/AC birim şarj fiyatları ve soket sayıları veriseti.",
-          "license": "https://creativecommons.org/licenses/by-nc/4.0/",
-          "isAccessibleForFree": true,
-          "creator": {
-            "@type": "Organization",
-            "name": "ChargeTogg",
-            "url": "https://chargetogg.com"
-          }
-        }
-      ]
-    }
-    </script>
-
-    <!-- Tailwind & Custom Fonts -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: '#00e5ff',
-                        brandGlow: '#00f2fe',
-                        brandDark: '#00838f',
-                        emeraldPulse: '#10b981',
-                        darkBg: '#050811',
-                        darkCard: '#0d1322',
-                        darkCardBorder: 'rgba(255, 255, 255, 0.08)',
-                        darkSurface: '#121a2e'
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-html{scroll-behavior:smooth}
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050811; color: #f1f5f9; }
-        .glass-panel { background: rgba(13, 19, 34, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-card { background: rgba(18, 26, 46, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .glass-card:hover { border-color: rgba(0, 229, 255, 0.4); transform: translateY(-3px); box-shadow: 0 12px 30px -10px rgba(0, 229, 255, 0.2); }
-        .btn-neon { background: linear-gradient(135deg, #00e5ff 0%, #00b4d8 100%); box-shadow: 0 0 25px rgba(0, 229, 255, 0.35); transition: all 0.3s ease; }
-        .btn-neon:hover { box-shadow: 0 0 35px rgba(0, 229, 255, 0.6); transform: translateY(-1px); }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #050811; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarj Operatorleri Karsilastirma | ChargeTogg</title>
+<meta name="description" content="Turkiye EV sarj operatorleri fiyat, guc ve kapsam karsilastirmasi. Trugo, ZES, Esarj, Astor, Voltrun, Sharz.net ve Tesla Supercharger guncel tarifeleri.">
+<link rel="canonical" href="https://chargetogg.com/karsilastirma">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"EV Sarj Operatorleri Karsilastirma","description":"Turkiye EV sarj operatorleri fiyat karsilastirmasi","url":"https://chargetogg.com/karsilastirma","isPartOf":{"@type":"WebSite","name":"ChargeTogg","url":"https://chargetogg.com"}}</script>
+<style>
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#050811;color:#e5e7eb;min-height:100vh;margin:0}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:24px}
+.cheapest{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3)}
+.expensive{background:rgba(239,68,68,.05);border-color:rgba(239,68,68,.2)}
+table{border-collapse:separate;border-spacing:0}
+th{background:rgba(255,255,255,.05);position:sticky;top:0;z-index:10}
+tr:hover td{background:rgba(255,255,255,.03)}
+</style>
 </head>
-<body class="bg-[#050811] text-slate-100 min-h-screen flex flex-col">
+<body>
+<nav class="border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-xl sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="/" class="flex items-center gap-2"><i class="fas fa-charging-station text-emerald-400 text-xl"></i><span class="font-black text-white text-lg">Charge<span class="text-emerald-400">Togg</span></span></a>
+<div class="flex items-center gap-4 text-sm">
+<a href="https://chargetogg.com" class="text-gray-400 hover:text-emerald-400 transition"><i class="fas fa-map mr-1"></i>Harita</a>
+<a href="https://servicetogg.com" class="text-gray-400 hover:text-emerald-400 transition"><i class="fas fa-wrench mr-1"></i>Servis</a>
+<a href="https://toggelectric.com" class="text-gray-400 hover:text-emerald-400 transition"><i class="fas fa-car mr-1"></i>Topluluk</a>
+</div>
+</div>
+</nav>
+<main class="max-w-6xl mx-auto px-4 py-12">
+<div class="text-center mb-12">
+<h1 class="text-4xl md:text-5xl font-black text-white mb-4"><i class="fas fa-chart-bar text-emerald-400 mr-3"></i>Sarj Operatorleri<br>Karsilastirma Tablosu</h1>
+<p class="text-gray-400 text-lg">Turkiye'deki tum EV sarj operatorlerinin guncel tarife, guc ve kapsam karsilastirmasi</p>
+<p class="text-gray-500 text-sm mt-2"><i class="fas fa-clock mr-1"></i>Son guncelleme: Agustos 2026 | Kaynak: EPDK Resmi Verileri</p>
+</div>
 
-    <!-- Header / Navbar -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/10 px-4 lg:px-8 py-3.5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <a href="https://chargetogg.com/" class="flex items-center gap-2.5 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-black font-black text-xl shadow-[0_0_20px_rgba(0,229,255,0.4)] group-hover:scale-105 transition-transform">
-                    <i class="fa-solid fa-bolt text-slate-900"></i>
-                </div>
-                <div>
-                    <span class="text-xl font-extrabold tracking-wider text-white">CHARGE<span class="text-cyan-400">TOGG</span></span>
-                    <span class="block text-[10px] text-slate-400 -mt-1 font-semibold tracking-widest">TARİFE EKOSİSTEMİ</span>
-                </div>
-            </a>
-        </div>
+<div class="glass p-2 md:p-6 overflow-x-auto mb-12">
+<table class="w-full text-sm">
+<thead>
+<tr class="text-left">
+<th class="px-4 py-4 rounded-tl-xl text-white font-bold">Operator</th>
+<th class="px-4 py-4 text-white font-bold">DC Fiyat<br><span class="text-gray-500 text-xs font-normal">TL/kWh</span></th>
+<th class="px-4 py-4 text-white font-bold">AC Fiyat<br><span class="text-gray-500 text-xs font-normal">TL/kWh</span></th>
+<th class="px-4 py-4 text-white font-bold">Maks Guc<br><span class="text-gray-500 text-xs font-normal">kW</span></th>
+<th class="px-4 py-4 text-white font-bold">Soket Sayisi</th>
+<th class="px-4 py-4 text-white font-bold">Kapsam</th>
+<th class="px-4 py-4 rounded-tr-xl text-white font-bold">Soket Tipleri</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-t border-gray-800/50">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center"><i class="fas fa-bolt text-emerald-400"></i></div><div><p class="font-bold text-white">Trugo</p><p class="text-gray-500 text-xs">Togg Resmi</p></div></div></td>
+<td class="px-4 py-4 font-bold text-emerald-400">14.98</td>
+<td class="px-4 py-4 text-gray-300">9.95</td>
+<td class="px-4 py-4"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-lg text-xs font-bold">300 kW HPC</span></td>
+<td class="px-4 py-4 text-white font-semibold">3,868+</td>
+<td class="px-4 py-4 text-cyan-400">81 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">CCS2, Type2</td>
+</tr>
+<tr class="border-t border-gray-800/50 cheapest">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center"><i class="fas fa-charging-station text-blue-400"></i></div><div><p class="font-bold text-white">Astor</p><p class="text-gray-500 text-xs">En Uygun DC</p></div></div></td>
+<td class="px-4 py-4 font-bold text-green-400">13.99 <i class="fas fa-arrow-down text-xs"></i></td>
+<td class="px-4 py-4 text-gray-300">9.49</td>
+<td class="px-4 py-4 text-gray-300">120 kW</td>
+<td class="px-4 py-4 text-white font-semibold">2,100+</td>
+<td class="px-4 py-4 text-gray-400">65 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">CCS2, CHAdeMO</td>
+</tr>
+<tr class="border-t border-gray-800/50">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center"><i class="fas fa-plug text-orange-400"></i></div><div><p class="font-bold text-white">Esarj</p><p class="text-gray-500 text-xs">Enerjisa</p></div></div></td>
+<td class="px-4 py-4 font-bold text-gray-200">14.90</td>
+<td class="px-4 py-4 text-gray-300">9.90</td>
+<td class="px-4 py-4 text-gray-300">180 kW</td>
+<td class="px-4 py-4 text-white font-semibold">4,200+</td>
+<td class="px-4 py-4 text-gray-400">78 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">CCS2, Type2</td>
+</tr>
+<tr class="border-t border-gray-800/50">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center"><i class="fas fa-bolt text-purple-400"></i></div><div><p class="font-bold text-white">ZES</p><p class="text-gray-500 text-xs">Zorlu Enerji</p></div></div></td>
+<td class="px-4 py-4 font-bold text-gray-200">16.49</td>
+<td class="px-4 py-4 text-gray-300">10.49</td>
+<td class="px-4 py-4 text-gray-300">180 kW</td>
+<td class="px-4 py-4 text-white font-semibold">5,519+</td>
+<td class="px-4 py-4 text-cyan-400">81 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">CCS2, Type2, CHAdeMO</td>
+</tr>
+<tr class="border-t border-gray-800/50">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-sun text-yellow-400"></i></div><div><p class="font-bold text-white">Voltrun</p><p class="text-gray-500 text-xs">Destinasyon</p></div></div></td>
+<td class="px-4 py-4 font-bold text-gray-200">15.50</td>
+<td class="px-4 py-4 text-gray-300">10.20</td>
+<td class="px-4 py-4 text-gray-300">150 kW</td>
+<td class="px-4 py-4 text-white font-semibold">1,800+</td>
+<td class="px-4 py-4 text-gray-400">55 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">CCS2, Type2</td>
+</tr>
+<tr class="border-t border-gray-800/50">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center"><i class="fas fa-plug-circle-bolt text-teal-400"></i></div><div><p class="font-bold text-white">Sharz.net</p><p class="text-gray-500 text-xs">AC Uzman</p></div></div></td>
+<td class="px-4 py-4 text-gray-600">—</td>
+<td class="px-4 py-4 font-bold text-green-400">8.99 <i class="fas fa-arrow-down text-xs"></i></td>
+<td class="px-4 py-4 text-gray-300">22 kW</td>
+<td class="px-4 py-4 text-white font-semibold">3,500+</td>
+<td class="px-4 py-4 text-gray-400">70 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">Type2</td>
+</tr>
+<tr class="border-t border-gray-800/50 expensive">
+<td class="px-4 py-4"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center"><i class="fas fa-car-battery text-red-400"></i></div><div><p class="font-bold text-white">Tesla SC</p><p class="text-gray-500 text-xs">Supercharger</p></div></div></td>
+<td class="px-4 py-4 font-bold text-red-400">16.99 <i class="fas fa-arrow-up text-xs"></i></td>
+<td class="px-4 py-4 text-gray-600">—</td>
+<td class="px-4 py-4 text-gray-300">250 kW</td>
+<td class="px-4 py-4 text-white font-semibold">450+</td>
+<td class="px-4 py-4 text-gray-400">25 il</td>
+<td class="px-4 py-4 text-gray-400 text-xs">CCS2, Tesla</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-        <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-            <a href="https://chargetogg.com/" class="text-slate-300 hover:text-cyan-400 transition-colors"><i class="fa-solid fa-house mr-1.5 text-slate-400"></i> Ana Sayfa</a>
-            <a href="https://chargetogg.com/#harita" class="text-slate-300 hover:text-cyan-400 transition-colors"><i class="fa-solid fa-map-location-dot mr-1.5 text-slate-400"></i> Şarj Haritası</a>
-            <a href="https://chargetogg.com/#simulator" class="text-slate-300 hover:text-cyan-400 transition-colors"><i class="fa-solid fa-calculator mr-1.5 text-slate-400"></i> Simülatör</a>
-            <a href="https://chargetogg.com/#rota" class="text-slate-300 hover:text-cyan-400 transition-colors"><i class="fa-solid fa-route mr-1.5 text-slate-400"></i> Akıllı Rota</a>
-            <a href="https://chargetogg.com/karsilastirma.html" class="text-cyan-400 border-b-2 border-cyan-400 pb-0.5"><i class="fa-solid fa-table-columns mr-1.5"></i> Fiyat Karşılaştırma</a>
-        </nav>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="glass p-6 text-center">
+<i class="fas fa-trophy text-4xl text-green-400 mb-3"></i>
+<h3 class="text-white font-bold mb-1">En Uygun DC</h3>
+<p class="text-3xl font-black text-green-400">Astor</p>
+<p class="text-gray-400 text-sm">13.99 TL/kWh</p>
+</div>
+<div class="glass p-6 text-center">
+<i class="fas fa-bolt text-4xl text-emerald-400 mb-3"></i>
+<h3 class="text-white font-bold mb-1">En Hizli</h3>
+<p class="text-3xl font-black text-emerald-400">Trugo</p>
+<p class="text-gray-400 text-sm">300 kW HPC</p>
+</div>
+<div class="glass p-6 text-center">
+<i class="fas fa-map-marked-alt text-4xl text-cyan-400 mb-3"></i>
+<h3 class="text-white font-bold mb-1">En Genis Ag</h3>
+<p class="text-3xl font-black text-cyan-400">ZES</p>
+<p class="text-gray-400 text-sm">5,519+ soket</p>
+</div>
+</div>
 
-        <div class="flex items-center gap-3">
-            <a href="https://servicetogg.com" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition">
-                <i class="fa-solid fa-wrench text-rose-400"></i> ServiceTogg
-            </a>
-            <a href="https://toggelectric.com" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition">
-                <i class="fa-solid fa-newspaper text-blue-400"></i> ToggElectric
-            </a>
-        </div>
-    </header>
+<div class="text-center">
+<a href="/" class="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold px-8 py-4 rounded-2xl hover:scale-105 transition-all shadow-lg shadow-emerald-500/25">
+<i class="fas fa-map-marked-alt"></i> Haritada Kesfet
+</a>
+</div>
+</main>
 
-    <!-- Main Container -->
-    <main class="flex-grow pt-28 pb-20 px-4 md:px-8 max-w-7xl mx-auto w-full space-y-12">
-
-        <!-- Hero Section -->
-        <section class="text-center space-y-4 max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                2026 EPDK & Operatör Resmi Verileri
-            </div>
-            <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                Türkiye EV Şarj İstasyonu <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400">Tarife ve Fiyat Karşılaştırması</span>
-            </h1>
-            <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
-                81 ildeki 46.665+ aktif şarj soketinin operatör bazlı güncel DC hızlı şarj ve AC normal şarj kWh birim fiyatları, maksimum güç kapasiteleri ve kapsama alanları tablosu.
-            </p>
-        </section>
-
-        <!-- KPI Summary Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <div class="glass-card rounded-2xl p-5 border border-white/10">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Toplam Soket (TR)</div>
-                <div class="text-2xl md:text-3xl font-black text-cyan-400 mt-2">46.665+</div>
-                <div class="text-xs text-slate-400 mt-1 flex items-center gap-1"><i class="fa-solid fa-shield-check text-emerald-400"></i> EPDK Resmi Kaydı</div>
-            </div>
-            <div class="glass-card rounded-2xl p-5 border border-white/10">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">En Uygun DC Tarife</div>
-                <div class="text-2xl md:text-3xl font-black text-emerald-400 mt-2">13.99 ₺</div>
-                <div class="text-xs text-slate-400 mt-1">Astor Şarj / kWh</div>
-            </div>
-            <div class="glass-card rounded-2xl p-5 border border-white/10">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">En Yüksek DC Güç</div>
-                <div class="text-2xl md:text-3xl font-black text-blue-400 mt-2">300 kW</div>
-                <div class="text-xs text-slate-400 mt-1">Trugo Ultra HPC</div>
-            </div>
-            <div class="glass-card rounded-2xl p-5 border border-white/10">
-                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pazar Lideri Şebeke</div>
-                <div class="text-2xl md:text-3xl font-black text-amber-400 mt-2">5.519+</div>
-                <div class="text-xs text-slate-400 mt-1">ZES (81 İlde Aktif)</div>
-            </div>
-        </div>
-
-        <!-- Tariff Table Section -->
-        <section class="glass-panel rounded-3xl p-6 md:p-8 space-y-6">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2.5">
-                        <i class="fa-solid fa-list-check text-cyan-400"></i> Operatör Fiyat & Güç Matrisi
-                    </h2>
-                    <p class="text-xs md:text-sm text-slate-400 mt-1">Fiyatlara KDV ve EPDK hizmet bedelleri dahildir.</p>
-                </div>
-                <div class="flex flex-wrap gap-2 items-center">
-                    <input type="text" id="opSearch" aria-label="Operatör Ara" placeholder="Operatör ara..." class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs md:text-sm text-white focus:outline-none focus:border-cyan-400 w-full sm:w-48">
-                    <select id="filterType" aria-label="İstasyon Güç Türü Filtresi" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs md:text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
-                        <option value="all">Tüm Operatörler</option>
-                        <option value="dc">DC Hızlı Şarj Olanlar</option>
-                        <option value="hpc">180kW+ Ultra HPC</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm border-collapse" id="tariffTable">
-                    <thead>
-                        <tr class="border-b border-white/10 text-slate-400 text-xs uppercase tracking-wider font-semibold">
-                            <th class="py-4 px-4">Operatör</th>
-                            <th class="py-4 px-4 cursor-pointer hover:text-cyan-400" onclick="sortTable(1)">DC Fiyat (₺/kWh) <i class="fa-solid fa-sort text-[10px] ml-1"></i></th>
-                            <th class="py-4 px-4 cursor-pointer hover:text-cyan-400" onclick="sortTable(2)">AC Fiyat (₺/kWh) <i class="fa-solid fa-sort text-[10px] ml-1"></i></th>
-                            <th class="py-4 px-4">Maks. Güç</th>
-                            <th class="py-4 px-4">Soket Sayısı</th>
-                            <th class="py-4 px-4">Kapsama</th>
-                            <th class="py-4 px-4">Öne Çıkan Özellik</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5 text-slate-200 font-medium" id="tableBody">
-                        <!-- Trugo -->
-                        <tr class="hover:bg-cyan-500/[0.04] transition-colors" data-dc="14.98" data-ac="9.95" data-power="300">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-black text-xs">TR</div>
-                                    <div>
-                                        <span class="font-bold text-white">Trugo</span>
-                                        <span class="block text-[10px] text-cyan-400 font-mono">Togg Ekosistemi</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono font-bold text-cyan-400 text-base">14.98 ₺</td>
-                            <td class="py-4 px-4 font-mono font-semibold text-slate-300">9.95 ₺</td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 text-xs font-bold font-mono">300 kW</span></td>
-                            <td class="py-4 px-4 font-mono">3.868+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">81 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-cyan-300 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">Togg T10X 28 dk HPC Şarjı</span></td>
-                        </tr>
-
-                        <!-- ZES -->
-                        <tr class="hover:bg-white/[0.02] transition-colors" data-dc="16.49" data-ac="10.49" data-power="180">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-black text-xs">ZS</div>
-                                    <div>
-                                        <span class="font-bold text-white">ZES</span>
-                                        <span class="block text-[10px] text-slate-400 font-mono">Zorlu Enerji</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono font-bold text-slate-200 text-base">16.49 ₺</td>
-                            <td class="py-4 px-4 font-mono font-semibold text-slate-300">10.49 ₺</td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-bold font-mono">180 kW</span></td>
-                            <td class="py-4 px-4 font-mono font-bold text-amber-400">5.519+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">81 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-slate-300 bg-white/5 px-2 py-1 rounded">Türkiye'nin En Çok Soketi</span></td>
-                        </tr>
-
-                        <!-- Eşarj -->
-                        <tr class="hover:bg-white/[0.02] transition-colors" data-dc="14.90" data-ac="9.90" data-power="180">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-xs">EŞ</div>
-                                    <div>
-                                        <span class="font-bold text-white">Eşarj</span>
-                                        <span class="block text-[10px] text-slate-400 font-mono">Enerjisa</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono font-bold text-emerald-400 text-base">14.90 ₺</td>
-                            <td class="py-4 px-4 font-mono font-semibold text-slate-300">9.90 ₺</td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-bold font-mono">180 kW</span></td>
-                            <td class="py-4 px-4 font-mono">4.200+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">78 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-slate-300 bg-white/5 px-2 py-1 rounded">Otoyol Dinlenme Tesisleri</span></td>
-                        </tr>
-
-                        <!-- Astor -->
-                        <tr class="hover:bg-emerald-500/[0.04] transition-colors" data-dc="13.99" data-ac="9.49" data-power="120">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black text-xs">AS</div>
-                                    <div>
-                                        <span class="font-bold text-white">Astor Şarj</span>
-                                        <span class="block text-[10px] text-emerald-400 font-mono">Astor Enerji</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono font-bold text-emerald-400 text-base">13.99 ₺ <span class="text-[10px] text-emerald-400 font-normal">★ En Uygun</span></td>
-                            <td class="py-4 px-4 font-mono font-semibold text-slate-300">9.49 ₺</td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-bold font-mono">120 kW</span></td>
-                            <td class="py-4 px-4 font-mono">2.100+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">65 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">En Düşük DC Birim Fiyatı</span></td>
-                        </tr>
-
-                        <!-- Voltrun -->
-                        <tr class="hover:bg-white/[0.02] transition-colors" data-dc="15.50" data-ac="10.20" data-power="150">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-black text-xs">VO</div>
-                                    <div>
-                                        <span class="font-bold text-white">Voltrun</span>
-                                        <span class="block text-[10px] text-slate-400 font-mono">Zebra Elektronik</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono font-bold text-slate-200 text-base">15.50 ₺</td>
-                            <td class="py-4 px-4 font-mono font-semibold text-slate-300">10.20 ₺</td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-bold font-mono">150 kW</span></td>
-                            <td class="py-4 px-4 font-mono">1.800+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">55 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-slate-300 bg-white/5 px-2 py-1 rounded">AVM & Site Şebekesi</span></td>
-                        </tr>
-
-                        <!-- Sharz.net -->
-                        <tr class="hover:bg-white/[0.02] transition-colors" data-dc="0" data-ac="8.99" data-power="22">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-600/20 text-cyan-300 flex items-center justify-center font-black text-xs">SH</div>
-                                    <div>
-                                        <span class="font-bold text-white">Sharz.net</span>
-                                        <span class="block text-[10px] text-slate-400 font-mono">E-Mobility</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono text-slate-500">—</td>
-                            <td class="py-4 px-4 font-mono font-bold text-emerald-400 text-base">8.99 ₺ <span class="text-[10px] text-emerald-400 font-normal">★ En Uygun AC</span></td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-bold font-mono">22 kW</span></td>
-                            <td class="py-4 px-4 font-mono">3.500+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">70 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-emerald-300 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">En Ekonomik AC Tarife</span></td>
-                        </tr>
-
-                        <!-- Tesla SC -->
-                        <tr class="hover:bg-white/[0.02] transition-colors" data-dc="16.99" data-ac="0" data-power="250">
-                            <td class="py-4 px-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center font-black text-xs">TS</div>
-                                    <div>
-                                        <span class="font-bold text-white">Tesla Supercharger</span>
-                                        <span class="block text-[10px] text-slate-400 font-mono">Tüm EV'lere Açık</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4 font-mono font-bold text-slate-200 text-base">16.99 ₺</td>
-                            <td class="py-4 px-4 font-mono text-slate-500">—</td>
-                            <td class="py-4 px-4"><span class="px-2.5 py-1 rounded-md bg-red-500/20 text-red-400 text-xs font-bold font-mono">250 kW</span></td>
-                            <td class="py-4 px-4 font-mono">450+</td>
-                            <td class="py-4 px-4"><span class="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs">25 il</span></td>
-                            <td class="py-4 px-4"><span class="text-xs text-slate-300 bg-white/5 px-2 py-1 rounded">V3 250kW Sıvı Soğutmalı</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Interactive Cost Calculator -->
-        <section class="glass-panel rounded-3xl p-6 md:p-8 space-y-6">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl font-bold">
-                    <i class="fa-solid fa-calculator"></i>
-                </div>
-                <div>
-                    <h2 class="text-xl md:text-2xl font-bold text-white">Togg T10X Şarj Maliyeti Karşılaştırıcı</h2>
-                    <p class="text-xs md:text-sm text-slate-400">Şarj etmek istediğiniz enerji miktarını seçin, tüm operatörlerin toplam fatura maliyetini anında görün.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
-                <div class="lg:col-span-1 glass-card rounded-2xl p-6 space-y-5 border border-white/10">
-                    <div>
-                        <div class="flex justify-between items-center text-sm font-semibold mb-2">
-                            <label for="kwhSlider" class="text-slate-300">Şarj Miktarı (kWh)</label>
-                            <span id="kwhDisplay" class="text-xl font-mono font-black text-cyan-400">53.1 kWh</span>
-                        </div>
-                        <input type="range" id="kwhSlider" aria-label="Aylık Tüketim (kWh)" min="10" max="88.5" step="0.5" value="53.1" class="w-full accent-cyan-400 bg-slate-800 rounded-lg cursor-pointer">
-                        <div class="flex justify-between text-[11px] text-slate-500 mt-1">
-                            <span>10 kWh (Şehir İçi)</span>
-                            <span>53.1 kWh (%20-%80)</span>
-                            <span>88.5 kWh (Tam)</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-slate-400">
-                        <div class="flex justify-between">
-                            <span>Referans Araç:</span>
-                            <span class="text-white font-semibold">Togg T10X V2 Uzun Menzil</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Batarya Kapasitesi:</span>
-                            <span class="text-white font-semibold">88.5 kWh</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Standart Otoyol Dolumu:</span>
-                            <span class="text-cyan-300 font-semibold">%20 ➔ %80 (53.1 kWh)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="calcResults">
-                    <!-- Results populated by JS -->
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="glass-panel border-t border-white/10 py-8 px-4 text-center text-xs text-slate-500 mt-auto">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                <p class="text-slate-400 font-semibold">ChargeTogg © 2026 — Togg Bağlantılı Ekosistem</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">EPDK lisanslı şarj operatörlerinin kamuya açık resmi tarifeleri baz alınmıştır.</p>
-            </div>
-            <div class="flex gap-4 text-slate-400">
-                <a href="https://chargetogg.com" class="hover:text-cyan-400 transition">ChargeTogg</a>
-                <a href="https://servicetogg.com" class="hover:text-rose-400 transition">ServiceTogg</a>
-                <a href="https://toggelectric.com" class="hover:text-blue-400 transition">ToggElectric</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Interactive Script -->
-    <script>
-        const operators = [
-            { name: "Trugo", dc: 14.98, ac: 9.95, power: "300 kW HPC", badge: "Togg Öncelikli", color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/30" },
-            { name: "Astor", dc: 13.99, ac: 9.49, power: "120 kW", badge: "En Uygun DC", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
-            { name: "Eşarj", dc: 14.90, ac: 9.90, power: "180 kW", badge: "Otoyol Ağı", color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/30" },
-            { name: "Voltrun", dc: 15.50, ac: 10.20, power: "150 kW", badge: "Şehir İçi", color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30" },
-            { name: "ZES", dc: 16.49, ac: 10.49, power: "180 kW", badge: "5.519+ Soket", color: "text-rose-400", bg: "bg-rose-500/10", border: "border-rose-500/30" },
-            { name: "Tesla SC", dc: 16.99, ac: null, power: "250 kW", badge: "Supercharger", color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" }
-        ];
-
-        function updateCalculator() {
-            const kwh = parseFloat(document.getElementById('kwhSlider').value);
-            document.getElementById('kwhDisplay').innerText = kwh.toFixed(1) + ' kWh';
-
-            const container = document.getElementById('calcResults');
-            container.innerHTML = '';
-
-            operators.forEach(op => {
-                const totalDc = (kwh * op.dc).toFixed(2);
-                const totalAc = op.ac ? (kwh * op.ac).toFixed(2) : null;
-
-                const card = document.createElement('div');
-                card.className = `glass-card rounded-xl p-4 border ${op.border} flex flex-col justify-between`;
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-white text-sm">${op.name}</span>
-                            <span class="text-[10px] px-2 py-0.5 rounded font-bold ${op.bg} ${op.color}">${op.badge}</span>
-                        </div>
-                        <div class="text-xs text-slate-400 mb-2 font-mono">${op.power}</div>
-                        <div class="text-lg font-black ${op.color} font-mono">${totalDc} ₺ <span class="text-[10px] text-slate-400 font-normal">DC</span></div>
-                        ${totalAc ? `<div class="text-xs text-slate-300 font-mono mt-0.5">${totalAc} ₺ <span class="text-[10px] text-slate-400">AC</span></div>` : ''}
-                    </div>
-                    <div class="mt-3 pt-2 border-t border-white/5 text-[10px] text-slate-400 flex justify-between">
-                        <span>Birim: ${op.dc} ₺/kWh</span>
-                        <span class="text-cyan-400">~${Math.round(kwh / 1.8)} km</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        document.getElementById('kwhSlider').addEventListener('input', updateCalculator);
-        updateCalculator();
-
-        // Search & Filter
-        document.getElementById('opSearch').addEventListener('input', function(e) {
-            const val = e.target.value.toLowerCase();
-            document.querySelectorAll('#tableBody tr').forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(val) ? '' : 'none';
-            });
-        });
-
-        document.getElementById('filterType').addEventListener('change', function(e) {
-            const filter = e.target.value;
-            document.querySelectorAll('#tableBody tr').forEach(row => {
-                const dc = parseFloat(row.dataset.dc);
-                const power = parseFloat(row.dataset.power);
-                if (filter === 'all') row.style.display = '';
-                else if (filter === 'dc' && dc > 0) row.style.display = '';
-                else if (filter === 'hpc' && power >= 180) row.style.display = '';
-                else row.style.display = 'none';
-            });
-        });
-
-        let sortAsc = true;
-        function sortTable(colIndex) {
-            const tbody = document.getElementById('tableBody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            rows.sort((a, b) => {
-                const valA = parseFloat(a.children[colIndex].innerText.replace('₺','').trim()) || 0;
-                const valB = parseFloat(b.children[colIndex].innerText.replace('₺','').trim()) || 0;
-                return sortAsc ? valA - valB : valB - valA;
-            });
-            sortAsc = !sortAsc;
-            rows.forEach(r => tbody.appendChild(r));
-        }
-    </script>
+<footer class="border-t border-gray-800/30 mt-20 py-8 text-center text-gray-600 text-sm">
+<p>ChargeTogg &copy; 2026 | Togg Connected Ecosystem</p>
+<p class="mt-1">Veriler: EPDK Temmuz 2026 | Fiyatlar degisiklik gosterebilir</p>
+</footer>
 </body>
 </html>
