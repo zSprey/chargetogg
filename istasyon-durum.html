@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canlı İstasyon Check-In & Doluluk Bildirimi | ChargeTogg</title>
+<meta name="description" content="Türkiye geneli Trugo, ZES, Eşarj şarj istasyonlarında anlık kuyruk durumu, şarj hızı, arıza bildirimi ve kitle kaynaklı canlı sürücü check-in ağı.">
+<link rel="canonical" href="https://chargetogg.com/istasyon-durum">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#050811;color:#e5e7eb;min-height:100vh;margin:0}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:24px}
+.pulse-green{box-shadow:0 0 0 0 rgba(16,185,129,0.7);animation:pulse-green 2s infinite}
+@keyframes pulse-green{0%{box-shadow:0 0 0 0 rgba(16,185,129,0.7)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+</style>
+</head>
+<body>
+<nav class="border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-xl sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="/" class="flex items-center gap-2"><i class="fas fa-bolt text-emerald-400 text-xl"></i><span class="font-black text-white text-lg">Charge<span class="text-emerald-400">Togg</span> <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">Canlı Check-In</span></span></a>
+<div class="flex items-center gap-4 text-sm">
+<a href="/" class="text-gray-400 hover:text-emerald-400 transition">Harita</a>
+<a href="/karsilastirma" class="text-gray-400 hover:text-emerald-400 transition">Tarifeler</a>
+<a href="/menzil-simulasyonu" class="text-gray-400 hover:text-emerald-400 transition">Menzil Testi</a>
+<a href="/kokpit" class="text-emerald-400 hover:text-white transition font-semibold"><i class="fas fa-gauge-high mr-1"></i>Kokpit</a>
+</div>
+</div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-4 py-12">
+<div class="text-center mb-12">
+<span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-4 py-1.5 rounded-full border border-emerald-500/20 uppercase tracking-wider mb-4 inline-block"><i class="fas fa-broadcast-tower mr-1"></i> Kitle Kaynaklı Canlı Telemetri Ağı</span>
+<h1 class="text-4xl md:text-5xl font-black text-white mb-4">Canlı İstasyon Check-In & Durum Bildirimi</h1>
+<p class="text-gray-400 text-lg max-w-2xl mx-auto">İstasyonlardaki anlık kuyruk durumunu, şarj hızını ve arıza bildirimlerini diğer sürücülerle paylaşın; istasyon güvenilirlik puanını birlikte yükseltin.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Check-In Form -->
+<div class="lg:col-span-5 glass p-6 md:p-8">
+<h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i class="fas fa-location-crosshairs text-emerald-400"></i> Yeni Durum Bildirimi Yap</h2>
+
+<form id="checkinForm" onsubmit="return handleCheckIn(event)">
+<div class="mb-4">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">İstasyon Seçin</label>
+<select id="ciStation" required class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none">
+<option value="Trugo O-5 Balıkesir Oksijen 180kW">Trugo - O-5 Balıkesir Oksijen (300kW HPC)</option>
+<option value="Trugo Bolu Dağı Highway Outlet">Trugo - Bolu Dağı Highway Outlet (300kW HPC)</option>
+<option value="ZES İstanbul Zorlu Center">ZES - İstanbul Zorlu Center (180kW DC)</option>
+<option value="Eşarj Ankara Armada AVM">Eşarj - Ankara Armada AVM (180kW DC)</option>
+<option value="Trugo İzmir Bornova Forum">Trugo - İzmir Bornova Forum (300kW HPC)</option>
+<option value="Astor Afyon Kolaylı Dinlenme Tesisi">Astor - Afyon Kolaylı Tesisleri (120kW DC)</option>
+<option value="Trugo Bursa Gemlik Teknoloji Kampüsü">Trugo - Gemlik Togg Kampüsü (300kW HPC)</option>
+<option value="Tesla Supercharger Bolu">Tesla Supercharger - Bolu (250kW V3)</option>
+</select>
+</div>
+
+<div class="mb-4">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Soket Durumu & Kuyruk</label>
+<div class="grid grid-cols-3 gap-2">
+<label class="cursor-pointer border border-gray-700 bg-gray-800/40 rounded-xl p-3 text-center text-xs has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-500/10">
+<input type="radio" name="ciStatus" value="Soket Boş, Sıra Yok" checked class="hidden">
+<i class="fas fa-check-circle text-emerald-400 text-lg mb-1 block"></i>
+<span class="text-gray-300 font-semibold">Boş (0 Araç)</span>
+</label>
+<label class="cursor-pointer border border-gray-700 bg-gray-800/40 rounded-xl p-3 text-center text-xs has-[:checked]:border-amber-500 has-[:checked]:bg-amber-500/10">
+<input type="radio" name="ciStatus" value="1-2 Araç Kuyruk Var" class="hidden">
+<i class="fas fa-clock text-amber-400 text-lg mb-1 block"></i>
+<span class="text-gray-300 font-semibold">1-2 Araç Sıra</span>
+</label>
+<label class="cursor-pointer border border-gray-700 bg-gray-800/40 rounded-xl p-3 text-center text-xs has-[:checked]:border-red-500 has-[:checked]:bg-red-500/10">
+<input type="radio" name="ciStatus" value="Kablo / Soket Arızalı" class="hidden">
+<i class="fas fa-triangle-exclamation text-red-400 text-lg mb-1 block"></i>
+<span class="text-gray-300 font-semibold">Arızalı Soket</span>
+</label>
+</div>
+</div>
+
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Ölçülen Şarj Hızı</label>
+<select id="ciSpeed" class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none">
+<option value="175 kW+ (Ultra Hızlı)">175 kW+ (Maksimum)</option>
+<option value="120-150 kW (Yüksek)">120 - 150 kW (Yüksek)</option>
+<option value="60-90 kW (Orta)">60 - 90 kW (Orta)</option>
+<option value="22 kW (AC)">22 kW AC</option>
+</select>
+</div>
+<div>
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Araç Modeliniz</label>
+<select id="ciCar" class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none">
+<option value="Togg T10X Uzun Menzil">Togg T10X Uzun Menzil</option>
+<option value="Togg T10X Standart">Togg T10X Standart</option>
+<option value="Togg T10F Fastback">Togg T10F Fastback</option>
+<option value="Tesla Model Y">Tesla Model Y</option>
+<option value="Diğer EV">Diğer Elektrikli Araç</option>
+</select>
+</div>
+</div>
+
+<div class="mb-5">
+<label class="text-gray-300 text-sm font-semibold mb-2 block">Sürücü Notu (Opsiyonel)</label>
+<input type="text" id="ciNote" placeholder="Örn: 2 no'lu kablo çok hızlı, kahveci açık..." class="w-full bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none text-sm">
+</div>
+
+<button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold py-4 rounded-xl hover:scale-102 transition-all shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2">
+<i class="fas fa-paper-plane"></i> Check-In Gönder & Paylaş
+</button>
+</form>
+</div>
+
+<!-- Live Stream Feed -->
+<div class="lg:col-span-7 space-y-4">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-xl font-bold text-white flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-400 pulse-green"></span> Canlı Sürücü Bildirim Akışı</h2>
+<span class="text-gray-400 text-xs"><i class="fas fa-arrows-rotate mr-1"></i> Anlık Otomatik Güncelleme</span>
+</div>
+
+<div id="checkinFeed" class="space-y-3">
+<!-- Seed Cards -->
+<div class="glass p-4 rounded-2xl border-l-4 border-emerald-500">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-white text-base">Trugo - O-5 Balıkesir Oksijen Tesisi</h4>
+<p class="text-gray-400 text-xs"><i class="fas fa-car text-emerald-400 mr-1"></i> Togg T10X V2 Uzun Menzil • Sürücü: Selim K.</p>
+</div>
+<span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-bold">🟢 Boş (0 Sıra)</span>
+</div>
+<p class="text-gray-300 text-sm mb-2">"1. soketten bağlandım, 178 kW ile %18'den %80'e 26 dakikada doldurdu. Yanındaki kafe ve tuvaletler tertemiz."</p>
+<div class="flex items-center justify-between text-xs text-gray-500">
+<span><i class="fas fa-gauge-high text-cyan-400 mr-1"></i> Hız: 178 kW Stabil</span>
+<span>3 dakika önce</span>
+</div>
+</div>
+
+<div class="glass p-4 rounded-2xl border-l-4 border-amber-500">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-white text-base">Trugo - Bolu Dağı Highway Outlet</h4>
+<p class="text-gray-400 text-xs"><i class="fas fa-car text-amber-400 mr-1"></i> Togg T10X Standart • Sürücü: Ahmet T.</p>
+</div>
+<span class="bg-amber-500/20 text-amber-400 text-xs px-2.5 py-1 rounded-full font-bold">🟡 1 Araç Bekliyor</span>
+</div>
+<p class="text-gray-300 text-sm mb-2">"4 soketten 3'ü dolu, önümdeki Togg %75'e geldi birazdan çıkıyor. Bekleme süresi yaklaşık 6-8 dakika."</p>
+<div class="flex items-center justify-between text-xs text-gray-500">
+<span><i class="fas fa-gauge-high text-cyan-400 mr-1"></i> Hız: 165 kW</span>
+<span>11 dakika önce</span>
+</div>
+</div>
+
+<div class="glass p-4 rounded-2xl border-l-4 border-emerald-500">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-bold text-white text-base">ZES - İstanbul Zorlu Center</h4>
+<p class="text-gray-400 text-xs"><i class="fas fa-car text-emerald-400 mr-1"></i> Togg T10F Fastback • Sürücü: Ece D.</p>
+</div>
+<span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-bold">🟢 Boş (Kuyruk Yok)</span>
+</div>
+<p class="text-gray-300 text-sm mb-2">"Kapalı otopark -2 katındaki 180kW DC soket sorunsuz çalışıyor. AutoCharge tak-çalıştır hemen başladı."</p>
+<div class="flex items-center justify-between text-xs text-gray-500">
+<span><i class="fas fa-gauge-high text-cyan-400 mr-1"></i> Hız: 152 kW</span>
+<span>24 dakika önce</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<footer class="border-t border-gray-800/30 mt-20 py-8 text-center text-gray-600 text-sm">
+<p>ChargeTogg Canlı Sürücü Telemetri Ağı &copy; 2026 | Togg Connected Ecosystem</p>
+</footer>
+
+<script>
+function handleCheckIn(e) {
+    e.preventDefault();
+    var station = document.getElementById('ciStation').value;
+    var status = document.querySelector('input[name="ciStatus"]:checked').value;
+    var speed = document.getElementById('ciSpeed').value;
+    var car = document.getElementById('ciCar').value;
+    var note = document.getElementById('ciNote').value || 'Soket aktif, şarj işlemi devam ediyor.';
+    
+    var borderColor = status.indexOf('Boş') !== -1 ? 'border-emerald-500' : (status.indexOf('Arızalı') !== -1 ? 'border-red-500' : 'border-amber-500');
+    var badgeColor = status.indexOf('Boş') !== -1 ? 'bg-emerald-500/20 text-emerald-400' : (status.indexOf('Arızalı') !== -1 ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400');
+    
+    var cardHtml = '<div class="glass p-4 rounded-2xl border-l-4 ' + borderColor + ' animate-fade-in">' +
+        '<div class="flex justify-between items-start mb-2">' +
+        '<div><h4 class="font-bold text-white text-base">' + station + '</h4>' +
+        '<p class="text-gray-400 text-xs"><i class="fas fa-car text-emerald-400 mr-1"></i> ' + car + ' • Sürücü: Siz (Doğrulanmış)</p></div>' +
+        '<span class="' + badgeColor + ' text-xs px-2.5 py-1 rounded-full font-bold">' + status + '</span></div>' +
+        '<p class="text-gray-300 text-sm mb-2">"' + note + '"</p>' +
+        '<div class="flex items-center justify-between text-xs text-gray-500">' +
+        '<span><i class="fas fa-gauge-high text-cyan-400 mr-1"></i> Hız: ' + speed + '</span>' +
+        '<span>Şimdi</span></div></div>';
+        
+    var feed = document.getElementById('checkinFeed');
+    feed.insertAdjacentHTML('afterbegin', cardHtml);
+    document.getElementById('ciNote').value = '';
+    alert('Check-In bildiriminiz canlı ağa başarıyla iletildi!');
+    return false;
+}
+</script>
+</body>
+</html>
